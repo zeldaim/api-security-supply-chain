@@ -1,6 +1,4 @@
 #!/usr/bin/env bash
-# 녹화되는 터미널 안에서 실제로 실행되는 시연. record_live.sh 가 가상 화면의 xterm 에서 이 스크립트를 돌리고 화면을 캡처한다.
-# 출력은 전부 그 자리에서 실행된 명령의 실제 출력이다.
 cd /repo/e2e_story
 D=demo_video_2026-11-16; R3=crapi_run3_2026-11-16; V=v2_portable; L=$D/live; mkdir -p $L; rm -f $L/*
 B=$'\e[1;36m'; G=$'\e[1;32m'; Y=$'\e[1;33m'; N=$'\e[0m'
