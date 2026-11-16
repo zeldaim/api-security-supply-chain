@@ -28,6 +28,17 @@
 
 ![관계 그래프](media/api_asset_graph.png)
 
+### 근거 대시보드 — "왜 위험한가"를 근거 종류별로
+
+| 근거 표시 관계 그래프 | 엔드포인트 위험 순위 (근거 칸) |
+|---|---|
+| ![근거 그래프](media/evidence_graph.png) | ![위험 순위](media/evidence_risk_table.png) |
+
+- 엔드포인트 하나에 **동적**(로그 관측 · 블랙박스 스캔 · nuclei) · **실증**(VEX) · **정적**(코드 호출 경로로 닿는 부품) 근거를 나란히 놓는다. 그래프에서는 선 모양이 근거 종류이고 체크박스로 켜고 끈다 ([`evidence_dashboard.py`](standardize/reach/evidence_dashboard.py), [`build_relations.py`](standardize/graph/build_relations.py)).
+- 시작은 "API-BOM 과 SBOM 이 그래프에 나열만 돼 있고 실제로는 이어져 있지 않다"는 문제 제기였다. 코드 호출을 따라 잇고 나서야 **고유 CVE 403개 중 309개(77%)가 어떤 엔드포인트에서도 닿지 않는다**는 결과가 나왔다. 결과를 믿기 전에 분석기 버그 5개(엉뚱한 핸들러, 인증 조건 무시, 미해석 호출 200여 건 등)를 먼저 고쳤다.
+- 순위 1위: `GET /api/v1/users/{id}` — Shadow + 개인정보 + 실증된 BOLA + 닿는 Critical 부품.
+- 한계: 이 앱에서는 닿는 CVE 94개가 전부 런타임 공통 부품(apache2 · glibc)이라 **엔드포인트 사이 순위를 가르지는 못한다.** 가치는 소음 제거와 영향 범위(셸에 닿는 건 `ping` 하나, JWT 라이브러리는 인증 경로만)다. 분석은 정적이고 PHP 라우팅에 맞춰져 있다.
+
 ## 2. 자동화 — 기준에서 룰, 룰에서 대응까지
 
 ```
@@ -77,7 +88,15 @@
 
 상세: [`verify/crapi/`](verify/crapi/) · [`automate/portable-workflow/README.md`](automate/portable-workflow/README.md)
 
-## 5. 스스로 정정한 것
+## 5. 다음 목표 — 소프트웨어에서 커널까지
+
+![소프트웨어 → 커널 ABI → 하드웨어 체인](media/kernel_chain.png)
+
+- SBOM 패키지 200개를 앱 → 시스템 → 커널 ABI → 하드웨어 인터페이스 계층으로 나눠 이은 화면 ([`kernel_hw_chain.py`](standardize/graph/kernel_hw_chain.py)).
+- **아직 결과가 아니라 방향이다.** 계층은 패키지 이름 규칙으로 나눴고(200개 중 111개는 미분류), 하드웨어 노드는 가정해서 그렸고, 선은 패키지 의존 관계다.
+- 다음 단계는 이 선을 **실행 중 관측**으로 바꾸는 것: 요청을 처리한 프로세스가 실제로 로드한 라이브러리(strace · eBPF)와 실제로 부른 커널 기능을 이어, 근거 대시보드의 "정적" 칸 옆에 "런타임" 칸을 만든다.
+
+## 6. 스스로 정정한 것
 
 | 처음 주장 | 정정 | 어떻게 찾았나 |
 |---|---|---|
