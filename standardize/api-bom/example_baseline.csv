@@ -1,0 +1,29 @@
+endpoint_key,kind,auth,frontend,in_spec,source,decision,owner,note
+GET /api/v1/diagnostics/ping,api,required,n,,public/api/v1/index.php:79,review,,코드에만 있음 — 담당자 확인 필요 (shadow 후보)
+GET /api/v1/users/{id},api,required,n,,public/api/v1/index.php:77,review,,코드에만 있음 — 담당자 확인 필요 (shadow 후보)
+DELETE /api/v2/cart,api,required,y,,public/api/index.php:104,active,,프런트에서 호출
+GET /api/v2/cart,api,required,y,,public/api/index.php:102,active,,프런트에서 호출
+POST /api/v2/cart,api,required,y,,public/api/index.php:103,active,,프런트에서 호출
+DELETE /api/v2/cart/{id},api,required,y,,public/api/index.php:106,active,,프런트에서 호출
+PATCH /api/v2/cart/{id},api,required,y,,public/api/index.php:105,active,,프런트에서 호출
+POST /api/v2/login,api,none,y,,public/api/index.php:86,active,,프런트에서 호출
+POST /api/v2/orders,api,required,y,,public/api/index.php:95,active,,프런트에서 호출
+GET /api/v2/orders/me,api,required,y,,public/api/index.php:96,active,,프런트에서 호출
+GET /api/v2/orders/{id},api,required,y,,public/api/index.php:98,active,,프런트에서 호출
+POST /api/v2/orders/{id}/cancel,api,required,y,,public/api/index.php:99,active,,프런트에서 호출
+GET /api/v2/products,api,none,y,,public/api/index.php:90,active,,프런트에서 호출
+GET /api/v2/products/search,api,none,y,,public/api/index.php:92,active,,프런트에서 호출
+GET /api/v2/products/{id},api,none,y,,public/api/index.php:93,active,,프런트에서 호출
+POST /api/v2/signup,api,none,y,,public/api/index.php:85,active,,프런트에서 호출
+GET /api/v2/users/me,api,required,y,,public/api/index.php:87,active,,프런트에서 호출
+PATCH /api/v2/users/me,api,required,y,,public/api/index.php:88,active,,프런트에서 호출
+GET /,page,none,-,,public/index.php,active,,화면(page)
+GET /cart.php,page,none,-,,public/cart.php,active,,화면(page)
+GET /index.php,page,none,-,,public/index.php,active,,화면(page)
+GET /login.php,page,none,-,,public/login.php,active,,화면(page)
+GET /me.php,page,none,-,,public/me.php,active,,화면(page)
+GET /order.php,page,none,-,,public/order.php,active,,화면(page)
+GET /orders.php,page,none,-,,public/orders.php,active,,화면(page)
+GET /product.php,page,none,-,,public/product.php,active,,화면(page)
+GET /products.php,page,none,-,,public/products.php,active,,화면(page)
+GET /signup.php,page,none,-,,public/signup.php,active,,화면(page)

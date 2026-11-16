@@ -1,0 +1,39 @@
+# 공통: 대응 기록(JSONL) + Slack 알림. 호출 측에서 decision, target_ip(없으면 '') 를 넘긴다
+- name: 알림 문장 만들기
+  ansible.builtin.set_fact:
+    resp_text: >-
+      [{{ decision }}] Wazuh L{{ ev.rule.level }} rule {{ ev.rule.id }} — {{ ev.rule.description }}
+      | src={{ target_ip | default('-', true) }}
+      | url={{ ev.data.url | default('-') }}
+      | agent={{ ev.agent.name | default('-') }}
+      | {{ ev.timestamp | default('') }}
+
+- name: 대응 기록 남기기 (logs/actions.jsonl)
+  ansible.builtin.lineinfile:
+    path: "{{ response_log }}"
+    create: true
+    mode: "0640"
+    line: >-
+      {{ {'at': now(utc=true).strftime('%Y-%m-%dT%H:%M:%SZ'), 'mode': response_mode, 'decision': decision,
+          'ip': target_ip | default(''), 'rule_id': ev.rule.id, 'level': ev.rule.level,
+          'description': ev.rule.description, 'url': ev.data.url | default(''),
+          'alert_id': ev.id | default('')} | to_json(ensure_ascii=false) }}
+  delegate_to: localhost
+  run_once: true
+
+- name: Slack 알림
+  ansible.builtin.uri:
+    url: "{{ slack_webhook_url }}"
+    method: POST
+    body_format: json
+    body: {text: "{{ resp_text }}"}
+    status_code: 200
+  delegate_to: localhost
+  run_once: true
+  when: slack_webhook_url | length > 0
+  failed_when: false        # 알림 실패가 차단을 되돌리지 않게
+
+- name: 화면 출력
+  ansible.builtin.debug:
+    msg: "{{ resp_text }}"
+  run_once: true

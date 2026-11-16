@@ -1,0 +1,60 @@
+<!--
+  BOLA(객체 ID 열거) 탐지 v2 — 2026-11-09, 손으로 작성 (YARA 변환 아님)
+
+  v1(0910 의 100904 BOLAEnumeration)을 대체한다.
+    v1: url 에 /users/1 또는 /users/2 가 있으면 요청 1건으로 level 12 (= EDA 자동 차단).
+        정상 사용자의 자기 조회 1건, /users/15 · /users/200 도 걸렸다.
+  v2: 두 축을 분리한다.
+    행위 = 같은 출발지 IP 가 짧은 시간에 "서로 다른" 객체 ID URL 을 반복 조회 (frequency + same_srcip + different_url)
+    결과 = 응답 코드. 2xx = 데이터가 나갔다(성공) / 401·403 = 막혔다(시도)
+    → 성공 열거만 level 12(자동 차단), 막힌 시도는 level 8(알림만).
+
+  임계값: 120초 안에 서로 다른 객체 URL 10개. 근거·한계는 rules_v2/README.md.
+  느린 열거(요청 간격 수십 초)는 이 룰의 몫이 아니다 → ML(0920-ml_anomaly.xml) 담당.
+
+  상위 SID: 31100 웹 접근 로그 / 31101 4xx (403 은 31101 로 내려가므로 포함) / 31108 2xx·3xx 단순 요청(level 0, 포함 안 하면 깨끗한 GET 200 을 못 본다)
+  ID 100920~100924 (v1 1009 00~06, ML 100950~ 와 겹치지 않음)
+-->
+<group name="shadow_api_threats,web,bola,">
+
+  <!-- 기반: 객체 ID 가 붙은 API 경로 (/api/v2/orders/4776, /api/v1/users/3 …). 경보 없음 -->
+  <rule id="100920" level="0">
+    <if_sid>31100, 31101, 31108</if_sid>
+    <url type="pcre2">^/api/v\d+/[A-Za-z_-]+/\d+(?:[/?]|$)</url>
+    <description>객체 ID API 조회</description>
+  </rule>
+
+  <!-- 결과: 성공 (2xx). level 2 인 이유: Wazuh 는 level 0 룰에 걸린 이벤트를 if_matched_sid 빈도 집계에 쌓지 않는다
+       (wazuh-logtest 4.14.6 에서 level 0 이면 100923 이 20건에도 안 울림 확인). 2 는 log_alert_level(기본 3) 미만이라 alerts 에 안 남는다 -->
+  <rule id="100921" level="2">
+    <if_sid>100920</if_sid>
+    <id>^2</id>
+    <description>객체 ID API 조회 성공</description>
+  </rule>
+
+  <!-- 결과: 거부 (401/403). level 2 이유는 위와 같음 -->
+  <rule id="100922" level="2">
+    <if_sid>100920</if_sid>
+    <id>^401|^403</id>
+    <description>객체 ID API 조회 거부</description>
+  </rule>
+
+  <!-- 행위+결과: 서로 다른 객체 10개를 120초 안에 성공 조회 → 자동 차단 대상 -->
+  <rule id="100923" level="12" frequency="10" timeframe="120">
+    <if_matched_sid>100921</if_matched_sid>
+    <same_srcip />
+    <different_url />
+    <description>[BOLA] $(srcip) 가 120초 안에 서로 다른 객체 ID 10개 이상 조회 성공 (2xx) (CWE-639)</description>
+    <group>attack,bola_success,</group>
+  </rule>
+
+  <!-- 행위+결과: 같은 행위지만 막힘 → 알림만 -->
+  <rule id="100924" level="8" frequency="10" timeframe="120">
+    <if_matched_sid>100922</if_matched_sid>
+    <same_srcip />
+    <different_url />
+    <description>[BOLA 시도] $(srcip) 가 120초 안에 서로 다른 객체 ID 10개 이상 조회, 거부됨 (401/403) (CWE-639)</description>
+    <group>attack,bola_attempt,</group>
+  </rule>
+
+</group>

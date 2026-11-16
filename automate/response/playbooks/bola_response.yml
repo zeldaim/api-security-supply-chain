@@ -1,0 +1,13 @@
+# BOLA 열거 대응 = 계정 정지 + 출발지 IP 차단 (2026-11-10)
+#   ① suspend_account.yml : user_id 정지 (핵심 — IP 를 바꿔도 같은 계정은 막힌다)
+#   ② block_ip.yml        : 앱 로그의 출발지는 data.client_ip (srcip 가 아님) → ip 변수로 넘겨 차단
+#   두 단계 모두 vars/response.yml 의 response_mode(notify/block)·허용 IP 를 따른다.
+#
+#   손으로: ansible-playbook -i inventory/hosts_v2.yml playbooks/bola_response.yml -e alert_file=$PWD/tests/alerts/high_bola_enum.json
+- name: ① 계정 정지
+  ansible.builtin.import_playbook: suspend_account.yml
+
+- name: ② 출발지 IP 차단 (client_ip)
+  ansible.builtin.import_playbook: block_ip.yml
+  vars:
+    ip: "{{ (ansible_eda.event.payload if (ansible_eda is defined) else (lookup('ansible.builtin.file', alert_file) | from_json)).data.client_ip | default('') }}"

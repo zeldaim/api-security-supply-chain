@@ -1,0 +1,17 @@
+# 경보 알림·기록만
+#   rulebook 이 부를 때: ansible_eda.event.payload 를 쓴다
+#   손으로 돌릴 때:      ansible-playbook playbooks/notify.yml -e alert_file=$PWD/tests/alerts/medium_xss.json
+- name: Wazuh 경보 알림
+  hosts: localhost
+  gather_facts: false
+  # 설정은 vars/response.yml 하나 — ansible-rulebook 은 playbooks/ 폴더만 임시 복사해 돌리므로 그 안에 둔다
+  vars_files:
+    - vars/response.yml
+  vars:
+    ev: "{{ ansible_eda.event.payload if (ansible_eda is defined) else (lookup('ansible.builtin.file', alert_file) | from_json) }}"
+  tasks:
+    - name: 기록·알림
+      ansible.builtin.include_tasks: tasks/record.yml
+      vars:
+        decision: notify
+        target_ip: "{{ ev.data.srcip | default('') }}"

@@ -1,0 +1,84 @@
+# YARA 에서 만든 Wazuh 규칙 배포 — tools/yara_to_wazuh.py 결과물
+#   검사(wazuh-analysisd -t) 실패 → 원복, 재시작 안 함 / 바뀐 경우에만 재시작
+#   ※ inventory 의 wazuh_manager 그룹(개인 Wazuh)에만. 팀 Wazuh 금지
+#
+#   ansible-playbook playbooks/deploy_rules.yml -K
+#   ansible-playbook playbooks/deploy_rules.yml -K --check --diff   # 미리보기
+- name: Wazuh 규칙 배포
+  hosts: wazuh_manager
+  gather_facts: false
+  become: true
+  vars:
+    rule_src: "{{ playbook_dir }}/../../api-bom/wazuh/rules/0910-shadow_api_threats.xml"
+    rule_dest: /var/ossec/etc/rules/0910-shadow_api_threats.xml
+    backup_dir: /var/ossec/etc/rules/backup
+  tasks:
+    - name: 백업 폴더
+      ansible.builtin.file:
+        path: "{{ backup_dir }}"
+        state: directory
+        mode: "0750"
+
+    - name: 기존 규칙 있나
+      ansible.builtin.stat:
+        path: "{{ rule_dest }}"
+      register: old
+
+    - name: 기존 규칙 백업
+      ansible.builtin.copy:
+        src: "{{ rule_dest }}"
+        dest: "{{ backup_dir }}/0910-shadow_api_threats.xml.bak"
+        remote_src: true
+        mode: "0640"
+      when: old.stat.exists
+
+    - name: 설치 → 검사 (실패하면 원복)
+      block:
+        - name: 규칙 복사
+          ansible.builtin.copy:
+            src: "{{ rule_src }}"
+            dest: "{{ rule_dest }}"
+            owner: root
+            group: wazuh
+            mode: "0640"
+          notify: wazuh-manager 재시작
+
+        - name: 설정·규칙 검사
+          ansible.builtin.command: /var/ossec/bin/wazuh-analysisd -t
+          changed_when: false
+          when: not ansible_check_mode
+      rescue:
+        - name: 원복 (백업 있음)
+          ansible.builtin.copy:
+            src: "{{ backup_dir }}/0910-shadow_api_threats.xml.bak"
+            dest: "{{ rule_dest }}"
+            remote_src: true
+            owner: root
+            group: wazuh
+            mode: "0640"
+          when: old.stat.exists
+
+        - name: 원복 (처음 설치였음 → 삭제)
+          ansible.builtin.file:
+            path: "{{ rule_dest }}"
+            state: absent
+          when: not old.stat.exists
+
+        - name: 중단
+          ansible.builtin.fail:
+            msg: "규칙 검사 실패 → 원복했고 재시작하지 않았습니다. wazuh-analysisd -t 출력 확인"
+
+  handlers:
+    - name: wazuh-manager 재시작
+      ansible.builtin.systemd_service:
+        name: wazuh-manager
+        state: restarted
+
+    - name: 재시작 확인
+      ansible.builtin.command: systemctl is-active wazuh-manager
+      register: active
+      until: active.rc == 0
+      retries: 10
+      delay: 3
+      changed_when: false
+      listen: wazuh-manager 재시작

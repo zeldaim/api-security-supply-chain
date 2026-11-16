@@ -1,0 +1,15 @@
+# BOLA 계정 정지 설정 (2026-11-10) — suspend_account.yml / bola_response.yml 이 읽는다
+# 모드(notify/block)·허용 IP 는 vars/response.yml 을 그대로 따른다. notify 면 정지도 기록만 한다.
+
+# 정지 시간 (분). 지나면 앱이 자동으로 정지를 풀어 준다 (TSV 의 해제시각 비교)
+suspend_minutes: 60
+
+# 웹 앱이 읽는 정지 목록 (AccountGuard.php 기본값 = 앱의 logs/suspended_users.tsv)
+# ansible-rulebook 은 playbooks/ 만 임시 폴더에 복사하므로 실제 운영에서는 환경변수로 절대 경로를 준다
+suspended_users_file: "{{ lookup('ansible.builtin.env', 'SUSPENDED_USERS_FILE') | default(playbook_dir ~ '/../logs/suspended_users.tsv', true) }}"
+
+# 절대 정지하지 않는 user_id (관리자·점검 계정 등). 정수로 적는다
+bola_protected_users: []
+
+# 정지 목록 파일 쓰기에 sudo 가 필요하면 true
+suspend_become: false

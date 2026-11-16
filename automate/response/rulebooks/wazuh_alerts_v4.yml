@@ -1,0 +1,95 @@
+# Event-Driven Ansible rulebook v4 — 공통 필드(ecs)만 본다 (2026-11-11)
+#
+# 짝: Wazuh integration custom-eda-v2 (경보에 "ecs" 블록을 붙여 보냄, response/wazuh/log_schema.py)
+#   출처마다 다르던 필드 → 하나로:  srcip/client_ip → ecs.source.ip · url/path → ecs.url.* · user_id → ecs.user.id
+#
+# v3 와 차이:
+#   - 알림 throttle 키가 (룰, 출발지, 엔드포인트 템플릿) 하나로 정리된다. v3 의 알림-A/B/C/D 넷 → 셋.
+#     v3 알림-A 한계("같은 출발지의 서로 다른 ID 엔드포인트 둘이 하나로 묶임") 해소: /users/{id} 와 /orders/{id} 는 다른 키.
+#     ID 열거(/users/1, /users/2 …)는 같은 템플릿이라 여전히 5분에 한 번.
+#   - 차단 조건은 v3 와 같은 범위(웹 접근 로그 경보 = ecs.event.dataset == apache.access)로 둔다.
+#     앱 로그 경보(Shadow 100512 등)까지 차단으로 넓히는 건 정책 결정이라 이 버전에서 바꾸지 않는다.
+#   - ecs 블록이 없는 경보(v1 integration 이 보낸 것): 차단은 예비 규칙(data.srcip, v3 와 같음), 알림은 맨 아래 규칙(룰 당 5분).
+#
+# 플레이북(block_ip · notify · bola_response)은 그대로 — 원래 data.* 필드도 경보에 그대로 남아 있다.
+#
+# 실행 (response/ 폴더에서):
+#   EDA_WEBHOOK_TOKEN=<토큰> ansible-rulebook -r rulebooks/wazuh_alerts_v4.yml -i inventory/hosts_v2.yml \
+#       --env-vars EDA_WEBHOOK_TOKEN -v
+- name: Wazuh 경보 대응 v4 (공통 필드)
+  hosts: all
+  sources:
+    - ansible.eda.webhook:
+        host: 0.0.0.0
+        port: 5000
+        token: "{{ EDA_WEBHOOK_TOKEN }}"
+
+  rules:
+    - name: BOLA 열거 (남의 객체 5분 3개 이상 성공) → 계정 정지 + 출발지 IP 차단
+      condition: event.payload.rule.id == "100931" and event.payload.ecs.user.id is defined
+      throttle:
+        once_within: 5 minutes
+        group_by_attributes:
+          - event.payload.ecs.user.id
+      action:
+        run_playbook:
+          name: playbooks/bola_response.yml
+
+    - name: 높은 위험 + 웹 접근 로그 출발지 → 차단 플레이북 (기본 notify 모드면 기록만)
+      condition: >-
+        event.payload.rule.level >= 12 and event.payload.ecs.source.ip is defined
+        and event.payload.ecs.event.dataset in ["apache.access", "ml"]
+      throttle:
+        once_within: 5 minutes
+        group_by_attributes:
+          - event.payload.ecs.source.ip
+      action:
+        run_playbook:
+          name: playbooks/block_ip.yml
+
+    - name: (예비) ecs 없는 v1 경보 + srcip → 차단 플레이북 — integration 을 v2 로 안 바꾼 채 v4 를 켜도 차단이 약해지지 않게
+      condition: >-
+        event.payload.ecs is not defined and event.payload.rule.level >= 12
+        and event.payload.data.srcip is defined
+      throttle:
+        once_within: 5 minutes
+        group_by_attributes:
+          - event.payload.data.srcip
+      action:
+        run_playbook:
+          name: playbooks/block_ip.yml
+
+    - name: 알림 — 엔드포인트가 있는 경보 → (룰, 출발지, 엔드포인트 템플릿) 당 5분에 한 번
+      condition: >-
+        event.payload.rule.level >= 7 and event.payload.ecs.source.ip is defined
+        and event.payload.ecs.url.template is defined
+      throttle:
+        once_within: 5 minutes
+        group_by_attributes:
+          - event.payload.rule.id
+          - event.payload.ecs.source.ip
+          - event.payload.ecs.url.template
+      action:
+        run_playbook:
+          name: playbooks/notify.yml
+
+    - name: 알림 — 출발지만 있는 경보(ML 등) → (룰, 출발지) 당 5분에 한 번
+      condition: event.payload.rule.level >= 7 and event.payload.ecs.source.ip is defined
+      throttle:
+        once_within: 5 minutes
+        group_by_attributes:
+          - event.payload.rule.id
+          - event.payload.ecs.source.ip
+      action:
+        run_playbook:
+          name: playbooks/notify.yml
+
+    - name: 알림 — 그 밖 (ecs 없는 v1 경보 포함) → 룰 당 5분에 한 번
+      condition: event.payload.rule.level >= 7
+      throttle:
+        once_within: 5 minutes
+        group_by_attributes:
+          - event.payload.rule.id
+      action:
+        run_playbook:
+          name: playbooks/notify.yml

@@ -1,0 +1,46 @@
+# BOLA 계정 정지 — 경보의 user_id 를 웹 앱 정지 목록(TSV)에 넣는다 (2026-11-10)
+#   IP 차단만으로는 BOLA 를 못 막는다: 로그인한 정상 계정의 공격이라 IP 를 바꾸면 같은 토큰으로 계속한다.
+#   그래서 "누가(user_id)" 를 막는다. 앱의 AccountGuard 가 이 목록을 읽어 403 을 돌려준다 (bola/app_patch/).
+#
+#   response_mode=notify(기본) → 정지하지 않고 dry-run 기록만
+#   response_mode=block        → webapp 그룹 호스트의 정지 목록에 추가 (suspend_minutes 뒤 자동 해제)
+#
+#   rulebook 이 부를 때: ansible_eda.event.payload.data.user_id
+#   손으로:  ansible-playbook -i inventory/hosts_v2.yml playbooks/suspend_account.yml -e alert_file=$PWD/tests/alerts/high_bola_enum.json
+- name: 계정 정지 (BOLA)
+  hosts: webapp
+  gather_facts: false
+  vars_files:
+    - vars/response.yml
+    - vars/bola.yml
+  vars:
+    ev: "{{ ansible_eda.event.payload if (ansible_eda is defined) else (lookup('ansible.builtin.file', alert_file) | from_json) }}"
+    target_user: "{{ (user_id | default(ev.data.user_id | default(''))) | string | trim }}"
+    target_ip: "{{ ev.data.client_ip | default('') }}"
+  tasks:
+    - name: 판단 — 형식·보호 계정·모드
+      ansible.builtin.set_fact:
+        decision: >-
+          {%- if not (target_user is match('^[0-9]+$')) -%}skip-invalid-user
+          {%- elif (target_user | int) in bola_protected_users -%}skip-protected-user
+          {%- elif response_mode != 'block' -%}dry-run-suspend
+          {%- else -%}suspended{%- endif -%}
+        suspend_until: "{{ (now().timestamp() | int) + (suspend_minutes | int) * 60 }}"
+
+    - name: 정지 목록에 추가 (같은 user_id 줄은 새 해제시각으로 교체)
+      ansible.builtin.lineinfile:
+        path: "{{ suspended_users_file }}"
+        create: true
+        mode: "0644"
+        regexp: "^{{ target_user }}\t"
+        line: "{{ target_user }}\t{{ suspend_until }}\tbola rule {{ ev.rule.id }} alert {{ ev.id | default('') }}"
+      become: "{{ suspend_become | bool }}"
+      when: decision == 'suspended'
+
+    - name: dry-run 이면 했을 일 보여주기
+      ansible.builtin.debug:
+        msg: "(notify 모드 — 실행 안 함) user_id {{ target_user }} 를 {{ suspend_minutes }}분 정지 → {{ suspended_users_file }}"
+      when: decision == 'dry-run-suspend'
+
+    - name: 기록·알림
+      ansible.builtin.include_tasks: tasks/record.yml

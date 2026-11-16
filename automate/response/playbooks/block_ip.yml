@@ -1,0 +1,55 @@
+# 출발지 IP 차단 (nftables, 시간 지나면 자동 해제)
+#   response_mode=notify(기본) → 차단하지 않고 "dry-run" 으로 기록만
+#   response_mode=block        → firewall 그룹 호스트에 실제 차단
+#
+#   rulebook 이 부를 때: ansible_eda.event.payload.data.srcip
+#   손으로:  ansible-playbook playbooks/block_ip.yml -e alert_file=$PWD/tests/alerts/high_sqli.json
+#            ansible-playbook playbooks/block_ip.yml -e alert_file=$PWD/tests/alerts/high_sqli.json -e response_mode=block -K
+- name: 출발지 IP 차단
+  hosts: firewall
+  gather_facts: false
+  # 설정은 vars/response.yml 하나 — ansible-rulebook 은 playbooks/ 폴더만 임시 복사해 돌리므로 그 안에 둔다
+  vars_files:
+    - vars/response.yml
+  vars:
+    ev: "{{ ansible_eda.event.payload if (ansible_eda is defined) else (lookup('ansible.builtin.file', alert_file) | from_json) }}"
+    target_ip: "{{ (ip | default(ev.data.srcip | default(''))) | string | trim }}"
+  tasks:
+    - name: 판단 — 형식·허용목록·모드
+      ansible.builtin.set_fact:
+        decision: >-
+          {%- if not (target_ip | is_ipv4) -%}skip-invalid-ip
+          {%- elif target_ip | ip_in_any(response_allowlist) -%}skip-allowlist
+          {%- elif response_mode != 'block' -%}dry-run
+          {%- else -%}blocked{%- endif -%}
+
+    - name: nftables 테이블·세트 준비 (없을 때만)
+      ansible.builtin.shell: |
+        set -e
+        nft list table inet shadow_resp >/dev/null 2>&1 && exit 0
+        nft -f - <<'EOF'
+        table inet shadow_resp {
+          set blocklist { type ipv4_addr; flags timeout; }
+          chain input   { type filter hook input   priority -10; policy accept; ip saddr @blocklist drop; }
+          chain forward { type filter hook forward priority -10; policy accept; ip saddr @blocklist drop; }
+        }
+        EOF
+        echo created
+      register: nft_setup
+      changed_when: "'created' in nft_setup.stdout"
+      become: true
+      when: decision == 'blocked'
+
+    - name: 차단 ({{ block_minutes }}분 뒤 자동 해제)
+      ansible.builtin.command: >-
+        nft add element inet shadow_resp blocklist { {{ target_ip }} timeout {{ block_minutes }}m }
+      become: true
+      when: decision == 'blocked'
+
+    - name: dry-run 이면 실행했을 명령 보여주기
+      ansible.builtin.debug:
+        msg: "(notify 모드 — 실행 안 함) nft add element inet shadow_resp blocklist { {{ target_ip }} timeout {{ block_minutes }}m }"
+      when: decision == 'dry-run'
+
+    - name: 기록·알림
+      ansible.builtin.include_tasks: tasks/record.yml

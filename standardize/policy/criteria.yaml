@@ -1,0 +1,20 @@
+# v3 일반 승인 기준 (문서 12 §2). judge.py 가 읽는다.
+# severity: high / medium / low
+criteria:
+  G1: {name: "명세 밖 API 외부 노출 금지", severity: high, ref: "OWASP API Security Top 10 2023 API9"}
+  G2: {name: "구버전 API 노출 금지", severity: high, ref: "OWASP API9"}
+  G3: {name: "명세·문서·디버그·관리·헬스 경로 외부 노출 금지", severity: medium, ref: "OWASP API8, API9"}
+  G4: {name: "인증 없는 민감정보(PII) 조회 금지", severity: high, ref: "OWASP API1, API2, API3"}
+  G5: {name: "관리 서비스 외부 노출 시 출발지 제한", severity: high, ref: "CIS Controls v8 4·12, NIST SP 800-41"}
+  G6: {name: "구역 간 기본 차단, any→any 금지", severity: high, ref: "NIST SP 800-41, CIS Controls v8 12"}
+  G7: {name: "알려진·실증된 취약점 없음", severity: high, ref: "OWASP API1 등, 모의해킹·VEX"}
+  G8: {name: "외부 노출 서비스 정체 식별", severity: medium, ref: "OWASP API9, CIS Controls v8 1"}
+  G9: {name: "불필요한 프로토콜 개방 금지", severity: low, ref: "CIS Controls v8 4"}
+
+# G3 경로 패턴 (외부 지식: 흔한 문서·디버그·관리 경로). healthz 는 낮음으로 따로 표시
+sensitive_paths: ["/docs", "swagger", "openapi", "/debug", "diagnostics", "/admin", "phpinfo", "server-status", "actuator"]
+health_paths: ["/healthz", "/health", "/status"]
+# G3·G7 에 쓰는 nuclei 태그
+nuclei_exposure_tags: [exposure, panel, debug, swagger, disclosure, config]
+# G5 관리형 서비스로 보는 이름 조각
+admin_service_hints: [ssh, gui, dashboard, grafana, mysql, db-]

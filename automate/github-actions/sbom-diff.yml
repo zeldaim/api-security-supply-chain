@@ -1,0 +1,105 @@
+name: SBOM Diff PR Comment
+
+on:
+  pull_request:
+    branches: [main]
+
+jobs:
+  sbom-diff:
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+      contents: read
+
+    steps:
+      - name: Checkout HEAD
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Find SBOM files
+        id: find_sbom
+        run: |
+          HEAD_SBOM=$(find docs/sbom/results -name "sbom-image.cdx.json" 2>/dev/null | sort | tail -1)
+          if [ -z "$HEAD_SBOM" ]; then
+            echo "found=false" >> "$GITHUB_OUTPUT"
+            echo "SBOM 파일 없음 — 스킵"
+            exit 0
+          fi
+          echo "found=true" >> "$GITHUB_OUTPUT"
+          echo "head_sbom=$HEAD_SBOM" >> "$GITHUB_OUTPUT"
+
+          BASE_SBOM=$(git show "origin/${{ github.base_ref }}:$HEAD_SBOM" > /tmp/base_sbom.cdx.json 2>/dev/null && echo "/tmp/base_sbom.cdx.json" || echo "")
+          echo "base_sbom=$BASE_SBOM" >> "$GITHUB_OUTPUT"
+
+      - name: Set up Python
+        if: steps.find_sbom.outputs.found == 'true'
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Run SBOM diff
+        if: steps.find_sbom.outputs.found == 'true'
+        id: diff
+        run: |
+          HEAD_SBOM="${{ steps.find_sbom.outputs.head_sbom }}"
+          BASE_SBOM="${{ steps.find_sbom.outputs.base_sbom }}"
+
+          if [ -z "$BASE_SBOM" ]; then
+            echo "diff_body=⚠️ **base branch에 SBOM 없음** — 최초 실행이거나 SBOM이 아직 생성되지 않았습니다." >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          DIFF_MD=$(python tools/sbom_diff.py --before "$BASE_SBOM" --after "$HEAD_SBOM" 2>/dev/null)
+          {
+            echo 'diff_body<<EOF'
+            echo "### 📦 SBOM Diff"
+            echo ""
+            echo "$DIFF_MD"
+            echo 'EOF'
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Post PR comment
+        if: steps.find_sbom.outputs.found == 'true'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const body = `${{ steps.diff.outputs.diff_body }}`;
+            const marker = '<!-- sbom-diff-comment -->';
+
+            const { data: comments } = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+            });
+
+            const existing = comments.find(c => c.body.includes(marker));
+            const fullBody = marker + '\n' + body;
+
+            if (existing) {
+              await github.rest.issues.updateComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: existing.id,
+                body: fullBody,
+              });
+            } else {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.issue.number,
+                body: fullBody,
+              });
+            }
+
+      - name: Skip notice
+        if: steps.find_sbom.outputs.found == 'false'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              body: '<!-- sbom-diff-comment -->\n📦 **SBOM 파일 없음** — `docs/sbom/results/*/sbom-image.cdx.json` 가 없어 diff를 건너뜁니다.',
+            });

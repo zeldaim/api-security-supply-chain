@@ -1,0 +1,17 @@
+# 수동 차단 해제:  ansible-playbook playbooks/unblock_ip.yml -e ip=203.0.113.50 -K
+# 지금 차단 목록:  sudo nft list set inet shadow_resp blocklist
+- name: 차단 해제
+  hosts: firewall
+  gather_facts: false
+  tasks:
+    - name: 입력 확인
+      ansible.builtin.assert:
+        that: ip is defined and (ip | is_ipv4)
+        fail_msg: "-e ip=<IPv4> 를 넘겨 주세요"
+
+    - name: 세트에서 제거 (없으면 그대로)
+      ansible.builtin.command: nft delete element inet shadow_resp blocklist { {{ ip }} }
+      become: true
+      register: r
+      failed_when: r.rc != 0 and 'No such file' not in r.stderr and 'does not exist' not in r.stderr
+      changed_when: r.rc == 0

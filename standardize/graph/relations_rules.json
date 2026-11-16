@@ -1,0 +1,47 @@
+{
+  "_doc": "엔드포인트 → 이미지 부품 연결 규칙. 근거(evidence)가 코드에 있는 것만 적는다. 추측 연결 금지.",
+  "runtime": {
+    "_doc": "모든 api/page 가 공통으로 올라타는 런타임 (Dockerfile: FROM php:7.4-apache)",
+    "components": ["apache2", "libphp"],
+    "evidence": "web/src/Dockerfile:1 FROM php:7.4-apache"
+  },
+  "rules": [
+    {
+      "when": {"authenticated": true, "kind": "api"},
+      "components": ["firebase/php-jwt"],
+      "evidence": "src/Core/Security.php:40,47 JWT::encode/decode (v2 AuthMiddleware, v1 decodeToken)"
+    },
+    {
+      "when": {"endpoint_key": "POST /api/v2/login"},
+      "components": ["firebase/php-jwt"],
+      "evidence": "src/Core/Security.php:40 JWT::encode (토큰 발급)"
+    },
+    {
+      "when": {"endpoint_key": "GET /api/v1/diagnostics/ping"},
+      "components": ["dash"],
+      "evidence": "src/Api/V1/DiagnosticsController.php shell_exec('ping -c 1 ' . $host) → /bin/sh(dash). 이미지에 iputils-ping 없음 → ping 은 실패하지만 ;명령 은 실행됨"
+    }
+  ],
+  "known_vulns": [
+    {
+      "id": "SESAC-PT-001",
+      "endpoint_key": "GET /api/v1/users/{id}",
+      "title": "BOLA/IDOR — v2 토큰으로 남의 PII 조회",
+      "cwe": 639,
+      "severity": "critical",
+      "state": "exploitable",
+      "detail": "pentest nuclei shop-v1-bola-idor 2026-11-02 매칭 (200 + 타인 PII). Wazuh 룰 교차 경보.",
+      "evidence": "pentest/sample/run_2026-11-02_detected/findings_redacted.json"
+    },
+    {
+      "id": "SESAC-PT-002",
+      "endpoint_key": "GET /api/v1/diagnostics/ping",
+      "title": "명령어 주입(RCE) — host 미검증 shell_exec",
+      "cwe": 78,
+      "severity": "critical",
+      "state": "in_triage",
+      "detail": "코드상 의도된 취약점(DiagnosticsController.php). 능동 확인은 토큰 없는 템플릿이라 401 미탐지 → 보류.",
+      "evidence": "pentest/sample/run_2026-11-02_detected/RUN.txt 미탐지 항목"
+    }
+  ]
+}

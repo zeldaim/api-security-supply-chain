@@ -1,0 +1,100 @@
+# Event-Driven Ansible rulebook v3 — v2 + 알림 throttle 을 '룰 ID 하나'에서 '룰 · 출발지 · 경로'로 (2026-11-11)
+#
+# 고친 문제 (e2e_story/runs/20261109_1144 사건 체인의 사건 4):
+#   v1·v2 알림 규칙은 throttle 키가 rule.id 하나뿐이다.
+#   02:54:15 soc-lab 호스트의 GET /api/v2/health (Shadow 100512) 알림이 나간 뒤 78초 만에 온
+#   GET /api/v1/users/1 (Shadow 100512, VEX exploitable = BOLA 실증 엔드포인트) 경보가 '같은 룰'이라 5분 throttle 에 묻혀
+#   대응 기록 없이 지나갔다. 다른 엔드포인트·다른 사람의 경보까지 한 키로 삼키는 설계 문제.
+#
+# v3 알림 규칙 (위에서부터 처음 맞는 하나만 실행. ansible-rulebook 의 throttle 기억은 규칙마다 따로다):
+#   알림-A  경로에 숫자 ID 또는 쿼리가 있음 → 키 (룰, 출발지)          — ID 열거·퍼징이 요청마다 알림 폭주하지 않게
+#   알림-B  경로가 있음(고정 경로)          → 키 (룰, 출발지, 경로)    — 엔드포인트가 다르면 따로 알림
+#   알림-C  URL 만 있음(웹 접근 로그 경보)   → 키 (룰, 출발지)
+#   알림-D  그 밖                          → 키 (룰)                — v2 와 같음
+#   → 사건 4(/api/v1/users/1)는 알림-A, 사건 3(/api/v2/health)은 알림-B 라 서로 묻히지 않는다.
+#   남는 한계: 같은 출발지가 5분 안에 서로 다른 'ID 있는' 엔드포인트 둘을 부르면 알림-A 에서 하나로 묶인다.
+#
+# v1·v2 파일은 기록으로 그대로 둔다. 차단·BOLA 규칙은 v2 와 같다.
+#
+# 실행 (response/ 폴더에서):
+#   EDA_WEBHOOK_TOKEN=<토큰> ansible-rulebook -r rulebooks/wazuh_alerts_v3.yml -i inventory/hosts_v2.yml \
+#       --env-vars EDA_WEBHOOK_TOKEN -v
+- name: Wazuh 경보 대응 v3
+  hosts: all
+  sources:
+    - ansible.eda.webhook:
+        host: 0.0.0.0
+        port: 5000
+        token: "{{ EDA_WEBHOOK_TOKEN }}"
+
+  rules:
+    - name: BOLA 열거 (남의 객체 5분 3개 이상 성공) → 계정 정지 + 출발지 IP 차단
+      condition: event.payload.rule.id == "100931"
+      throttle:
+        once_within: 5 minutes
+        group_by_attributes:
+          - event.payload.data.user_id
+      action:
+        run_playbook:
+          name: playbooks/bola_response.yml
+
+    - name: 높은 위험 + 출발지 IP → 차단 플레이북 (기본 notify 모드면 기록만)
+      condition: >-
+        event.payload.rule.level >= 12 and event.payload.data.srcip is defined
+      throttle:
+        once_within: 5 minutes
+        group_by_attributes:
+          - event.payload.data.srcip
+      action:
+        run_playbook:
+          name: playbooks/block_ip.yml
+
+    - name: 알림-A 숫자 ID·쿼리 있는 경로 → (룰, 출발지) 당 5분에 한 번
+      condition: >-
+        event.payload.rule.level >= 7 and event.payload.data.path is defined
+        and event.payload.data.client_ip is defined
+        and event.payload.data.path is search("/[0-9]+(/|$)|[?]")
+      throttle:
+        once_within: 5 minutes
+        group_by_attributes:
+          - event.payload.rule.id
+          - event.payload.data.client_ip
+      action:
+        run_playbook:
+          name: playbooks/notify.yml
+
+    - name: 알림-B 고정 경로 → (룰, 출발지, 경로) 당 5분에 한 번
+      condition: >-
+        event.payload.rule.level >= 7 and event.payload.data.path is defined
+        and event.payload.data.client_ip is defined
+      throttle:
+        once_within: 5 minutes
+        group_by_attributes:
+          - event.payload.rule.id
+          - event.payload.data.client_ip
+          - event.payload.data.path
+      action:
+        run_playbook:
+          name: playbooks/notify.yml
+
+    - name: 알림-C 웹 접근 로그 경보(URL·출발지) → (룰, 출발지) 당 5분에 한 번
+      condition: >-
+        event.payload.rule.level >= 7 and event.payload.data.srcip is defined
+      throttle:
+        once_within: 5 minutes
+        group_by_attributes:
+          - event.payload.rule.id
+          - event.payload.data.srcip
+      action:
+        run_playbook:
+          name: playbooks/notify.yml
+
+    - name: 알림-D 그 밖 중간 위험 → 룰 당 5분에 한 번 (v2 와 같음)
+      condition: event.payload.rule.level >= 7
+      throttle:
+        once_within: 5 minutes
+        group_by_attributes:
+          - event.payload.rule.id
+      action:
+        run_playbook:
+          name: playbooks/notify.yml

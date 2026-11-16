@@ -1,0 +1,34 @@
+<!--
+  BOLA 소유권 규칙 — 로그인 사용자(user_id) ≠ 경로의 객체 소유자 + 조회 성공(2xx)  (2026-11-10)
+
+  입력: 팀 웹 app.log (JSON 한 줄/요청, Wazuh localfile log_format=json). 필드 순서 …"path"…,"status"…,"user_id"…
+  판정: Wazuh 룰은 두 필드를 직접 비교하지 못한다 → 원본 줄에 PCRE2 역참조로
+        "/api/v{1,2}/users/(N)" 의 N 과 "user_id" 가 다르고 status 가 2xx 인 줄만 잡는다.
+  근거(실데이터, e2e_story/ml/experiments/windows_ensemble_2026-11-10/teamweb/):
+        팀 웹 app.log 361,022줄(10-26~11-03)에서 이 식의 적중 = 파이썬 판정과 2,313/2,313 일치,
+        정상 사용자 6 IP 적중 0건 · 공격 PC(.27 2160, .151 148) · 작성자 검증(.20 5).
+  한계: 소유자를 경로에서 바로 알 수 있는 /users/{n} 만. /orders/{id} 등은 DB 소유자 조회가 필요 → 앱 로그에 owner_id 를 남기면 같은 방식으로 확장.
+  차단: 이 로그의 출발지 필드는 client_ip (srcip 아님) → EDA 자동 차단 조건(srcip)에 걸리지 않고 알림만. 차단하려면 디코더에서 client_ip→srcip 매핑 필요.
+  ID 100930~100932
+-->
+<group name="shadow_api_threats,web,bola,bola_ownership,">
+
+  <!-- 남의 객체 조회 성공 1건 — 정상 사용자 8일간 0건이라 1건도 경보 가치가 있다 -->
+  <rule id="100930" level="10">
+    <decoded_as>json</decoded_as>
+    <field name="path" type="pcre2">^/api/v[12]/users/\d+</field>
+    <regex type="pcre2">"path":"/api/v[12]/users/(\d+)(?:[/?][^"]*)?","status":2\d\d,.*"user_id":"?(?!\1[",])\d+</regex>
+    <description>[BOLA] $(client_ip) 사용자 $(user_id) 가 남의 객체 $(path) 조회 성공 (소유권 불일치, CWE-639)</description>
+    <group>attack,bola_ownership_hit,</group>
+  </rule>
+
+  <!-- 같은 출발지가 5분 안에 서로 다른 남의 객체 3개 이상 성공 조회 → 열거 -->
+  <rule id="100931" level="12" frequency="3" timeframe="300">
+    <if_matched_sid>100930</if_matched_sid>
+    <same_field>client_ip</same_field>
+    <different_field>path</different_field>
+    <description>[BOLA 열거] $(client_ip) 가 5분 안에 서로 다른 남의 객체 3개 이상 조회 성공 (CWE-639)</description>
+    <group>attack,bola_ownership_enum,</group>
+  </rule>
+
+</group>
