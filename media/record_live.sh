@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-# 실제 화면 녹화: 컨테이너 안에 가상 화면을 띄우고, 그 터미널에서 live_demo.sh 를 실행하면서 화면을 캡처한다.
 #   bash record_live.sh         → demo_live.mp4 (실시간) · demo_live_2x.mp4 (2배속)
 # 필요: crAPI 기동, e2e-runner · wazuh-manager 이미지, crapi_run3 의 모델(state/B), demo-rec 이미지(Dockerfile.rec)
 set -u
