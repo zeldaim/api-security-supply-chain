@@ -133,3 +133,11 @@
 | `media/` | 시연 영상 2개 · 대시보드 그림 · 녹화 스크립트 |
 
 코드는 원본 저장소에서 골라 옮긴 것이라 일부 스크립트의 경로(`api-bom/…`, `e2e_story/…`, `team_one/…`)는 원본 구조 기준이다. 팀 프로젝트의 웹 애플리케이션 소스는 포함하지 않았다.
+
+## 라이선스
+
+이 레포에서 **제가 작성한 코드와 문서**는 [Apache License 2.0](LICENSE) 을 따릅니다.
+
+다음은 제외합니다 (각 원저작자의 권리를 따름):
+- `media/demo_team_edited_6x.mp4`, `media/poster_team.jpg` — 팀 프로젝트 시연 영상과 그 편집본
+- 외부 도구·데이터(OWASP crAPI, Dependency-Track, Syft 등)는 각자의 라이선스를 따릅니다
