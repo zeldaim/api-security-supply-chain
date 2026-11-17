@@ -71,6 +71,32 @@
 
 ![탐지 → 대응 대시보드](media/e2e_dashboard.png)
 
+### 실제 실행 화면 (2026-11-09, 팀 환경)
+
+> 이 환경(팀 웹 · Wazuh · Dependency-Track)은 교육과정 종료로 더 이상 없다. 아래 화면이 그 실행의 기록이다. 화면 속 주소는 모두 실습망 사설 IP 이다.
+
+**탐지 → 대응 → 승인 → 룰 재생성, 3막 시연 한 번의 기록**
+
+| 화면 | 내용 |
+|---|---|
+| ![3막 요약](media/e2e_3act_summary.png) | **E2E 보안 시연 — 공격 → 탐지(ML) → 대응(Ansible) → 승인 → 룰 재생성.** 1막은 느린 BOLA 를 ML 이 잡고, 2막은 빠른 공격을 룰이 잡아 자동 차단, 3막은 운영 중 새로 생긴 API 를 사람이 승인해 룰을 다시 만든다. 중간의 점수 그래프는 공격 구간에서 이상 점수가 임계값을 넘는 모습 |
+| ![3막 허용 목록 변화](media/e2e_3act_allowlist_change.png) | **3막 — 승인 판정과 허용 목록 변화.** 새로 보인 `/api/v1/files`, `/api/v1/products` 는 reject(운영 의도 없음), `/api/v2/health` 는 add:active(운영팀 헬스체크). 허용 목록이 비어 있던 상태에서 승인된 경로만 들어간 뒤의 룰 변화도 함께 보인다 |
+| ![진행 기록](media/e2e_3act_timeline.png) | **시각별 진행 기록.** 11:46 시작 → 1막 느린 BOLA 탐지, EDA 차단 → 2막 빠른 공격 차단 → 3막 승인 후 룰 재생성·배포 → 재확인 |
+
+> 이 3막은 이후 회차(11-11)에서 허용 목록이 이전 회차에서 넘어와 다르게 나왔다(추정, 확인 중). 위 화면은 11-09 회차 기준이다.
+
+**관제 화면과 부품 취약점**
+
+| Wazuh 경보 (Threat Hunting) | Wazuh MITRE ATT&CK 매핑 |
+|---|---|
+| ![Wazuh 경보](media/wazuh_alerts_threat_hunting.png) | ![MITRE 매핑](media/wazuh_mitre_mapping.png) |
+| 같은 시간대 레벨 12~14 경보 7건: ML 이상 행위(느린 BOLA), 명세 밖 호출(Shadow API), SQL UNION, 경로 순회 공격 | 같은 경보가 정찰 · 초기 접근 · 탐색(T1595, T1083, T1190 등)으로 분류된 화면 |
+
+| 엔드포인트 ↔ 부품 도달성 | Dependency-Track 포트폴리오 |
+|---|---|
+| ![도달성](media/reach_dashboard.png) | ![DT](media/dt_portfolio_dashboard.png) |
+| 고유 CVE 403개 중 94개만 엔드포인트에서 닿고 309개는 닿지 않음(not_affected 후보) | 매일 수집한 SBOM(CycloneDX 1.6)이 버전별로 쌓이는 모습 |
+
 ## 3. 보안 ML — 룰이 못 쓰는 행위를 보완
 
 | 비교 (실제 랩 로그) | 빠른 BOLA | 느린 BOLA (출발지 7곳) | 정상 오탐 |
