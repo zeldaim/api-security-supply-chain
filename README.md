@@ -98,6 +98,8 @@
 
 상세: [`verify/crapi/`](verify/crapi/) · [`automate/portable-workflow/README.md`](automate/portable-workflow/README.md)
 
+> **v1 제품 정의서:** [PRODUCT_V1.md](PRODUCT_V1.md) — 누가 쓰나 · v1 범위 · 성공 기준 7개와 현재 상태
+
 ## 5. 다음 목표 — 소프트웨어에서 커널까지
 
 ![소프트웨어 → 커널 ABI → 하드웨어 체인](media/kernel_chain.png)
