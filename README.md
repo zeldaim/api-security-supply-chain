@@ -91,6 +91,7 @@
 
 - 샘플: [`2026-11-09 보안 일일 보고서 (자동)`](automate/daily-report/sample/2026-11-09_0843_보안일일보고서.md) — 기준 위반 높음 37 · 중간 22, 부품 취약점 2,355건, 1위 `GET /api/v1/users/{id}`
 - 생성기와 설명: [`automate/daily-report/`](automate/daily-report/README.md)
+- **서버가 꺼진 날(출근하지 않는 날)의 자동화:** GitHub Actions 가 서버 없이 같은 보고서를 만들고, 서버가 꺼진 채 스캔해 인벤토리가 오염되는 일을 막는다 — [`오프라인 모드`](automate/daily-report/README.md#실습-서버가-꺼진-날--오프라인-자동화)
 
 **관제 화면과 부품 취약점**
 
