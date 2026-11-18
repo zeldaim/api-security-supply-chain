@@ -59,8 +59,8 @@ flowchart TB
 모든 룰과 특징은 **웹 서버 접근 로그(Apache / nginx combined 계열) 한 줄 = 요청 하나**를 입력으로 받는다.
 
 ```
-10.66.0.2 - - [19/Nov/2026:03:00:00 +0900] "GET /debug HTTP/1.1" 200 1299 "-" "Mozilla/5.0"
-└ 출발지 IP          └ 시각                   └ 메서드 · 경로(+쿼리)   └ 응답 코드 · 크기     └ User-Agent
+10.66.0.240 - - [18/Nov/2026:23:17:14 +0000] "GET /debug HTTP/1.1" 200 1299 "-" "Mozilla/5.0 (api-defense-lab)"
+└ 출발지 IP    └ 시각                        └ 메서드 · 경로(+쿼리)   └ 응답 코드 · 크기     └ User-Agent
 ```
 
 | 로그 칸 | Wazuh (`web-accesslog` 디코더, 룰 31100 계열) | Sigma (`category: webserver`) | 행위 ML 특징 |
