@@ -134,6 +134,18 @@
 
 상세: [`verify/crapi/`](verify/crapi/) · [`automate/portable-workflow/README.md`](automate/portable-workflow/README.md)
 
+### 개발에 쓰지 않은 앱에서 — VAmPI 실패 → v2.1 → 네 번째 앱 DVRA (2026-11-18)
+
+| 앱 | Shadow 룰 (실제 Wazuh) | ML (BOLA) |
+|---|---|---|
+| VAmPI, v2 설정만 | ❌ 자체 시험 48/49 중단 · 탐색 재현율 9/15 | — |
+| VAmPI, v2.1 (VAmPI 를 보고 고침) | 52/52 · 탐색 14/15 · 정상 0/362 | 특징만 확인 |
+| **DVRA, v2.1 설정만 (처음 보는 앱)** | **116/118 · 탐색 15/15 · 정상 2/355** | **실제 BOLA high** · 회피 변종 4종 40/40 · 다른 세션 정상 180창 오탐 0 · 평가 게이트는 **근소 실패**(49창 < 50 · 4.1%) |
+
+![DVRA 대시보드 — 탐색은 룰이, BOLA 는 ML 이](verify/dashboard_dvra_2026-11-18/screenshots/02_attack_window.png)
+
+상세: [`verify/dvra/`](verify/dvra/README.md) · [`verify/vampi/`](verify/vampi/README.md) · [`automate/portable-workflow-v2.1/`](automate/portable-workflow-v2.1/README.md) · 대시보드(코드화) [`verify/dashboard_dvra_2026-11-18/`](verify/dashboard_dvra_2026-11-18/README.md) · **ML 최종 정리 [`ml/FINAL_v1.0.md`](ml/FINAL_v1.0.md)**
+
 > **v1 제품 정의서:** [PRODUCT_V1.md](PRODUCT_V1.md) — 누가 쓰나 · v1 범위 · 성공 기준 7개와 현재 상태
 
 ## 5. 다음 목표 — 소프트웨어에서 커널까지
@@ -151,6 +163,7 @@
 | ML 오탐 0/65 | 10~15% | 정상을 시각순이 아니라 출발지 단위로 나눔 |
 | 합성 데이터에서 "느린 BOLA 는 LOF 만 잡는다" | 철회 | 피처 하나로 전부 갈리는 지름길 발견 |
 | 설정만 바꾸면 다른 앱에서도 된다 | 틀림 | crAPI 에 직접 돌림 |
+| (v2 는) 처음 보는 앱에서도 된다 | VAmPI 에서 실패 → v2.1 로 고친 뒤 네 번째 앱 DVRA 에서 룰은 통과, ML 게이트는 근소 실패 | VAmPI · DVRA 에 설정만으로 적용 |
 | 팀 웹 로그에서 ML 이 룰보다 더 잡는다 | 근거 없음 | 룰을 통과한 공격 구간 중 ML 탐지 0 |
 
 ## 한계
@@ -158,7 +171,7 @@
 - 정상 트래픽은 스크립트와 공개 데이터 재생이다. 실제 서비스의 오탐률은 모른다.
 - 행위 단위가 출발지 IP 라 여러 IP 로 나눈 공격은 탐지 0%. 계정·토큰 단위가 다음 단계다.
 - 도달성 분석은 정적 분석이다. 실행 중 실제로 로드된 라이브러리·커널 기능을 잇는 것이 다음 목표다.
-- 확인한 앱은 팀 웹과 crAPI 둘뿐이다.
+- 확인한 앱은 팀 웹 · crAPI · VAmPI · DVRA 넷이다. 공격은 앱마다 같은 생성기로 1~2회라 통계적으로 강한 주장은 못 한다.
 
 ## 구성
 
@@ -168,6 +181,10 @@
 | `automate/` | CI · 룰 생성 · Wazuh 룰 v2 · 대응(Ansible/EDA) · 이식 가능한 워크플로 |
 | `ml/` | 행위 특징 · 학습 · 탐지 · 평가(변종 · 게이트) · 랩 실험 코드 · 모델 카드 · 랩 로그 |
 | `verify/crapi/` | crAPI 검증 기록 · 트래픽 생성기 |
+| `verify/vampi/` · `verify/dvra/` | 처음 보는 앱 검증 (VAmPI 실패 · DVRA 룰 · ML 1차 무효 · 2차) |
+| `verify/dashboard_dvra_2026-11-18/` | 룰(실제 Wazuh) + ML 대시보드 — Grafana 코드화 |
+| `verify/elk_teamlog_2026-11-18/` | ELK 인덱스 기반 Shadow 분류 — 팀 로그 108만 줄, 9% 분류 실패 원인 수정 |
+| `ml/FINAL_v1.0.md` | ML 최종 보고 v1.0 (기능 동결) |
 | `media/` | 시연 영상 2개 · 대시보드 그림 · 녹화 스크립트 |
 
 코드는 원본 저장소에서 골라 옮긴 것이라 일부 스크립트의 경로(`api-bom/…`, `e2e_story/…`, `team_one/…`)는 원본 구조 기준이다. 팀 프로젝트의 웹 애플리케이션 소스는 포함하지 않았다.
