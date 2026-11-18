@@ -51,7 +51,7 @@ Wazuh 쪽 판정(`api-security-supply-chain/standardize/policy/offspec_triage`, 
 ## 따라 하기
 
 ```bash
-cd /d/api-security-supply-chain/elk_local_2026-11-18
+cd /d/api-security-supply-chain/verify/elk_teamlog_2026-11-18
 docker network create elk-local
 docker run -d --name es-local --net elk-local -p 127.0.0.1:9200:9200 -e discovery.type=single-node -e xpack.security.enabled=false -e ES_JAVA_OPTS="-Xms2g -Xmx2g" docker.elastic.co/elasticsearch/elasticsearch:9.5.5
 docker run -d --name kb-local --net elk-local -p 127.0.0.1:5601:5601 -e ELASTICSEARCH_HOSTS=http://es-local:9200 docker.elastic.co/kibana/kibana:9.5.5
@@ -68,3 +68,15 @@ python load.py <shop_access.log> shop-access-v2 api-access-v2      # 약 8분
 - 로그는 파일에서 `_bulk` 로 넣었다. Filebeat → SSH 터널 경로는 다시 확인하지 않았다.
 - `non_api` 는 `/api/` 접두어 가정이다. 다른 앱은 범위를 명세에서 뽑아야 한다(v2_portable 의 `derive_scope` 와 같은 문제).
 - 정규화는 숫자 · UUID · 16자 이상 hex 만 `{id}` 로 묶는다. `/api/v1/users/me` 같은 문자열은 그대로 남는다.
+
+## 함께 올린 자료 (2026-11-18 공개)
+
+| 파일 | 내용 |
+|---|---|
+| [`notes/2026-11-18_ELK_상태_정정.md`](notes/2026-11-18_ELK_상태_정정.md) | 레포 기록("Metricbeat setup 에서 멈춤")과 실제(수집 동작) 정정 · 근거 캡처 |
+| [`docs/02_ELK_구축_가이드라인.md`](docs/02_ELK_구축_가이드라인.md) | 팀 인프라 기준 ELK 구축 가이드 (원래 계획) |
+| [`docs/ELK_완성_구현_계획.md`](docs/ELK_완성_구현_계획.md) | Kibana SIEM · nuclei 적재 등 완성 계획 |
+| [`docs/01_Prometheus_vs_Kibana_비교.md`](docs/01_Prometheus_vs_Kibana_비교.md) | 모니터링 도구 선택 비교 |
+| [`openapi_to_inventory.py`](openapi_to_inventory.py) | 명세 → enrich 인벤토리(`inventory.ndjson`) 생성기 |
+
+문서 속 IP(192.168.x)는 지금은 없어진 팀 실습망의 사설 주소다.

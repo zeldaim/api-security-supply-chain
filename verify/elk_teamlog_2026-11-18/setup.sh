@@ -14,4 +14,4 @@ curl -sf -XPUT "$E/_ingest/pipeline/api-access-v2" -H "$J" --data-binary @pipeli
 curl -sf -XPUT "$E/_index_template/shop-access" -H "$J" -d '{"index_patterns":["shop-access-*"],"template":{"settings":{"number_of_replicas":0,"refresh_interval":"30s"},"mappings":{"properties":{"api":{"properties":{"classification":{"type":"keyword"},"endpoint_key":{"type":"keyword"},"endpoint":{"type":"keyword"}}},"source":{"properties":{"ip":{"type":"ip"}}},"error":{"properties":{"message":{"type":"keyword"}}}}}}}' >/dev/null
 echo "준비 완료: api-inventory $(grep -c endpoint_key inventory.ndjson)개 · 파이프라인 api-access-v1 · api-access-v2"
 # 인벤토리는 다음으로 만들었다 (팀 명세):
-#   MSYS_NO_PATHCONV=1 python ../tools/openapi_to_inventory.py ../api-bom/inputs/team_one_ab6c390/web/src/public/docs/openapi.yaml shop-api 웹팀 > inventory.ndjson
+#   MSYS_NO_PATHCONV=1 python openapi_to_inventory.py <팀 명세 openapi.yaml> shop-api 웹팀 > inventory.ndjson
