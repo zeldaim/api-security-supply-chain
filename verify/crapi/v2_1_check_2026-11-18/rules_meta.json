@@ -1,0 +1,286 @@
+{
+  "generated_at": "2026-11-18T04:14:32+00:00",
+  "generator": "gen_shadow_rules_v2_1.py",
+  "spec_source": "e2e_story/crapi_generality_2026-11-15/work/crapi-openapi-spec.json",
+  "spec_sha256": "9dc66ecfb21556b454d9b71be32753abb43d13f6fd2e39a414d583ffdd66bceb",
+  "operation_count": 44,
+  "allowlist_count": 0,
+  "status_option": "static",
+  "log_format": "accesslog",
+  "scope": "^(?:/+community/+api|/+identity/+api|/+workshop/+api)(?:/|\\?|$)",
+  "scope_prefixes": [
+    "/community/api",
+    "/identity/api",
+    "/workshop/api"
+  ],
+  "rule_ids": {
+    "base": 100500,
+    "other_method": 100501,
+    "undoc_DELETE": 100502,
+    "undoc_GET": 100503,
+    "undoc_POST": 100504,
+    "undoc_PUT": 100505,
+    "L1": 100510,
+    "L2": 100511,
+    "L3": 100512,
+    "L3E": 100513,
+    "F1": 100520,
+    "F2": 100521
+  },
+  "bursts": {
+    "F1": [
+      20,
+      30,
+      60
+    ],
+    "F2": [
+      10,
+      60,
+      60
+    ]
+  },
+  "operations": {
+    "DELETE": [
+      {
+        "template": "/identity/api/v2/admin/videos/{video_id}",
+        "source": "openapi",
+        "reason": ""
+      },
+      {
+        "template": "/identity/api/v2/user/videos/{video_id}",
+        "source": "openapi",
+        "reason": ""
+      }
+    ],
+    "GET": [
+      {
+        "template": "/community/api/v2/community/posts/recent",
+        "source": "openapi",
+        "reason": ""
+      },
+      {
+        "template": "/community/api/v2/community/posts/{postId}",
+        "source": "openapi",
+        "reason": ""
+      },
+      {
+        "template": "/identity/api/v2/user/dashboard",
+        "source": "openapi",
+        "reason": ""
+      },
+      {
+        "template": "/identity/api/v2/user/videos/convert_video",
+        "source": "openapi",
+        "reason": ""
+      },
+      {
+        "template": "/identity/api/v2/user/videos/{video_id}",
+        "source": "openapi",
+        "reason": ""
+      },
+      {
+        "template": "/identity/api/v2/vehicle/vehicles",
+        "source": "openapi",
+        "reason": ""
+      },
+      {
+        "template": "/identity/api/v2/vehicle/{vehicleId}/location",
+        "source": "openapi",
+        "reason": ""
+      },
+      {
+        "template": "/workshop/api/management/users/all",
+        "source": "openapi",
+        "reason": ""
+      },
+      {
+        "template": "/workshop/api/mechanic/",
+        "source": "openapi",
+        "reason": ""
+      },
+      {
+        "template": "/workshop/api/mechanic/mechanic_report",
+        "source": "openapi",
+        "reason": ""
+      },
+      {
+        "template": "/workshop/api/mechanic/receive_report",
+        "source": "openapi",
+        "reason": ""
+      },
+      {
+        "template": "/workshop/api/mechanic/service_requests",
+        "source": "openapi",
+        "reason": ""
+      },
+      {
+        "template": "/workshop/api/shop/orders/all",
+        "source": "openapi",
+        "reason": ""
+      },
+      {
+        "template": "/workshop/api/shop/orders/{order_id}",
+        "source": "openapi",
+        "reason": ""
+      },
+      {
+        "template": "/workshop/api/shop/products",
+        "source": "openapi",
+        "reason": ""
+      },
+      {
+        "template": "/workshop/api/shop/return_qr_code",
+        "source": "openapi",
+        "reason": ""
+      }
+    ],
+    "POST": [
+      {
+        "template": "/community/api/v2/community/posts",
+        "source": "openapi",
+        "reason": ""
+      },
+      {
+        "template": "/community/api/v2/community/posts/{postId}/comment",
+        "source": "openapi",
+        "reason": ""
+      },
+      {
+        "template": "/community/api/v2/coupon/new-coupon",
+        "source": "openapi",
+        "reason": ""
+      },
+      {
+        "template": "/community/api/v2/coupon/validate-coupon",
+        "source": "openapi",
+        "reason": ""
+      },
+      {
+        "template": "/identity/api/auth/forget-password",
+        "source": "openapi",
+        "reason": ""
+      },
+      {
+        "template": "/identity/api/auth/login",
+        "source": "openapi",
+        "reason": ""
+      },
+      {
+        "template": "/identity/api/auth/signup",
+        "source": "openapi",
+        "reason": ""
+      },
+      {
+        "template": "/identity/api/auth/v2.7/user/login-with-token",
+        "source": "openapi",
+        "reason": ""
+      },
+      {
+        "template": "/identity/api/auth/v2/check-otp",
+        "source": "openapi",
+        "reason": ""
+      },
+      {
+        "template": "/identity/api/auth/v3/check-otp",
+        "source": "openapi",
+        "reason": ""
+      },
+      {
+        "template": "/identity/api/auth/v4.0/user/login-with-token",
+        "source": "openapi",
+        "reason": ""
+      },
+      {
+        "template": "/identity/api/v2/user/change-email",
+        "source": "openapi",
+        "reason": ""
+      },
+      {
+        "template": "/identity/api/v2/user/pictures",
+        "source": "openapi",
+        "reason": ""
+      },
+      {
+        "template": "/identity/api/v2/user/reset-password",
+        "source": "openapi",
+        "reason": ""
+      },
+      {
+        "template": "/identity/api/v2/user/verify-email-token",
+        "source": "openapi",
+        "reason": ""
+      },
+      {
+        "template": "/identity/api/v2/user/videos",
+        "source": "openapi",
+        "reason": ""
+      },
+      {
+        "template": "/identity/api/v2/vehicle/add_vehicle",
+        "source": "openapi",
+        "reason": ""
+      },
+      {
+        "template": "/identity/api/v2/vehicle/resend_email",
+        "source": "openapi",
+        "reason": ""
+      },
+      {
+        "template": "/workshop/api/mechanic/signup",
+        "source": "openapi",
+        "reason": ""
+      },
+      {
+        "template": "/workshop/api/merchant/contact_mechanic",
+        "source": "openapi",
+        "reason": ""
+      },
+      {
+        "template": "/workshop/api/shop/apply_coupon",
+        "source": "openapi",
+        "reason": ""
+      },
+      {
+        "template": "/workshop/api/shop/orders",
+        "source": "openapi",
+        "reason": ""
+      },
+      {
+        "template": "/workshop/api/shop/orders/return_order",
+        "source": "openapi",
+        "reason": ""
+      },
+      {
+        "template": "/workshop/api/shop/products",
+        "source": "openapi",
+        "reason": ""
+      }
+    ],
+    "PUT": [
+      {
+        "template": "/identity/api/v2/user/videos/{video_id}",
+        "source": "openapi",
+        "reason": ""
+      },
+      {
+        "template": "/workshop/api/shop/orders/{order_id}",
+        "source": "openapi",
+        "reason": ""
+      }
+    ]
+  },
+  "param_formats": {
+    "/identity/api/v2/user/videos/{video_id}": {
+      "video_id": "\\d+"
+    },
+    "/identity/api/v2/admin/videos/{video_id}": {
+      "video_id": "\\d+"
+    },
+    "/identity/api/v2/vehicle/{vehicleId}/location": {
+      "vehicleId": "[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}"
+    },
+    "/workshop/api/shop/orders/{order_id}": {
+      "order_id": "\\d+"
+    }
+  }
+}

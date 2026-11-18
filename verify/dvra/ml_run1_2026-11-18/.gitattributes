@@ -1,0 +1,2 @@
+# 상위 .gitattributes 의 e2e_story/** text eol=lf 가 압축 파일 줄바꿈을 바꿔 손상시킨다 → 이 폴더의 .gz 는 바이너리
+*.gz binary

@@ -1,0 +1,124 @@
+{
+  "generated_at": "2026-11-18T04:12:49+00:00",
+  "generator": "gen_shadow_rules_v2_1.py",
+  "spec_source": "e2e_story/v2_1_portable/vampi_run_2026-11-18/state/spec.yaml",
+  "spec_sha256": "35200f354f9c9968182fc19458295ed45bb4c368150348c46d5146a7e40a61c9",
+  "operation_count": 14,
+  "allowlist_count": 0,
+  "status_option": "static",
+  "log_format": "accesslog",
+  "scope": "^/(?!(?:\\?|$))(?![^?]*\\.(?:css|js|png|jpe?g|gif|svg|ico|woff2?|ttf|map|html?|txt)(?:\\?|$))",
+  "scope_prefixes": [
+    "/books",
+    "/createdb",
+    "/me",
+    "/users"
+  ],
+  "rule_ids": {
+    "base": 100500,
+    "other_method": 100501,
+    "undoc_DELETE": 100502,
+    "undoc_GET": 100503,
+    "undoc_POST": 100504,
+    "undoc_PUT": 100505,
+    "L1": 100510,
+    "L2": 100511,
+    "L3": 100512,
+    "L3E": 100513,
+    "F1": 100520,
+    "F2": 100521
+  },
+  "bursts": {
+    "F1": [
+      20,
+      30,
+      60
+    ],
+    "F2": [
+      10,
+      60,
+      60
+    ]
+  },
+  "operations": {
+    "DELETE": [
+      {
+        "template": "/users/v1/{username}",
+        "source": "openapi",
+        "reason": ""
+      }
+    ],
+    "GET": [
+      {
+        "template": "/",
+        "source": "openapi",
+        "reason": ""
+      },
+      {
+        "template": "/books/v1",
+        "source": "openapi",
+        "reason": ""
+      },
+      {
+        "template": "/books/v1/{book_title}",
+        "source": "openapi",
+        "reason": ""
+      },
+      {
+        "template": "/createdb",
+        "source": "openapi",
+        "reason": ""
+      },
+      {
+        "template": "/me",
+        "source": "openapi",
+        "reason": ""
+      },
+      {
+        "template": "/users/v1",
+        "source": "openapi",
+        "reason": ""
+      },
+      {
+        "template": "/users/v1/_debug",
+        "source": "openapi",
+        "reason": ""
+      },
+      {
+        "template": "/users/v1/{username}",
+        "source": "openapi",
+        "reason": ""
+      }
+    ],
+    "POST": [
+      {
+        "template": "/books/v1",
+        "source": "openapi",
+        "reason": ""
+      },
+      {
+        "template": "/users/v1/login",
+        "source": "openapi",
+        "reason": ""
+      },
+      {
+        "template": "/users/v1/register",
+        "source": "openapi",
+        "reason": ""
+      }
+    ],
+    "PUT": [
+      {
+        "template": "/users/v1/{username}/email",
+        "source": "openapi",
+        "reason": ""
+      },
+      {
+        "template": "/users/v1/{username}/password",
+        "source": "openapi",
+        "reason": ""
+      }
+    ]
+  },
+  "param_formats": {}
+}

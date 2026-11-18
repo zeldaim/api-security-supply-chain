@@ -1,0 +1,15 @@
+GET /users/v2 404
+GET /users/v1/admin/list 404
+GET /users/v1/_internal 404
+POST /users/v1/reset 405
+GET /books/v1/export/all 404
+GET /books/v2 404
+DELETE /books/v1/bookTitle16 405
+PATCH /me 405
+GET /admin 404
+GET /api/v1/users 404
+GET /debug 404
+GET /swagger.json 404
+GET /actuator/health 404
+GET /users 404
+GET /books 404

@@ -1,0 +1,10 @@
+## 룰 로드 오류 없음 (wazuh/wazuh-manager:4.14.6)
+## 케이스 대조
+FAIL 기대=L1  실제=None (룰 31101, L5)  DELETE / -> 405  (명세 경로 + 그 경로에 없는 메서드(DELETE))
+48/49 일치 (실제 wazuh-logtest)
+## 실제 로그: lt_probe.log
+입력 15줄 → L1 9 · 경보 없음 6
+## 실제 로그: lt_bola.log
+입력 33줄 → 경보 없음 33
+## 실제 로그: lt_normal.log
+입력 362줄 → 경보 없음 362

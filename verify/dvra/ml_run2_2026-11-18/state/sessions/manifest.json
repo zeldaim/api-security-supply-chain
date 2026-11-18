@@ -1,0 +1,56 @@
+{
+ "n_per_variant": 40,
+ "seed": 100,
+ "desc": {
+  "V1_sequential": "순차 BOLA (모델 조정 때 본 형태) — 기준선",
+  "V2_random_order": "ID 무작위 순서 — 연속 열거 회피",
+  "V3_multi_api": "여러 API 에 분산 — 한 API 집중 회피",
+  "V4_blend_browser": "브라우저 UA + 정상 페이지에 섞음",
+  "V5_very_slow": "60~110초 간격, 요청 10건 — 더 느리게",
+  "V6_ip_distributed": "여러 IP 로 분산 — 창당 5건 미만 노림",
+  "V7_combined": "무작위+다API+브라우저+정상 섞기 (결합)",
+  "B_normal": "정상 사용자 (대조군, 오탐 확인)"
+ },
+ "variants": {
+  "V1_sequential": {
+   "desc": "순차 BOLA (모델 조정 때 본 형태) — 기준선",
+   "n_sessions": 40,
+   "is_attack": true
+  },
+  "V2_random_order": {
+   "desc": "ID 무작위 순서 — 연속 열거 회피",
+   "n_sessions": 40,
+   "is_attack": true
+  },
+  "V3_multi_api": {
+   "desc": "여러 API 에 분산 — 한 API 집중 회피",
+   "n_sessions": 40,
+   "is_attack": true
+  },
+  "V4_blend_browser": {
+   "desc": "브라우저 UA + 정상 페이지에 섞음",
+   "n_sessions": 40,
+   "is_attack": true
+  },
+  "V5_very_slow": {
+   "desc": "60~110초 간격, 요청 10건 — 더 느리게",
+   "n_sessions": 40,
+   "is_attack": true
+  },
+  "V6_ip_distributed": {
+   "desc": "여러 IP 로 분산 — 창당 5건 미만 노림",
+   "n_sessions": 40,
+   "is_attack": true
+  },
+  "V7_combined": {
+   "desc": "무작위+다API+브라우저+정상 섞기 (결합)",
+   "n_sessions": 40,
+   "is_attack": true
+  },
+  "B_normal": {
+   "desc": "정상 사용자 (대조군, 오탐 확인)",
+   "n_sessions": 40,
+   "is_attack": false
+  }
+ }
+}

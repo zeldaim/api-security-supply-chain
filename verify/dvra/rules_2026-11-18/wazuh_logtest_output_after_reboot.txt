@@ -1,0 +1,13 @@
+## 룰 로드 오류 없음 (wazuh/wazuh-manager:4.14.6)
+## 케이스 대조
+FAIL 기대=L1  실제=F1 (룰 100520, L10)  GET /reset-password/zz-undocumented-1 -> 404  (/reset-password: 없는 경로 탐색)
+FAIL 기대=L3  실제=F2 (룰 100521, L14)  GET /reset-password/zz-undocumented-1 -> 200  (/reset-password: 명세 밖 호출 성공)
+116/118 일치 (실제 wazuh-logtest)
+## 실제 로그: lt_normal.log
+입력 355줄 → L3 2 · 경보 없음 353
+## 실제 로그: lt_bola.log
+입력 63줄 → 경보 없음 63
+## 실제 로그: lt_probe.log
+입력 15줄 → L1 11 · L2 1 · L3 2 · OTHER 1
+## 실제 로그: lt_probe_all.log
+입력 17줄 → L1 11 · L2 1 · L3 2 · OTHER 1 · 경보 없음 2

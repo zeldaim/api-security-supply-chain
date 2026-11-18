@@ -1,0 +1,5 @@
+명세 작업 44개 (예외 0건) · 로그 형식 accesslog → verify/crapi/v2_1_check_2026-11-18/0915-shadow_api_rules.xml
+  검사 범위: ^(?:/+community/+api|/+identity/+api|/+workshop/+api)(?:/|\?|$)
+  룰 ID 100500~ · 테스트 케이스 75개 → verify/crapi/v2_1_check_2026-11-18/testcases.jsonl
+
+75/75 통과 (파이썬 재현 — 구현 검증)

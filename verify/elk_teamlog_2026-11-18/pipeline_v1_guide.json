@@ -1,0 +1,33 @@
+{
+  "description": "Apache 액세스 로그 → 파싱 → 경로 정규화 → 명세 대조 (직접 수집·Wazuh 경유 공용)",
+  "processors": [
+    { "set": { "if": "ctx.wazuh?.full_log != null", "field": "event.original", "copy_from": "wazuh.full_log" } },
+    { "set": { "if": "ctx.wazuh?.full_log == null", "field": "event.original", "copy_from": "message" } },
+    { "grok": {
+        "field": "event.original",
+        "patterns": [
+          "%{IPORHOST:source.ip} %{NOTSPACE:ident} %{NOTSPACE:user.name} \\[%{HTTPDATE:access_ts}\\] \"%{WORD:http.request.method} %{NOTSPACE:url.original} HTTP/%{NUMBER:http.version}\" %{NUMBER:http.response.status_code:int} (?:%{NUMBER:http.response.body.bytes:long}|-)(?: \"%{DATA:http.request.referrer}\" \"%{DATA:user_agent.original}\")?.*"
+        ]
+    }},
+    { "date":   { "field": "access_ts", "formats": ["dd/MMM/yyyy:HH:mm:ss Z"] } },
+    { "remove": { "field": ["access_ts", "ident", "message"], "ignore_missing": true } },
+
+    { "set":  { "field": "url.path", "copy_from": "url.original" } },
+    { "gsub": { "field": "url.path", "pattern": "\\?.*$", "replacement": "" } },
+
+    { "set":  { "field": "api.endpoint", "copy_from": "url.path" } },
+    { "gsub": { "field": "api.endpoint", "pattern": "[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}", "replacement": "{id}" } },
+    { "gsub": { "field": "api.endpoint", "pattern": "/[0-9a-fA-F]{16,}(?=/|$)", "replacement": "/{id}" } },
+    { "gsub": { "field": "api.endpoint", "pattern": "/\\d+(?=/|$)", "replacement": "/{id}" } },
+    { "gsub": { "field": "api.endpoint", "pattern": "(?<=.)/$", "replacement": "" } },
+
+    { "set":    { "field": "api.endpoint_key", "value": "{{http.request.method}} {{api.endpoint}}" } },
+    { "enrich": { "policy_name": "api-inventory-policy", "field": "api.endpoint_key", "target_field": "api.inventory", "ignore_missing": true } },
+    { "script": {
+        "source": "if (ctx.api.inventory == null) { ctx.api.classification = 'shadow'; } else if (ctx.api.inventory.status == 'deprecated') { ctx.api.classification = 'zombie'; } else { ctx.api.classification = 'documented'; }"
+    }}
+  ],
+  "on_failure": [
+    { "set": { "field": "error.message", "value": "{{ _ingest.on_failure_message }}" } }
+  ]
+}

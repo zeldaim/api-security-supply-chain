@@ -1,0 +1,187 @@
+{
+ "model_trained_at": "2026-11-18T07:35:46+00:00",
+ "threshold_high": -0.01309,
+ "threshold_medium": 0.02591,
+ "n_train_windows": 189,
+ "variants": {
+  "V1_sequential": {
+   "desc": "순차 BOLA (모델 조정 때 본 형태) — 기준선",
+   "is_attack": true,
+   "total": 40,
+   "scored": 40,
+   "skipped_lt5": 0,
+   "detected_high": 40,
+   "detected_medium_plus": 40,
+   "miss": 0,
+   "rate_high": 1.0,
+   "rate_medium_plus": 1.0,
+   "sample_scores": [
+    -0.0571,
+    -0.0571,
+    -0.0571,
+    -0.0571,
+    -0.0571,
+    -0.0571,
+    -0.0571,
+    -0.0571
+   ]
+  },
+  "V2_random_order": {
+   "desc": "ID 무작위 순서 — 연속 열거 회피",
+   "is_attack": true,
+   "total": 40,
+   "scored": 40,
+   "skipped_lt5": 0,
+   "detected_high": 40,
+   "detected_medium_plus": 40,
+   "miss": 0,
+   "rate_high": 1.0,
+   "rate_medium_plus": 1.0,
+   "sample_scores": [
+    -0.0571,
+    -0.0571,
+    -0.0571,
+    -0.0571,
+    -0.0571,
+    -0.0571,
+    -0.0571,
+    -0.0571
+   ]
+  },
+  "V3_multi_api": {
+   "desc": "여러 API 에 분산 — 한 API 집중 회피",
+   "is_attack": true,
+   "total": 40,
+   "scored": 40,
+   "skipped_lt5": 0,
+   "detected_high": 40,
+   "detected_medium_plus": 40,
+   "miss": 0,
+   "rate_high": 1.0,
+   "rate_medium_plus": 1.0,
+   "sample_scores": [
+    -0.0571,
+    -0.0571,
+    -0.0571,
+    -0.0571,
+    -0.0571,
+    -0.0571,
+    -0.0571,
+    -0.0571
+   ]
+  },
+  "V4_blend_browser": {
+   "desc": "브라우저 UA + 정상 페이지에 섞음",
+   "is_attack": true,
+   "total": 40,
+   "scored": 40,
+   "skipped_lt5": 0,
+   "detected_high": 23,
+   "detected_medium_plus": 39,
+   "miss": 1,
+   "rate_high": 0.575,
+   "rate_medium_plus": 0.975,
+   "sample_scores": [
+    -0.0601,
+    -0.0601,
+    -0.0569,
+    -0.0538,
+    -0.0507,
+    -0.0507,
+    -0.0457,
+    -0.0457
+   ]
+  },
+  "V5_very_slow": {
+   "desc": "60~110초 간격, 요청 10건 — 더 느리게",
+   "is_attack": true,
+   "total": 40,
+   "scored": 40,
+   "skipped_lt5": 0,
+   "detected_high": 40,
+   "detected_medium_plus": 40,
+   "miss": 0,
+   "rate_high": 1.0,
+   "rate_medium_plus": 1.0,
+   "sample_scores": [
+    -0.0735,
+    -0.0735,
+    -0.0735,
+    -0.0735,
+    -0.0735,
+    -0.0735,
+    -0.0735,
+    -0.0735
+   ]
+  },
+  "V6_ip_distributed": {
+   "desc": "여러 IP 로 분산 — 창당 5건 미만 노림",
+   "is_attack": true,
+   "total": 40,
+   "scored": 0,
+   "skipped_lt5": 40,
+   "detected_high": 0,
+   "detected_medium_plus": 0,
+   "miss": 40,
+   "rate_high": 0.0,
+   "rate_medium_plus": 0.0,
+   "sample_scores": []
+  },
+  "V7_combined": {
+   "desc": "무작위+다API+브라우저+정상 섞기 (결합)",
+   "is_attack": true,
+   "total": 40,
+   "scored": 40,
+   "skipped_lt5": 0,
+   "detected_high": 11,
+   "detected_medium_plus": 40,
+   "miss": 0,
+   "rate_high": 0.275,
+   "rate_medium_plus": 1.0,
+   "sample_scores": [
+    -0.04,
+    -0.0269,
+    -0.0164,
+    -0.0164,
+    -0.0154,
+    -0.0154,
+    -0.0147,
+    -0.0147
+   ]
+  },
+  "B_normal": {
+   "desc": "정상 사용자 (대조군, 오탐 확인)",
+   "is_attack": false,
+   "total": 40,
+   "scored": 40,
+   "skipped_lt5": 0,
+   "detected_high": 0,
+   "detected_medium_plus": 10,
+   "miss": 30,
+   "rate_high": 0.0,
+   "rate_medium_plus": 0.25,
+   "sample_scores": [
+    0.0064,
+    0.0108,
+    0.0125,
+    0.0134,
+    0.0136,
+    0.0171,
+    0.0177,
+    0.0177
+   ]
+  }
+ },
+ "false_positive": {
+  "holdout_features.csv": {
+   "total_windows": 63,
+   "quiet_benign": 0,
+   "excluded_overlap_with_train": 0,
+   "leak_unknown": false,
+   "flagged_high": 0,
+   "flagged_medium_plus": 0,
+   "fp_high": null,
+   "fp_medium_plus": null
+  }
+ }
+}

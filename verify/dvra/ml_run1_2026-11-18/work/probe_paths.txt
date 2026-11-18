@@ -1,0 +1,15 @@
+GET /debug 200
+GET /delivery/orders 200
+GET /admin/reset-chef-password 403
+GET /admin 404
+GET /api/v1/users 404
+GET /swagger.json 404
+GET /actuator/health 404
+GET /orders/export 422
+GET /menu/abc 405
+GET /users 404
+POST /menu 405
+DELETE /orders/1 405
+GET /backup.zip 404
+GET /admin/stats/memory 404
+GET /internal/metrics 404

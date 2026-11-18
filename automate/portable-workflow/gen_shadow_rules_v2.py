@@ -26,7 +26,10 @@ import sys
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
-_spec = importlib.util.spec_from_file_location("gen_v1", HERE / ".." / ".." / "team_src" / "detection" / "shadow_api" / "gen_shadow_rules.py")
+_GEN_V1 = HERE / ".." / ".." / "team_src" / "detection" / "shadow_api" / "gen_shadow_rules.py"   # 작업 레포 위치
+if not _GEN_V1.exists():                                   # 공개 레포에는 같은 파일이 automate/rules/ 에 있다
+    _GEN_V1 = HERE / ".." / "rules" / "gen_shadow_rules.py"
+_spec = importlib.util.spec_from_file_location("gen_v1", _GEN_V1)
 G = importlib.util.module_from_spec(_spec)
 _spec.loader.exec_module(G)        # 팀 생성기 (PyYAML 필요)
 

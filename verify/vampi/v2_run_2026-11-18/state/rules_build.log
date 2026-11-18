@@ -1,0 +1,6 @@
+명세 작업 14개 (예외 0건) · 로그 형식 accesslog → verify/vampi/v2_run_2026-11-18/state/0915-shadow_api_rules.xml
+  검사 범위: ^(?:/+books|/+createdb|/+me|/+users)(?:/|\?|$)
+  룰 ID 100500~ · 테스트 케이스 49개 → verify/vampi/v2_run_2026-11-18/state/testcases.jsonl
+FAIL 기대=L1  결과=None  DELETE / -> 405  (명세 경로 + 그 경로에 없는 메서드(DELETE))
+
+48/49 통과 (파이썬 재현 — 구현 검증)

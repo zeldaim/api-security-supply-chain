@@ -1,0 +1,9 @@
+## 룰 로드 오류 없음 (wazuh/wazuh-manager:4.14.6)
+## 케이스 대조
+52/52 일치 (실제 wazuh-logtest)
+## 실제 로그: lt_probe.log
+입력 15줄 → L1 14 · 경보 없음 1
+## 실제 로그: lt_bola.log
+입력 33줄 → 경보 없음 33
+## 실제 로그: lt_normal.log
+입력 362줄 → 경보 없음 362

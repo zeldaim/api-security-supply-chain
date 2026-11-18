@@ -1,0 +1,5 @@
+명세 작업 21개 (예외 0건) · 로그 형식 accesslog → verify/dvra/ml_run2_2026-11-18/state/0915-shadow_api_rules.xml
+  검사 범위: ^/(?!(?:\?|$))(?![^?]*\.(?:css|js|png|jpe?g|gif|svg|ico|woff2?|ttf|map|html?|txt)(?:\?|$))
+  룰 ID 100500~ · 테스트 케이스 118개 → verify/dvra/ml_run2_2026-11-18/state/testcases.jsonl
+
+118/118 통과 (파이썬 재현 — 구현 검증)

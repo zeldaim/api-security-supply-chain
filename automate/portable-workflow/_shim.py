@@ -35,5 +35,13 @@ def check_model(model_dir):
         sys.exit(f"[v2] 이 모델은 v2 특징으로 학습한 것이 아닙니다({model_dir}). v1 모델에 v2 특징을 넣으면 값의 뜻이 달라집니다 → v2_portable/train.py 로 다시 학습")
 
 
+_PUBLIC = {"ml/": os.path.join("..", "ml", "behavior"), "eval/": os.path.join("..", "ml", "eval")}   # 공개 레포 위치
+
+
 def run_original(rel):
-    runpy.run_path(os.path.join(HERE, "..", rel), run_name="__main__")
+    path = os.path.join(HERE, "..", rel)                   # 작업 레포: e2e_story/ml · e2e_story/eval
+    if not os.path.exists(path):
+        for prefix, alt in _PUBLIC.items():
+            if rel.startswith(prefix):
+                path = os.path.join(HERE, "..", alt, rel[len(prefix):])
+    runpy.run_path(path, run_name="__main__")

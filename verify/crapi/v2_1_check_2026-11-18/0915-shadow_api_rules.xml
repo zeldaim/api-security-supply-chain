@@ -1,0 +1,150 @@
+<!--
+  Shadow API 탐지 룰 — 웹 접근 로그용 (자동 생성: gen_shadow_rules_v2.py build 로 다시 만드세요)
+  생성 시각 : 2026-11-18T04:14:32+00:00
+  명세 원본 : e2e_story/crapi_generality_2026-11-15/work/crapi-openapi-spec.json
+  명세 SHA256: 9dc66ecfb21556b454d9b71be32753abb43d13f6fd2e39a414d583ffdd66bceb
+  명세 작업 수: 44 (예외 목록 0건 포함)
+  검사 범위 : ^(?:/+community/+api|/+identity/+api|/+workshop/+api)(?:/|\?|$)
+  필드: url(경로+쿼리) · protocol(메서드) · id(응답 코드) · srcip — Wazuh web-accesslog 디코더
+    DELETE  /identity/api/v2/admin/videos/{video_id}
+    DELETE  /identity/api/v2/user/videos/{video_id}
+    GET     /community/api/v2/community/posts/recent
+    GET     /community/api/v2/community/posts/{postId}
+    GET     /identity/api/v2/user/dashboard
+    GET     /identity/api/v2/user/videos/convert_video
+    GET     /identity/api/v2/user/videos/{video_id}
+    GET     /identity/api/v2/vehicle/vehicles
+    GET     /identity/api/v2/vehicle/{vehicleId}/location
+    GET     /workshop/api/management/users/all
+    GET     /workshop/api/mechanic/
+    GET     /workshop/api/mechanic/mechanic_report
+    GET     /workshop/api/mechanic/receive_report
+    GET     /workshop/api/mechanic/service_requests
+    GET     /workshop/api/shop/orders/all
+    GET     /workshop/api/shop/orders/{order_id}
+    GET     /workshop/api/shop/products
+    GET     /workshop/api/shop/return_qr_code
+    POST    /community/api/v2/community/posts
+    POST    /community/api/v2/community/posts/{postId}/comment
+    POST    /community/api/v2/coupon/new-coupon
+    POST    /community/api/v2/coupon/validate-coupon
+    POST    /identity/api/auth/forget-password
+    POST    /identity/api/auth/login
+    POST    /identity/api/auth/signup
+    POST    /identity/api/auth/v2.7/user/login-with-token
+    POST    /identity/api/auth/v2/check-otp
+    POST    /identity/api/auth/v3/check-otp
+    POST    /identity/api/auth/v4.0/user/login-with-token
+    POST    /identity/api/v2/user/change-email
+    POST    /identity/api/v2/user/pictures
+    POST    /identity/api/v2/user/reset-password
+    POST    /identity/api/v2/user/verify-email-token
+    POST    /identity/api/v2/user/videos
+    POST    /identity/api/v2/vehicle/add_vehicle
+    POST    /identity/api/v2/vehicle/resend_email
+    POST    /workshop/api/mechanic/signup
+    POST    /workshop/api/merchant/contact_mechanic
+    POST    /workshop/api/shop/apply_coupon
+    POST    /workshop/api/shop/orders
+    POST    /workshop/api/shop/orders/return_order
+    POST    /workshop/api/shop/products
+    PUT     /identity/api/v2/user/videos/{video_id}
+    PUT     /workshop/api/shop/orders/{order_id}
+-->
+<group name="shadow_api,">
+
+  <!-- 기반: 접근 로그의 API 범위 요청. 명세 안 요청은 여기서 끝난다 (레벨 0 = 경보 없음) -->
+  <rule id="100500" level="0">
+    <if_sid>31100, 31101, 31108, 31120, 31121, 31122, 31123</if_sid>
+    <url type="pcre2">^(?:/+community/+api|/+identity/+api|/+workshop/+api)(?:/|\?|$)</url>
+    <description>API 요청 (명세 범위)</description>
+  </rule>
+
+  <!-- 명세 밖 판정: 명세에 아예 없는 메서드 -->
+  <rule id="100501" level="6">
+    <if_sid>100500</if_sid>
+    <protocol type="pcre2" negate="yes">^(?:DELETE|GET|POST|PUT)$</protocol>
+    <description>[Shadow API] 명세 밖 호출: $(srcip) $(protocol) $(url)</description>
+    <group>shadow_api_undocumented,</group>
+  </rule>
+
+  <!-- 명세 밖 판정: DELETE 인데 명세의 DELETE 경로(2개) 어디에도 맞지 않음 -->
+  <rule id="100502" level="6">
+    <if_sid>100500</if_sid>
+    <protocol type="pcre2">^DELETE$</protocol>
+    <url type="pcre2" negate="yes">^(?:/identity/api/v2/admin/videos/\d+|/identity/api/v2/user/videos/\d+)/*(?:\?.*)?$</url>
+    <description>[Shadow API] 명세 밖 호출: $(srcip) $(protocol) $(url)</description>
+    <group>shadow_api_undocumented,</group>
+  </rule>
+
+  <!-- 명세 밖 판정: GET 인데 명세의 GET 경로(16개) 어디에도 맞지 않음 -->
+  <rule id="100503" level="6">
+    <if_sid>100500</if_sid>
+    <protocol type="pcre2">^GET$</protocol>
+    <url type="pcre2" negate="yes">^(?:/community/api/v2/community/posts/[^/?]+|/community/api/v2/community/posts/recent|/identity/api/v2/user/dashboard|/identity/api/v2/user/videos/\d+|/identity/api/v2/user/videos/convert_video|/identity/api/v2/vehicle/[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}/location|/identity/api/v2/vehicle/vehicles|/workshop/api/management/users/all|/workshop/api/mechanic/|/workshop/api/mechanic/mechanic_report|/workshop/api/mechanic/receive_report|/workshop/api/mechanic/service_requests|/workshop/api/shop/orders/\d+|/workshop/api/shop/orders/all|/workshop/api/shop/products|/workshop/api/shop/return_qr_code)/*(?:\?.*)?$</url>
+    <description>[Shadow API] 명세 밖 호출: $(srcip) $(protocol) $(url)</description>
+    <group>shadow_api_undocumented,</group>
+  </rule>
+
+  <!-- 명세 밖 판정: POST 인데 명세의 POST 경로(24개) 어디에도 맞지 않음 -->
+  <rule id="100504" level="6">
+    <if_sid>100500</if_sid>
+    <protocol type="pcre2">^POST$</protocol>
+    <url type="pcre2" negate="yes">^(?:/community/api/v2/community/posts|/community/api/v2/community/posts/[^/?]+/comment|/community/api/v2/coupon/new\-coupon|/community/api/v2/coupon/validate\-coupon|/identity/api/auth/forget\-password|/identity/api/auth/login|/identity/api/auth/signup|/identity/api/auth/v2/check\-otp|/identity/api/auth/v2\.7/user/login\-with\-token|/identity/api/auth/v3/check\-otp|/identity/api/auth/v4\.0/user/login\-with\-token|/identity/api/v2/user/change\-email|/identity/api/v2/user/pictures|/identity/api/v2/user/reset\-password|/identity/api/v2/user/verify\-email\-token|/identity/api/v2/user/videos|/identity/api/v2/vehicle/add_vehicle|/identity/api/v2/vehicle/resend_email|/workshop/api/mechanic/signup|/workshop/api/merchant/contact_mechanic|/workshop/api/shop/apply_coupon|/workshop/api/shop/orders|/workshop/api/shop/orders/return_order|/workshop/api/shop/products)/*(?:\?.*)?$</url>
+    <description>[Shadow API] 명세 밖 호출: $(srcip) $(protocol) $(url)</description>
+    <group>shadow_api_undocumented,</group>
+  </rule>
+
+  <!-- 명세 밖 판정: PUT 인데 명세의 PUT 경로(2개) 어디에도 맞지 않음 -->
+  <rule id="100505" level="6">
+    <if_sid>100500</if_sid>
+    <protocol type="pcre2">^PUT$</protocol>
+    <url type="pcre2" negate="yes">^(?:/identity/api/v2/user/videos/\d+|/workshop/api/shop/orders/\d+)/*(?:\?.*)?$</url>
+    <description>[Shadow API] 명세 밖 호출: $(srcip) $(protocol) $(url)</description>
+    <group>shadow_api_undocumented,</group>
+  </rule>
+
+  <!-- 단계: 명세 밖 호출을 응답 코드로 분류 -->
+  <rule id="100510" level="5">
+    <if_group>shadow_api_undocumented</if_group>
+    <id type="pcre2">^40[45]$</id>
+    <description>[Shadow API L1 정찰] $(srcip) $(protocol) $(url)</description>
+    <group>shadow_api_recon,</group>
+  </rule>
+  <rule id="100511" level="8">
+    <if_group>shadow_api_undocumented</if_group>
+    <id type="pcre2">^40[13]$</id>
+    <description>[Shadow API L2 발견] $(srcip) $(protocol) $(url)</description>
+    <group>shadow_api_discovery,</group>
+  </rule>
+  <rule id="100512" level="12">
+    <if_group>shadow_api_undocumented</if_group>
+    <id type="pcre2">^2\d\d$</id>
+    <description>[Shadow API L3 악용] $(srcip) $(protocol) $(url)</description>
+    <mitre><id>T1190</id></mitre>
+    <group>shadow_api_exploit,</group>
+  </rule>
+  <rule id="100513" level="10">
+    <if_group>shadow_api_undocumented</if_group>
+    <id type="pcre2">^5\d\d$</id>
+    <description>[Shadow API L3-E 서버 오류] $(srcip) $(protocol) $(url)</description>
+    <group>shadow_api_error,</group>
+  </rule>
+
+  <!-- 빈도: 같은 출발지 IP 가 짧은 시간에 반복 -->
+  <rule id="100520" level="10" frequency="20" timeframe="30" ignore="60">
+    <if_matched_sid>100510</if_matched_sid>
+    <same_srcip />
+    <description>[Shadow API F1 자동화 정찰] $(srcip) 30초 안에 L1 20회 이상</description>
+    <mitre><id>T1595.003</id></mitre>
+    <group>shadow_api_recon_burst,</group>
+  </rule>
+  <rule id="100521" level="14" frequency="10" timeframe="60" ignore="60">
+    <if_matched_sid>100512</if_matched_sid>
+    <same_srcip />
+    <description>[Shadow API F2 대량 유출] $(srcip) 60초 안에 L3 10회 이상</description>
+    <mitre><id>T1119</id></mitre>
+    <group>shadow_api_mass_exfil,</group>
+  </rule>
+
+</group>

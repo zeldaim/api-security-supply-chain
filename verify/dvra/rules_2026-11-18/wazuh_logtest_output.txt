@@ -1,0 +1,4 @@
+## 룰 로드 오류 없음 (wazuh/wazuh-manager:4.14.6)
+## 케이스 대조
+케이스 118개인데 logtest 이벤트 0개 — 출력 형식 확인 필요
+Error response from daemon: chown /var/lib/docker/containers/50629a9b97858a29130fb2ba0e4ab3c8f977f7bb8505b20ba76254c6602d762e/resolv.conf: read-only file system

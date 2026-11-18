@@ -26,7 +26,10 @@ if not targets:
     sys.exit("[variants v2] 명세에 ID 를 경로로 받는 GET 이 없습니다 — E2E_BOLA_TARGETS 로 지정하세요")
 public_objects = [p.replace("{id}", "{r}") for p in sorted(param1) if p not in targets]   # 대상이 아닌 ID 경로 = 공개 자원(정상 사용자가 여러 개 본다)
 
-spec = importlib.util.spec_from_file_location("variants_v1", os.path.join(HERE, "..", "eval", "variants.py"))
+_V1 = os.path.join(HERE, "..", "eval", "variants.py")              # 작업 레포
+if not os.path.exists(_V1):                                         # 공개 레포
+    _V1 = os.path.join(HERE, "..", "..", "ml", "eval", "variants.py")
+spec = importlib.util.spec_from_file_location("variants_v1", _V1)
 v1 = importlib.util.module_from_spec(spec); spec.loader.exec_module(v1)
 v1.SPEC_TARGET = targets[0]
 v1.OTHER_TARGETS = targets

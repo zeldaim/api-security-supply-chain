@@ -1,0 +1,32 @@
+{"index": {}}
+{"endpoint_key": "POST /api/v2/signup", "service": "shop-api", "owner": "웹팀", "status": "active"}
+{"index": {}}
+{"endpoint_key": "POST /api/v2/login", "service": "shop-api", "owner": "웹팀", "status": "active"}
+{"index": {}}
+{"endpoint_key": "GET /api/v2/users/me", "service": "shop-api", "owner": "웹팀", "status": "active"}
+{"index": {}}
+{"endpoint_key": "PATCH /api/v2/users/me", "service": "shop-api", "owner": "웹팀", "status": "active"}
+{"index": {}}
+{"endpoint_key": "GET /api/v2/products/search", "service": "shop-api", "owner": "웹팀", "status": "active"}
+{"index": {}}
+{"endpoint_key": "GET /api/v2/products", "service": "shop-api", "owner": "웹팀", "status": "active"}
+{"index": {}}
+{"endpoint_key": "GET /api/v2/products/{id}", "service": "shop-api", "owner": "웹팀", "status": "active"}
+{"index": {}}
+{"endpoint_key": "POST /api/v2/orders", "service": "shop-api", "owner": "웹팀", "status": "active"}
+{"index": {}}
+{"endpoint_key": "GET /api/v2/orders/me", "service": "shop-api", "owner": "웹팀", "status": "active"}
+{"index": {}}
+{"endpoint_key": "GET /api/v2/orders/{id}", "service": "shop-api", "owner": "웹팀", "status": "active"}
+{"index": {}}
+{"endpoint_key": "POST /api/v2/orders/{id}/cancel", "service": "shop-api", "owner": "웹팀", "status": "active"}
+{"index": {}}
+{"endpoint_key": "GET /api/v2/cart", "service": "shop-api", "owner": "웹팀", "status": "active"}
+{"index": {}}
+{"endpoint_key": "POST /api/v2/cart", "service": "shop-api", "owner": "웹팀", "status": "active"}
+{"index": {}}
+{"endpoint_key": "DELETE /api/v2/cart", "service": "shop-api", "owner": "웹팀", "status": "active"}
+{"index": {}}
+{"endpoint_key": "PATCH /api/v2/cart/{id}", "service": "shop-api", "owner": "웹팀", "status": "active"}
+{"index": {}}
+{"endpoint_key": "DELETE /api/v2/cart/{id}", "service": "shop-api", "owner": "웹팀", "status": "active"}

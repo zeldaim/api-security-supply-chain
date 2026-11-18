@@ -1,0 +1,7 @@
+# 원본에서 다시 만들 수 있는 파일은 커밋하지 않는다 (access.log.gz 를 풀고 run_ml.sh 를 돌리면 생김)
+work/logs/access.log
+work/normal.log
+work/attack.log
+state/raw.log
+state/train.log
+state/holdout.log

@@ -1,0 +1,180 @@
+{
+  "generated_at": "2026-11-18T09:09:43+00:00",
+  "generator": "gen_shadow_rules_v2_1.py",
+  "spec_source": "verify/dvra/ml_run2_2026-11-18/state/spec.yaml",
+  "spec_sha256": "97ad8622bae2a589c0384617ccd19ed46bd996fa06ff4ceb4af096637909442b",
+  "operation_count": 21,
+  "allowlist_count": 0,
+  "status_option": "static",
+  "log_format": "accesslog",
+  "scope": "^/(?!(?:\\?|$))(?![^?]*\\.(?:css|js|png|jpe?g|gif|svg|ico|woff2?|ttf|map|html?|txt)(?:\\?|$))",
+  "scope_prefixes": [
+    "/admin",
+    "/apply-referral",
+    "/discount-coupons",
+    "/healthcheck",
+    "/menu",
+    "/orders",
+    "/profile",
+    "/referral-code",
+    "/register",
+    "/reset-password",
+    "/token",
+    "/users"
+  ],
+  "rule_ids": {
+    "base": 100500,
+    "other_method": 100501,
+    "undoc_DELETE": 100502,
+    "undoc_GET": 100503,
+    "undoc_PATCH": 100504,
+    "undoc_POST": 100505,
+    "undoc_PUT": 100506,
+    "L1": 100510,
+    "L2": 100511,
+    "L3": 100512,
+    "L3E": 100513,
+    "F1": 100520,
+    "F2": 100521
+  },
+  "bursts": {
+    "F1": [
+      20,
+      30,
+      60
+    ],
+    "F2": [
+      10,
+      60,
+      60
+    ]
+  },
+  "operations": {
+    "DELETE": [
+      {
+        "template": "/menu/{item_id}",
+        "source": "openapi",
+        "reason": ""
+      }
+    ],
+    "GET": [
+      {
+        "template": "/admin/stats/disk",
+        "source": "openapi",
+        "reason": ""
+      },
+      {
+        "template": "/discount-coupons",
+        "source": "openapi",
+        "reason": ""
+      },
+      {
+        "template": "/healthcheck",
+        "source": "openapi",
+        "reason": ""
+      },
+      {
+        "template": "/menu",
+        "source": "openapi",
+        "reason": ""
+      },
+      {
+        "template": "/orders",
+        "source": "openapi",
+        "reason": ""
+      },
+      {
+        "template": "/orders/status/{order_id}",
+        "source": "openapi",
+        "reason": ""
+      },
+      {
+        "template": "/orders/{order_id}",
+        "source": "openapi",
+        "reason": ""
+      },
+      {
+        "template": "/profile",
+        "source": "openapi",
+        "reason": ""
+      },
+      {
+        "template": "/referral-code",
+        "source": "openapi",
+        "reason": ""
+      }
+    ],
+    "PATCH": [
+      {
+        "template": "/profile",
+        "source": "openapi",
+        "reason": ""
+      }
+    ],
+    "POST": [
+      {
+        "template": "/apply-referral",
+        "source": "openapi",
+        "reason": ""
+      },
+      {
+        "template": "/orders",
+        "source": "openapi",
+        "reason": ""
+      },
+      {
+        "template": "/register",
+        "source": "openapi",
+        "reason": ""
+      },
+      {
+        "template": "/reset-password",
+        "source": "openapi",
+        "reason": ""
+      },
+      {
+        "template": "/reset-password/new-password",
+        "source": "openapi",
+        "reason": ""
+      },
+      {
+        "template": "/token",
+        "source": "openapi",
+        "reason": ""
+      }
+    ],
+    "PUT": [
+      {
+        "template": "/menu",
+        "source": "openapi",
+        "reason": ""
+      },
+      {
+        "template": "/menu/{item_id}",
+        "source": "openapi",
+        "reason": ""
+      },
+      {
+        "template": "/profile",
+        "source": "openapi",
+        "reason": ""
+      },
+      {
+        "template": "/users/update_role",
+        "source": "openapi",
+        "reason": ""
+      }
+    ]
+  },
+  "param_formats": {
+    "/menu/{item_id}": {
+      "item_id": "\\d+"
+    },
+    "/orders/{order_id}": {
+      "order_id": "\\d+"
+    },
+    "/orders/status/{order_id}": {
+      "order_id": "\\d+"
+    }
+  }
+}
