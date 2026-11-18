@@ -1,6 +1,12 @@
 #!/usr/bin/env bash
 # docs/37 재현 — numpy 만 필요 (scikit-learn 없이 돈다). 저장소 루트에서:  bash docs/37_결과/run.sh
 set -e
+# 데이터(datasets/real_web/)와 ml/features.py 는 ml_detection 저장소에 있다. 이 저장소의 사본은 기록용이다.
+if [ ! -f datasets/real_web/real_canon_access.log.gz ]; then
+  echo "이 스크립트는 ml_detection 저장소 루트에서 돌린다 (데이터가 거기 있다):"
+  echo "  git clone https://github.com/zeldaim/ml_detection.git && cd ml_detection && bash docs/37_결과/run.sh"
+  exit 1
+fi
 T=$(mktemp -d)
 python - "$T" <<'PY'
 import gzip, shutil, sys

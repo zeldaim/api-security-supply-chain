@@ -5,6 +5,74 @@
 
 보안 엔지니어 팀 프로젝트의 담당 파트(**API 명세화 · 탐지 룰 파이프라인**)에서 출발해 개인적으로 확장한 저장소입니다.
 
+> **직접 돌려 보려면 → [api-defense-lab](https://github.com/zeldaim/api-defense-lab)** — 이 저장소의 Shadow API 룰 · 행위 ML · 자동 차단을 `docker compose up` 한 번으로 재현하는 연습장 (정답지 · 채점기 · Sigma 룰 포함, 새 clone 으로 확인).
+> 이 저장소는 **설계와 검증 기록**이다. 코드는 원본 저장소에서 골라 옮긴 것이라 대부분 그대로는 안 돈다(아래 "재현 가능 범위").
+
+## 구조 — 기준에서 탐지 · 대응까지
+
+```mermaid
+flowchart TB
+  subgraph STD["① 표준화 (평소)"]
+    direction LR
+    SRC["소스 · 방화벽 설정<br/>로그 · 스캔"] --> BOM["API-BOM · SBOM<br/>(CycloneDX)"]
+    BOM --> OK{"사람 승인"}
+    OK --> OAS["OpenAPI 허용 목록"]
+    OAS -- "룰 자동 생성<br/>+ wazuh-logtest" --> RULES["Wazuh 룰<br/>Shadow API · 서명 · BOLA"]
+    BOM --> REACH["Dependency-Track · VEX<br/>도달성 분석"]
+    REACH -. "위험 순위 · 소음 제거<br/>(차단에는 안 쓴다)" .-> RANK["엔드포인트 위험 순위"]
+  end
+
+  subgraph RUN["② ~ ④ 공격이 들어올 때"]
+    direction LR
+    ATK(["공격자"]) -- "HTTP 요청" --> WEB["웹 서버 · nginx"]
+    WEB -- "접근 로그" --> WZ["② Wazuh manager"]
+    WEB -- "접근 로그" --> MLF["③ 행위 ML<br/>IP × 5분 창"]
+    MLF -- "점수 → 경보" --> WZ
+    WZ -- "경보" --> EDA["④ Event-Driven Ansible"]
+    EDA --> ACT["nftables 차단 · 계정 정지<br/>60분 뒤 자동 해제"]
+  end
+
+  RULES --> WZ
+  NONE["WAF · API Gateway<br/>— 이 프로젝트에 없음 (범위 밖)"]
+  style NONE stroke-dasharray: 5 5
+```
+
+| 방어선 | 무엇을 막나 | 무엇을 못 막나 |
+|---|---|---|
+| ② Shadow API 룰 (명세 밖 호출) | 숨은 · 구버전 API 탐색과 호출 | 명세 **안**의 BOLA (정상 요청과 문법이 같다) |
+| ② 서명 룰 (YARA → Wazuh) · BOLA 룰 | SQLi 같은 알려진 문자열, 빠른 BOLA 열거 | 느린 BOLA (빈도 기준 아래) |
+| ③ 행위 ML | 느린 BOLA 열거 (출발지 7곳 전부) | 처음 보는 정상 사용자 10~15% 를 오탐 — PoC |
+| ④ 대응 | 경보 → 차단 · 계정 정지 · 자동 해제를 코드로 | 여러 IP 로 나눈 공격 (출발지 단위라서) |
+| ① 도달성 | 대응 대상이 아니라 **우선순위** — CVE 403개 중 77% 를 "닿지 않음"으로 걸러 냄 | 런타임에 실제 로드된 것 (정적 분석) |
+
+### 재현 가능 범위
+
+| 무엇 | 어디서 돌리나 | 상태 |
+|---|---|---|
+| Shadow API 룰 + 행위 ML + 자동 차단 + 채점 (DVRA) | [api-defense-lab](https://github.com/zeldaim/api-defense-lab) `docker compose up -d` → `traffic demo` → `scorer` | ✅ 새 clone 으로 확인 (2026-11-19) |
+| 빈도 룰 vs LOF vs 임계값 룰 숫자 (§3 표) | [ml_detection](https://github.com/zeldaim/ml_detection) 에서 `bash docs/37_결과/run.sh` (numpy 만) | ✅ 새 clone 으로 확인 — 정상 오탐 52/356 · 느린 BOLA 210/210 그대로 (데이터가 그 저장소에 있다) |
+| 팀 웹 · Wazuh · Dependency-Track · EDA 전체 흐름 | — | ❌ 교육과정 종료로 환경 없음. 화면 · 영상 · 결과 파일이 기록 |
+| 이 저장소의 나머지 스크립트 | — | ⚠️ 경로가 원본 구조 기준 (`api-bom/…`, `e2e_story/…`) |
+
+### 입력 로그 형식
+
+모든 룰과 특징은 **웹 서버 접근 로그(Apache / nginx combined 계열) 한 줄 = 요청 하나**를 입력으로 받는다.
+
+```
+10.66.0.2 - - [19/Nov/2026:03:00:00 +0900] "GET /debug HTTP/1.1" 200 1299 "-" "Mozilla/5.0"
+└ 출발지 IP          └ 시각                   └ 메서드 · 경로(+쿼리)   └ 응답 코드 · 크기     └ User-Agent
+```
+
+| 로그 칸 | Wazuh (`web-accesslog` 디코더, 룰 31100 계열) | Sigma (`category: webserver`) | 행위 ML 특징 |
+|---|---|---|---|
+| 출발지 IP | `srcip` | `c-ip` | 행위 단위 (IP × 5분 창) |
+| 메서드 | `protocol` | `cs-method` | 명세 밖 비율 |
+| 경로 + 쿼리 | `url` | `cs-uri-stem` · `cs-uri-query` | 경로 틀 · 객체 ID · 연속 ID |
+| 응답 코드 | `id` | `sc-status` | 오류 비율 · Shadow 단계(L1~L3) |
+| User-Agent | — | `cs-user-agent` | UA 수 |
+
+프록시 뒤라면 첫 칸을 **실제 클라이언트 IP**(예: `X-Forwarded-For` 를 검증한 값)로 바꿔 남겨야 한다 — 프록시 IP 가 남으면 모든 요청이 한 출발지로 보인다.
+
 | 영상 | |
 |---|---|
 | [![내 시연](media/poster_mine.jpg)](media/demo_mine_live_2x.mp4) | **개인 확장 — 실제 화면 녹화 (78초, 2배속)** crAPI 에 실제 BOLA 공격 → 접근 로그 → 행위 특징·모델 채점 → 명세에서 자동 생성한 룰을 실제 Wazuh 로 확인 |
@@ -53,13 +121,7 @@
 
 ## 2. 자동화 — 기준에서 룰, 룰에서 대응까지
 
-```
-소스·설정·로그·스캔 ─▶ API-BOM / SBOM ─▶ (사람 승인) ─▶ OpenAPI 허용 목록 ─▶ Wazuh 룰 자동 생성·시험
-                                                                              │
-                     공격 ─▶ 접근 로그 ─▶ Wazuh ─▶ Event-Driven Ansible ─▶ 차단 · 계정 정지 · 자동 해제
-                                         ▲
-                     행위 특징 ─▶ ML 점수 ─┘
-```
+흐름은 맨 위 [구조](#구조--기준에서-탐지--대응까지) 그림.
 
 | 자동화 | 내용 | 코드 |
 |---|---|---|
@@ -115,7 +177,7 @@
 | 임계값 룰 (5분에 객체 5개) | 전부 | 205/210 | 0/356 |
 | ML (LOF) | 34/35 | **210/210** | 52/356 (14.6%) |
 
-- 결론을 한쪽으로 몰지 않았다. 느린 BOLA 는 빈도 룰이 놓치고 ML 이 잡지만, BOLA 만 보면 임계값 룰이 오탐 0 으로 같은 일을 한다. ML 의 몫은 룰을 미리 쓰지 않은 종류다 ([`ml/docs/37_…`](ml/docs/), 재현 `bash ml/docs/37_결과/run.sh`).
+- 결론을 한쪽으로 몰지 않았다. 느린 BOLA 는 빈도 룰이 놓치고 ML 이 잡지만, BOLA 만 보면 임계값 룰이 오탐 0 으로 같은 일을 한다. ML 의 몫은 룰을 미리 쓰지 않은 종류다 ([`ml/docs/37_…`](ml/docs/), 재현은 [ml_detection](https://github.com/zeldaim/ml_detection) 에서 `bash docs/37_결과/run.sh` — 데이터가 그 저장소에 있다).
 - 모델 카드: [`ml/docs/MODEL_CARD.md`](ml/docs/MODEL_CARD.md) — 처음 보는 정상 사용자 오탐 10~15% (PoC, 운영 전).
 
 ## 4. 검증 — 다른 앱(OWASP crAPI)에서 다시
