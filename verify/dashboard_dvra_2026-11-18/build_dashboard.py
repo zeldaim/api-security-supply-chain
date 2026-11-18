@@ -152,6 +152,18 @@ panels += [
                      color_by_value("label", {"bola": "red", "probe": "orange", "normal": "green"})]),
 ]
 y += 8
+panels += [
+    table("IP별 요청 수 Top 10", 0, y, 12, 8,
+          [tgt(ACC, "*", buckets=[terms("2", "client_ip", 10)])],
+          "요청 수로 줄 세우면 BOLA 공격자(10.77.0.1)는 안 보인다 — 전체 31위, 공격 10분 13위",
+          rename={"client_ip": "IP", "Count": "요청 수"}),
+    table("IP별 서로 다른 경로 수 Top 10 (BOLA 단서)", 12, y, 12, 8,
+          [tgt(ACC, "*", metrics=[{"id": "1", "type": "cardinality", "field": "path"}],
+               buckets=[terms("2", "client_ip", 10, order_by="1")])],
+          "서로 다른 경로(객체) 수로 줄 세우면 BOLA 공격자가 1위 — 공격 10분 63 vs 2위 29",
+          rename={"client_ip": "IP", "Unique Count": "서로 다른 경로 수"}),
+]
+y += 8
 # (sortBy 는 organize 뒤에 오므로 바뀐 이름으로 정렬한다)
 # ── 5줄: 원본 ─────────────────────────────────────────────────────────────────
 panels += [

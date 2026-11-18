@@ -9,6 +9,36 @@ DVRA ML 2차 수집([`../dvra/ml_run2_2026-11-18/`](../dvra/ml_run2_2026-11-18/R
 
 ![공격 구간](screenshots/02_attack_window.png)
 
+## 팀 대시보드와 비교
+
+![팀 대시보드 vs 내 대시보드](screenshots/04_team_vs_mine.png)
+
+| | 팀 대시보드 (2026-11-09 시연) | 내 대시보드 (2026-11-18) |
+|---|---|---|
+| 대상 | 팀 앱 (PHP 쇼핑몰, `/api/v1/users/{id}` BOLA) | **처음 보는 앱 DVRA** (설정만 바꿔 적용) |
+| 데이터 | 실시간 Wazuh 경보 · 아카이브 (OpenSearch) | 끝난 수집을 **실제 `wazuh-logtest`** 에 통과시킨 판정 + ML 창 점수 (Elasticsearch) |
+| 탐지 | 명세 대조 룰 (미등록 API 호출 · 응답) | 명세 대조 룰 + **ML(BOLA, 명세 안의 경로)** |
+| 강점 | **대응까지 연결** — SOAR 승인 대기 · 자동 차단 · 계층별 차단(IDS/IPS · WAF · SIEM) | **정답지 대조** — 룰과 ML 이 각각 무엇을 잡았나, 오탐이 어디서 나왔나 |
+| 없는 것 | ML · 정답 라벨 | 대응(차단) · 실시간 · IDS/WAF 비교 |
+| 만든 방식 | 영상 속 통합 대시보드는 만든 방식 기록 없음 · 팀 레포의 "Shadow API 탐지" 대시보드는 생성기(`build_dashboard.py`) | **코드** (`build_dashboard.py` → 프로비저닝) |
+
+팀 화면의 BOLA 는 `/api/v1/users/{id}` 가 **명세 밖**(Shadow API)이라 명세 대조 룰로 잡혔다. DVRA 의 BOLA 는 **명세 안의** `/orders/{id}` 라 룰로는 안 잡히고 ML 이 잡는다 — 두 화면이 맡는 공격이 다르다.
+
+## 직접 만든 패널 — 요청 수 vs 서로 다른 경로 수 (2026-11-18 실습)
+
+![직접 만든 패널](screenshots/03_my_panels.png)
+
+Grafana 화면에서 직접 쿼리를 만들고(Terms `client_ip` · Count → Unique Count `path`), 같은 내용을 `build_dashboard.py` 에 코드로 옮겨 넣었다.
+
+| 줄 세운 기준 | BOLA 공격자(10.77.0.1) 순위 |
+|---|---|
+| 요청 수, 전체 73분 | 31위 (63건 — 정상 사용자는 1인당 약 430건) |
+| 요청 수, 공격 10분 | 13위 (정상 사용자도 그 10분에 60~73건) |
+| **서로 다른 경로 수, 공격 10분** | **1위 — 63 vs 2위 29** |
+
+- **요청량으로는 BOLA 를 못 찾는다.** 무엇을 열었나(서로 다른 객체 수)로 봐야 한다 — ML 특징 `id_span_log` 를 쓰는 이유.
+- 실습 중 표의 정렬이 두 번 **IP 글자 순서(Term)** 로 돼 있어 공격자가 1위처럼 보였다. 표는 정렬 기준부터 확인한다.
+
 ## 무엇을 보여 주나
 
 | 줄 | 패널 | 데이터 |
@@ -47,7 +77,7 @@ build_dashboard.py ──▶ grafana/dashboards/dvra_detection.json ────
 | `run_logtest.sh` | 접근 로그 전체를 Wazuh 컨테이너의 `wazuh-logtest` 에 넣고 출력 저장 |
 | `score_windows.py` | 2차 모델로 모든 IP × 5분 창 채점 (e2e-runner 컨테이너) |
 | `to_es.py` | 로그 · logtest 판정 · ML 점수 → ES 인덱스 3개 (Wazuh alerts 모양: `rule.*` · `data.*`) |
-| `build_dashboard.py` | 대시보드 JSON 생성 (패널 14개) |
+| `build_dashboard.py` | 대시보드 JSON 생성 (패널 16개 — 14개 + 직접 만든 2개) |
 | `grafana/provisioning/` | 데이터 소스 3개 · 대시보드 폴더 자동 등록 |
 | `capture_grafana.js` | 헤드리스 Chrome 캡처 |
 | `data/` | 입력 로그(정상 · 공격 IP 만), logtest 출력(gz), ML 창 점수 |
@@ -65,7 +95,7 @@ docker run -d --name es-local --net elk-local -p 127.0.0.1:9200:9200 -e discover
 python to_es.py --log data/access_dvra_run2.log --logtest data/logtest_out.txt --ml data/ml_windows.csv
 #   예상: dvra-access 12,576건 · wazuh-alerts-dvra 17건 · dvra-ml 446건 (오류 0)
 
-python build_dashboard.py                    # 예상: 패널 14개
+python build_dashboard.py                    # 예상: 패널 16개
 MSYS_NO_PATHCONV=1 docker run -d --name grafana-dvra --network elk-local -p 127.0.0.1:3000:3000 \
   -e GF_AUTH_ANONYMOUS_ENABLED=true -e GF_AUTH_ANONYMOUS_ORG_ROLE=Admin -e GF_AUTH_DISABLE_LOGIN_FORM=true \
   -v "$(pwd -W)/grafana/provisioning:/etc/grafana/provisioning:ro" -v "$(pwd -W)/grafana/dashboards:/var/lib/grafana/dashboards:ro" grafana/grafana:11.6.0

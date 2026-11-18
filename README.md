@@ -144,6 +144,12 @@
 
 ![DVRA 대시보드 — 탐색은 룰이, BOLA 는 ML 이](verify/dashboard_dvra_2026-11-18/screenshots/02_attack_window.png)
 
+요청 수로 줄 세우면 BOLA 공격자는 공격 10분 동안에도 13위지만, **서로 다른 경로 수**로 보면 63 vs 2위 29 로 1위다 — 탐지 특징을 요청량이 아니라 객체 접근 다양성으로 잡은 이유.
+
+![직접 만든 패널](verify/dashboard_dvra_2026-11-18/screenshots/03_my_panels.png)
+
+팀 시연 대시보드(대응 · SOAR 중심)와 나란히: [`04_team_vs_mine.png`](verify/dashboard_dvra_2026-11-18/screenshots/04_team_vs_mine.png)
+
 상세: [`verify/dvra/`](verify/dvra/README.md) · [`verify/vampi/`](verify/vampi/README.md) · [`automate/portable-workflow-v2.1/`](automate/portable-workflow-v2.1/README.md) · 대시보드(코드화) [`verify/dashboard_dvra_2026-11-18/`](verify/dashboard_dvra_2026-11-18/README.md) · **ML 최종 정리 [`ml/FINAL_v1.0.md`](ml/FINAL_v1.0.md)**
 
 > **v1 제품 정의서:** [PRODUCT_V1.md](PRODUCT_V1.md) — 누가 쓰나 · v1 범위 · 성공 기준 7개와 현재 상태

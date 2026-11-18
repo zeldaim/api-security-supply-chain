@@ -13,7 +13,7 @@ const SHOTS = [
 ];
 (async () => {
   const b = await chromium.launch({ executablePath: CHROME, headless: true });
-  const p = await b.newPage({ viewport: { width: 1600, height: 1450 }, deviceScaleFactor: 1 });
+  const p = await b.newPage({ viewport: { width: 1600, height: 1950 }, deviceScaleFactor: 1 });
   for (const [name, url, full] of SHOTS) {
     await p.goto(url, { waitUntil: 'load' });
     await p.waitForTimeout(20000);
