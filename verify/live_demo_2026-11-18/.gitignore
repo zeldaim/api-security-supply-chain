@@ -1,0 +1,8 @@
+logs/
+run_*/video/
+run_*/video2/
+run_*/raw_recording.webm
+blocked/ips.map
+work/
+.current_run
+__pycache__/

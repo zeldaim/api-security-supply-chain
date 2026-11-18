@@ -1,0 +1,147 @@
+{"type": "ml", "timestamp": "2026-11-18T17:47:22.039871+00:00", "client_ip": "10.10.0.1", "level": "high", "score": -0.05352, "n_req": 6, "seq_id_run": 1, "label": "normal"}
+{"type": "ml", "timestamp": "2026-11-18T17:47:22.039871+00:00", "client_ip": "10.10.0.2", "level": "high", "score": -0.05218, "n_req": 6, "seq_id_run": 1, "label": "normal"}
+{"type": "ml", "timestamp": "2026-11-18T17:47:27.103965+00:00", "client_ip": "10.10.0.3", "level": "high", "score": -0.04586, "n_req": 7, "seq_id_run": 1, "label": "normal"}
+{"type": "ml", "timestamp": "2026-11-18T17:47:27.103965+00:00", "client_ip": "10.10.0.4", "level": "high", "score": -0.05318, "n_req": 5, "seq_id_run": 1, "label": "normal"}
+{"type": "ml", "timestamp": "2026-11-18T17:47:27.103965+00:00", "client_ip": "10.10.0.5", "level": "medium", "score": 0.00219, "n_req": 5, "seq_id_run": 0, "label": "normal"}
+{"type": "ml", "timestamp": "2026-11-18T17:47:27.103965+00:00", "client_ip": "10.10.0.6", "level": "high", "score": -0.03991, "n_req": 5, "seq_id_run": 1, "label": "normal"}
+{"type": "ml", "timestamp": "2026-11-18T17:47:27.103965+00:00", "client_ip": "10.10.0.7", "level": "high", "score": -0.04663, "n_req": 6, "seq_id_run": 1, "label": "normal"}
+{"type": "ml", "timestamp": "2026-11-18T17:47:32.140255+00:00", "client_ip": "10.10.0.8", "level": "high", "score": -0.04172, "n_req": 7, "seq_id_run": 1, "label": "normal"}
+{"type": "ml", "timestamp": "2026-11-18T17:47:32.140255+00:00", "client_ip": "10.10.0.9", "level": "high", "score": -0.04172, "n_req": 7, "seq_id_run": 1, "label": "normal"}
+{"type": "ml", "timestamp": "2026-11-18T17:47:32.140255+00:00", "client_ip": "10.10.0.10", "level": "medium", "score": 0.00346, "n_req": 5, "seq_id_run": 0, "label": "normal"}
+{"type": "ml", "timestamp": "2026-11-18T17:47:32.140255+00:00", "client_ip": "10.10.0.11", "level": "high", "score": -0.0399, "n_req": 7, "seq_id_run": 1, "label": "normal"}
+{"type": "ml", "timestamp": "2026-11-18T17:47:32.140255+00:00", "client_ip": "10.10.0.12", "level": "high", "score": -0.0322, "n_req": 7, "seq_id_run": 1, "label": "normal"}
+{"type": "ml", "timestamp": "2026-11-18T17:47:37.207747+00:00", "client_ip": "10.10.0.13", "level": "medium", "score": 4e-05, "n_req": 6, "seq_id_run": 0, "label": "normal"}
+{"type": "ml", "timestamp": "2026-11-18T17:47:37.207747+00:00", "client_ip": "10.10.0.14", "level": "high", "score": -0.0399, "n_req": 7, "seq_id_run": 1, "label": "normal"}
+{"type": "ml", "timestamp": "2026-11-18T17:47:37.207747+00:00", "client_ip": "10.10.0.15", "level": "high", "score": -0.05242, "n_req": 6, "seq_id_run": 1, "label": "normal"}
+{"type": "ml", "timestamp": "2026-11-18T17:47:37.207747+00:00", "client_ip": "10.10.0.16", "level": "high", "score": -0.03957, "n_req": 7, "seq_id_run": 1, "label": "normal"}
+{"type": "ml", "timestamp": "2026-11-18T17:47:37.207747+00:00", "client_ip": "10.10.0.17", "level": "high", "score": -0.03646, "n_req": 5, "seq_id_run": 1, "label": "normal"}
+{"type": "ml", "timestamp": "2026-11-18T17:47:42.268826+00:00", "client_ip": "10.10.0.18", "level": "high", "score": -0.0356, "n_req": 7, "seq_id_run": 1, "label": "normal"}
+{"type": "ml", "timestamp": "2026-11-18T17:47:42.268826+00:00", "client_ip": "10.10.0.19", "level": "high", "score": -0.03908, "n_req": 7, "seq_id_run": 1, "label": "normal"}
+{"type": "ml", "timestamp": "2026-11-18T17:47:42.268826+00:00", "client_ip": "10.10.0.20", "level": "high", "score": -0.05142, "n_req": 6, "seq_id_run": 1, "label": "normal"}
+{"type": "ml", "timestamp": "2026-11-18T17:47:52.453584+00:00", "client_ip": "10.10.0.7", "level": "medium", "score": -0.0145, "n_req": 8, "seq_id_run": 1, "label": "normal"}
+{"type": "ml", "timestamp": "2026-11-18T17:47:52.453584+00:00", "client_ip": "10.10.0.9", "level": "medium", "score": -0.01403, "n_req": 11, "seq_id_run": 1, "label": "normal"}
+{"type": "ml", "timestamp": "2026-11-18T17:47:52.453584+00:00", "client_ip": "10.10.0.11", "level": "medium", "score": -0.015, "n_req": 10, "seq_id_run": 1, "label": "normal"}
+{"type": "ml", "timestamp": "2026-11-18T17:47:57.526001+00:00", "client_ip": "10.10.0.12", "level": "medium", "score": -0.0001, "n_req": 9, "seq_id_run": 1, "label": "normal"}
+{"type": "ml", "timestamp": "2026-11-18T17:47:57.526001+00:00", "client_ip": "10.10.0.14", "level": "medium", "score": -0.00727, "n_req": 11, "seq_id_run": 1, "label": "normal"}
+{"type": "ml", "timestamp": "2026-11-18T17:47:57.526001+00:00", "client_ip": "10.10.0.15", "level": "medium", "score": -0.00848, "n_req": 10, "seq_id_run": 1, "label": "normal"}
+{"type": "ml", "timestamp": "2026-11-18T17:47:57.526001+00:00", "client_ip": "10.10.0.16", "level": "medium", "score": 0.00337, "n_req": 9, "seq_id_run": 1, "label": "normal"}
+{"type": "ml", "timestamp": "2026-11-18T17:48:02.584355+00:00", "client_ip": "10.10.0.1", "level": "medium", "score": 0.01349, "n_req": 13, "seq_id_run": 1, "label": "normal"}
+{"type": "ml", "timestamp": "2026-11-18T17:48:02.584355+00:00", "client_ip": "10.10.0.17", "level": "medium", "score": -0.00858, "n_req": 10, "seq_id_run": 1, "label": "normal"}
+{"type": "ml", "timestamp": "2026-11-18T17:48:02.584355+00:00", "client_ip": "10.10.0.18", "level": "medium", "score": 0.0083, "n_req": 9, "seq_id_run": 1, "label": "normal"}
+{"type": "ml", "timestamp": "2026-11-18T17:48:02.584355+00:00", "client_ip": "10.10.0.19", "level": "medium", "score": -0.00201, "n_req": 9, "seq_id_run": 1, "label": "normal"}
+{"type": "ml", "timestamp": "2026-11-18T17:48:02.584355+00:00", "client_ip": "10.10.0.20", "level": "medium", "score": 0.01071, "n_req": 8, "seq_id_run": 1, "label": "normal"}
+{"type": "ml", "timestamp": "2026-11-18T17:48:07.646813+00:00", "client_ip": "10.10.0.2", "level": "medium", "score": 0.0293, "n_req": 12, "seq_id_run": 1, "label": "normal"}
+{"type": "ml", "timestamp": "2026-11-18T17:48:07.646813+00:00", "client_ip": "10.10.0.3", "level": "medium", "score": 0.03333, "n_req": 15, "seq_id_run": 1, "label": "normal"}
+{"type": "ml", "timestamp": "2026-11-18T17:48:07.646813+00:00", "client_ip": "10.10.0.4", "level": "medium", "score": 0.02031, "n_req": 12, "seq_id_run": 1, "label": "normal"}
+{"type": "ml", "timestamp": "2026-11-18T17:48:07.646813+00:00", "client_ip": "10.10.0.6", "level": "medium", "score": 0.0111, "n_req": 11, "seq_id_run": 1, "label": "normal"}
+{"type": "ml", "timestamp": "2026-11-18T17:48:12.709481+00:00", "client_ip": "10.10.0.8", "level": "medium", "score": 0.03482, "n_req": 12, "seq_id_run": 1, "label": "normal"}
+{"type": "ml", "timestamp": "2026-11-18T18:02:29.114666+00:00", "client_ip": "10.10.0.17", "level": "high", "score": -0.03236, "n_req": 6, "seq_id_run": 1, "label": "normal"}
+{"type": "ml", "timestamp": "2026-11-18T18:02:29.114666+00:00", "client_ip": "10.10.0.18", "level": "high", "score": -0.0278, "n_req": 8, "seq_id_run": 1, "label": "normal"}
+{"type": "ml", "timestamp": "2026-11-18T18:02:29.114666+00:00", "client_ip": "10.10.0.19", "level": "medium", "score": -0.00606, "n_req": 7, "seq_id_run": 1, "label": "normal"}
+{"type": "ml", "timestamp": "2026-11-18T18:02:34.140176+00:00", "client_ip": "10.10.0.20", "level": "high", "score": -0.02371, "n_req": 6, "seq_id_run": 1, "label": "normal"}
+{"type": "ml", "timestamp": "2026-11-18T18:02:34.140176+00:00", "client_ip": "10.10.0.1", "level": "high", "score": -0.01626, "n_req": 5, "seq_id_run": 1, "label": "normal"}
+{"type": "ml", "timestamp": "2026-11-18T18:02:34.140176+00:00", "client_ip": "10.10.0.2", "level": "high", "score": -0.01626, "n_req": 5, "seq_id_run": 1, "label": "normal"}
+{"type": "ml", "timestamp": "2026-11-18T18:02:34.140176+00:00", "client_ip": "10.10.0.3", "level": "medium", "score": -0.01508, "n_req": 5, "seq_id_run": 1, "label": "normal"}
+{"type": "ml", "timestamp": "2026-11-18T18:02:34.140176+00:00", "client_ip": "10.10.0.4", "level": "medium", "score": -0.01442, "n_req": 6, "seq_id_run": 1, "label": "normal"}
+{"type": "ml", "timestamp": "2026-11-18T18:02:39.174792+00:00", "client_ip": "10.10.0.5", "level": "medium", "score": -0.01442, "n_req": 6, "seq_id_run": 1, "label": "normal"}
+{"type": "ml", "timestamp": "2026-11-18T18:02:39.174792+00:00", "client_ip": "10.10.0.6", "level": "medium", "score": -0.01442, "n_req": 6, "seq_id_run": 1, "label": "normal"}
+{"type": "ml", "timestamp": "2026-11-18T18:02:39.174792+00:00", "client_ip": "10.10.0.7", "level": "medium", "score": -0.01442, "n_req": 6, "seq_id_run": 1, "label": "normal"}
+{"type": "ml", "timestamp": "2026-11-18T18:02:39.174792+00:00", "client_ip": "10.10.0.8", "level": "medium", "score": -0.01442, "n_req": 6, "seq_id_run": 1, "label": "normal"}
+{"type": "ml", "timestamp": "2026-11-18T18:02:44.222366+00:00", "client_ip": "10.10.0.11", "level": "medium", "score": -0.00935, "n_req": 5, "seq_id_run": 1, "label": "normal"}
+{"type": "ml", "timestamp": "2026-11-18T18:02:44.222366+00:00", "client_ip": "10.10.0.12", "level": "high", "score": -0.01626, "n_req": 5, "seq_id_run": 1, "label": "normal"}
+{"type": "ml", "timestamp": "2026-11-18T18:02:44.222366+00:00", "client_ip": "10.10.0.13", "level": "high", "score": -0.03723, "n_req": 8, "seq_id_run": 1, "label": "normal"}
+{"type": "ml", "timestamp": "2026-11-18T18:02:44.222366+00:00", "client_ip": "10.10.0.14", "level": "medium", "score": 0.04263, "n_req": 5, "seq_id_run": 0, "label": "normal"}
+{"type": "ml", "timestamp": "2026-11-18T18:02:49.272907+00:00", "client_ip": "10.10.0.17", "level": "medium", "score": 0.0231, "n_req": 10, "seq_id_run": 1, "label": "normal"}
+{"type": "ml", "timestamp": "2026-11-18T18:02:49.272907+00:00", "client_ip": "10.10.0.18", "level": "medium", "score": 0.03652, "n_req": 11, "seq_id_run": 1, "label": "normal"}
+{"type": "ml", "timestamp": "2026-11-18T18:02:49.272907+00:00", "client_ip": "10.10.0.15", "level": "high", "score": -0.03723, "n_req": 8, "seq_id_run": 1, "label": "normal"}
+{"type": "ml", "timestamp": "2026-11-18T18:02:49.272907+00:00", "client_ip": "10.10.0.16", "level": "medium", "score": -0.0081, "n_req": 7, "seq_id_run": 1, "label": "normal"}
+{"type": "ml", "timestamp": "2026-11-18T18:02:54.331747+00:00", "client_ip": "10.10.0.20", "level": "medium", "score": 0.04866, "n_req": 9, "seq_id_run": 1, "label": "normal"}
+{"type": "ml", "timestamp": "2026-11-18T18:02:54.331747+00:00", "client_ip": "10.10.0.1", "level": "medium", "score": 0.04866, "n_req": 9, "seq_id_run": 1, "label": "normal"}
+{"type": "ml", "timestamp": "2026-11-18T18:02:54.331747+00:00", "client_ip": "10.10.0.2", "level": "medium", "score": 0.04866, "n_req": 9, "seq_id_run": 1, "label": "normal"}
+{"type": "ml", "timestamp": "2026-11-18T18:03:04.464019+00:00", "client_ip": "10.10.0.9", "level": "medium", "score": 0.03374, "n_req": 7, "seq_id_run": 1, "label": "normal"}
+{"type": "ml", "timestamp": "2026-11-18T18:03:04.464019+00:00", "client_ip": "10.10.0.10", "level": "medium", "score": 0.02956, "n_req": 8, "seq_id_run": 1, "label": "normal"}
+{"type": "ml", "timestamp": "2026-11-18T18:03:04.464019+00:00", "client_ip": "10.10.0.12", "level": "medium", "score": 0.03271, "n_req": 7, "seq_id_run": 1, "label": "normal"}
+{"type": "ml", "timestamp": "2026-11-18T18:03:04.464019+00:00", "client_ip": "10.10.0.13", "level": "medium", "score": 0.04256, "n_req": 10, "seq_id_run": 1, "label": "normal"}
+{"type": "ml", "timestamp": "2026-11-18T18:03:09.525029+00:00", "client_ip": "10.10.0.15", "level": "medium", "score": 0.05502, "n_req": 10, "seq_id_run": 1, "label": "normal"}
+{"type": "alert", "timestamp": "2026-11-18T18:03:37.920000+00:00", "rule": {"id": "100512", "level": 12, "description": "[Shadow API L3 악용] 10.66.0.2 GET /debug", "groups": ["shadow_api", "shadow_api_exploit"]}, "data": {"client_ip": "10.66.0.2", "method": "GET", "path": "/debug", "status": "200"}, "label": "probe"}
+{"type": "block", "timestamp": "2026-11-18T18:03:39.929075+00:00", "client_ip": "10.66.0.2", "source": "Shadow 룰", "reason": "shadow_api_exploit (레벨 12)", "detail": "/debug", "label": "probe"}
+{"type": "ml", "timestamp": "2026-11-18T18:03:39.998961+00:00", "client_ip": "10.66.0.2", "level": "medium", "score": -0.01145, "n_req": 7, "seq_id_run": 0, "label": "probe"}
+{"type": "alert", "timestamp": "2026-11-18T18:03:39.920000+00:00", "rule": {"id": "100511", "level": 8, "description": "[Shadow API L2 발견] 10.66.0.2 GET /admin/reset-chef-password", "groups": ["shadow_api", "shadow_api_discovery"]}, "data": {"client_ip": "10.66.0.2", "method": "GET", "path": "/admin/reset-chef-password", "status": "403"}, "label": "probe"}
+{"type": "alert", "timestamp": "2026-11-18T18:03:39.920000+00:00", "rule": {"id": "100510", "level": 5, "description": "[Shadow API L1 정찰] 10.66.0.2 GET /api/v1/users", "groups": ["shadow_api", "shadow_api_recon"]}, "data": {"client_ip": "10.66.0.2", "method": "GET", "path": "/api/v1/users", "status": "404"}, "label": "probe"}
+{"type": "alert", "timestamp": "2026-11-18T18:03:39.920000+00:00", "rule": {"id": "100510", "level": 5, "description": "[Shadow API L1 정찰] 10.66.0.2 GET /admin", "groups": ["shadow_api", "shadow_api_recon"]}, "data": {"client_ip": "10.66.0.2", "method": "GET", "path": "/admin", "status": "404"}, "label": "probe"}
+{"type": "alert", "timestamp": "2026-11-18T18:03:39.920000+00:00", "rule": {"id": "100512", "level": 12, "description": "[Shadow API L3 악용] 10.66.0.2 GET /delivery/orders", "groups": ["shadow_api", "shadow_api_exploit"]}, "data": {"client_ip": "10.66.0.2", "method": "GET", "path": "/delivery/orders", "status": "200"}, "label": "probe"}
+{"type": "alert", "timestamp": "2026-11-18T18:03:41.922000+00:00", "rule": {"id": "100511", "level": 8, "description": "[Shadow API L2 발견] 10.66.0.2 GET /swagger.json", "groups": ["shadow_api", "shadow_api_discovery"]}, "data": {"client_ip": "10.66.0.2", "method": "GET", "path": "/swagger.json", "status": "403"}, "label": "probe"}
+{"type": "alert", "timestamp": "2026-11-18T18:03:41.924000+00:00", "rule": {"id": "100511", "level": 8, "description": "[Shadow API L2 발견] 10.66.0.2 GET /actuator/health", "groups": ["shadow_api", "shadow_api_discovery"]}, "data": {"client_ip": "10.66.0.2", "method": "GET", "path": "/actuator/health", "status": "403"}, "label": "probe"}
+{"type": "alert", "timestamp": "2026-11-18T18:03:41.925000+00:00", "rule": {"id": "100511", "level": 8, "description": "[Shadow API L2 발견] 10.66.0.2 GET /orders/export", "groups": ["shadow_api", "shadow_api_discovery"]}, "data": {"client_ip": "10.66.0.2", "method": "GET", "path": "/orders/export", "status": "403"}, "label": "probe"}
+{"type": "alert", "timestamp": "2026-11-18T18:03:41.926000+00:00", "rule": {"id": "100511", "level": 8, "description": "[Shadow API L2 발견] 10.66.0.2 GET /menu/abc", "groups": ["shadow_api", "shadow_api_discovery"]}, "data": {"client_ip": "10.66.0.2", "method": "GET", "path": "/menu/abc", "status": "403"}, "label": "probe"}
+{"type": "alert", "timestamp": "2026-11-18T18:03:43.922000+00:00", "rule": {"id": "100511", "level": 8, "description": "[Shadow API L2 발견] 10.66.0.2 GET /users", "groups": ["shadow_api", "shadow_api_discovery"]}, "data": {"client_ip": "10.66.0.2", "method": "GET", "path": "/users", "status": "403"}, "label": "probe"}
+{"type": "alert", "timestamp": "2026-11-18T18:03:43.922000+00:00", "rule": {"id": "100511", "level": 8, "description": "[Shadow API L2 발견] 10.66.0.2 DELETE /orders/1", "groups": ["shadow_api", "shadow_api_discovery"]}, "data": {"client_ip": "10.66.0.2", "method": "DELETE", "path": "/orders/1", "status": "403"}, "label": "probe"}
+{"type": "alert", "timestamp": "2026-11-18T18:03:43.922000+00:00", "rule": {"id": "100511", "level": 8, "description": "[Shadow API L2 발견] 10.66.0.2 GET /backup.zip", "groups": ["shadow_api", "shadow_api_discovery"]}, "data": {"client_ip": "10.66.0.2", "method": "GET", "path": "/backup.zip", "status": "403"}, "label": "probe"}
+{"type": "alert", "timestamp": "2026-11-18T18:03:43.922000+00:00", "rule": {"id": "100511", "level": 8, "description": "[Shadow API L2 발견] 10.66.0.2 POST /menu", "groups": ["shadow_api", "shadow_api_discovery"]}, "data": {"client_ip": "10.66.0.2", "method": "POST", "path": "/menu", "status": "403"}, "label": "probe"}
+{"type": "ml", "timestamp": "2026-11-18T18:03:45.079586+00:00", "client_ip": "10.66.0.2", "level": "high", "score": -0.01961, "n_req": 17, "seq_id_run": 1, "label": "probe"}
+{"type": "alert", "timestamp": "2026-11-18T18:03:45.923000+00:00", "rule": {"id": "100511", "level": 8, "description": "[Shadow API L2 발견] 10.66.0.2 GET /admin/stats/memory", "groups": ["shadow_api", "shadow_api_discovery"]}, "data": {"client_ip": "10.66.0.2", "method": "GET", "path": "/admin/stats/memory", "status": "403"}, "label": "probe"}
+{"type": "alert", "timestamp": "2026-11-18T18:03:45.923000+00:00", "rule": {"id": "100511", "level": 8, "description": "[Shadow API L2 발견] 10.66.0.2 GET /internal/metrics", "groups": ["shadow_api", "shadow_api_discovery"]}, "data": {"client_ip": "10.66.0.2", "method": "GET", "path": "/internal/metrics", "status": "403"}, "label": "probe"}
+{"type": "ml", "timestamp": "2026-11-18T18:04:51.031497+00:00", "client_ip": "10.77.0.2", "level": "high", "score": -0.09489, "n_req": 8, "seq_id_run": 6, "label": "bola"}
+{"type": "block", "timestamp": "2026-11-18T18:04:56.164368+00:00", "client_ip": "10.77.0.2", "source": "ML", "reason": "BOLA 의심 (high)", "detail": "점수 -0.096 · 요청 21 · 연속 ID 19", "label": "bola"}
+{"type": "ml", "timestamp": "2026-11-18T18:05:06.261239+00:00", "client_ip": "10.77.0.2", "level": "high", "score": -0.11171, "n_req": 15, "seq_id_run": 15, "label": "bola"}
+{"type": "ml", "timestamp": "2026-11-18T18:05:06.261239+00:00", "client_ip": "10.10.0.9", "level": "high", "score": -0.09192, "n_req": 5, "seq_id_run": 1, "label": "normal"}
+{"type": "ml", "timestamp": "2026-11-18T18:05:26.597683+00:00", "client_ip": "10.10.0.4", "level": "medium", "score": -0.01508, "n_req": 5, "seq_id_run": 1, "label": "normal"}
+{"type": "ml", "timestamp": "2026-11-18T18:05:26.597683+00:00", "client_ip": "10.10.0.5", "level": "medium", "score": -0.00676, "n_req": 8, "seq_id_run": 1, "label": "normal"}
+{"type": "ml", "timestamp": "2026-11-18T18:05:26.597683+00:00", "client_ip": "10.10.0.6", "level": "medium", "score": 0.00551, "n_req": 7, "seq_id_run": 1, "label": "normal"}
+{"type": "ml", "timestamp": "2026-11-18T18:05:26.597683+00:00", "client_ip": "10.10.0.8", "level": "high", "score": -0.02371, "n_req": 6, "seq_id_run": 1, "label": "normal"}
+{"type": "ml", "timestamp": "2026-11-18T18:05:31.682326+00:00", "client_ip": "10.10.0.9", "level": "medium", "score": -0.0017, "n_req": 9, "seq_id_run": 1, "label": "normal"}
+{"type": "ml", "timestamp": "2026-11-18T18:05:31.682326+00:00", "client_ip": "10.10.0.10", "level": "medium", "score": -0.00327, "n_req": 9, "seq_id_run": 1, "label": "normal"}
+{"type": "ml", "timestamp": "2026-11-18T18:05:31.682326+00:00", "client_ip": "10.10.0.12", "level": "high", "score": -0.01626, "n_req": 5, "seq_id_run": 1, "label": "normal"}
+{"type": "ml", "timestamp": "2026-11-18T18:05:31.682326+00:00", "client_ip": "10.10.0.13", "level": "medium", "score": -0.01413, "n_req": 5, "seq_id_run": 1, "label": "normal"}
+{"type": "ml", "timestamp": "2026-11-18T18:05:36.770288+00:00", "client_ip": "10.10.0.14", "level": "medium", "score": -0.0017, "n_req": 9, "seq_id_run": 1, "label": "normal"}
+{"type": "ml", "timestamp": "2026-11-18T18:05:36.770288+00:00", "client_ip": "10.10.0.15", "level": "medium", "score": -0.00152, "n_req": 9, "seq_id_run": 1, "label": "normal"}
+{"type": "ml", "timestamp": "2026-11-18T18:05:36.770288+00:00", "client_ip": "10.10.0.16", "level": "high", "score": -0.01626, "n_req": 5, "seq_id_run": 1, "label": "normal"}
+{"type": "ml", "timestamp": "2026-11-18T18:05:36.770288+00:00", "client_ip": "10.10.0.17", "level": "medium", "score": -0.01442, "n_req": 6, "seq_id_run": 1, "label": "normal"}
+{"type": "ml", "timestamp": "2026-11-18T18:05:36.770288+00:00", "client_ip": "10.10.0.18", "level": "medium", "score": -0.00606, "n_req": 7, "seq_id_run": 1, "label": "normal"}
+{"type": "ml", "timestamp": "2026-11-18T18:05:41.860533+00:00", "client_ip": "10.10.0.19", "level": "medium", "score": -0.00176, "n_req": 5, "seq_id_run": 1, "label": "normal"}
+{"type": "ml", "timestamp": "2026-11-18T18:05:41.860533+00:00", "client_ip": "10.10.0.20", "level": "medium", "score": -0.00606, "n_req": 7, "seq_id_run": 1, "label": "normal"}
+{"type": "ml", "timestamp": "2026-11-18T18:05:41.860533+00:00", "client_ip": "10.10.0.1", "level": "high", "score": -0.01626, "n_req": 5, "seq_id_run": 1, "label": "normal"}
+{"type": "ml", "timestamp": "2026-11-18T18:05:41.860533+00:00", "client_ip": "10.10.0.2", "level": "high", "score": -0.02939, "n_req": 5, "seq_id_run": 1, "label": "normal"}
+{"type": "ml", "timestamp": "2026-11-18T18:05:46.978027+00:00", "client_ip": "10.10.0.7", "level": "medium", "score": 0.06118, "n_req": 9, "seq_id_run": 1, "label": "normal"}
+{"type": "ml", "timestamp": "2026-11-18T18:05:52.113098+00:00", "client_ip": "10.10.0.8", "level": "medium", "score": 0.05433, "n_req": 9, "seq_id_run": 1, "label": "normal"}
+{"type": "ml", "timestamp": "2026-11-18T18:05:52.113098+00:00", "client_ip": "10.10.0.11", "level": "medium", "score": 0.03925, "n_req": 8, "seq_id_run": 1, "label": "normal"}
+{"type": "ml", "timestamp": "2026-11-18T18:05:52.113098+00:00", "client_ip": "10.10.0.12", "level": "medium", "score": 0.06032, "n_req": 9, "seq_id_run": 1, "label": "normal"}
+{"type": "ml", "timestamp": "2026-11-18T18:05:57.228448+00:00", "client_ip": "10.10.0.16", "level": "medium", "score": 0.0207, "n_req": 8, "seq_id_run": 1, "label": "normal"}
+{"type": "ml", "timestamp": "2026-11-18T18:06:02.345049+00:00", "client_ip": "10.10.0.1", "level": "medium", "score": 0.0207, "n_req": 8, "seq_id_run": 1, "label": "normal"}
+{"type": "ml", "timestamp": "2026-11-18T18:06:02.345049+00:00", "client_ip": "10.10.0.2", "level": "medium", "score": 0.04116, "n_req": 10, "seq_id_run": 1, "label": "normal"}
+{"type": "ml", "timestamp": "2026-11-18T18:06:07.457094+00:00", "client_ip": "10.10.0.3", "level": "medium", "score": 0.01567, "n_req": 7, "seq_id_run": 1, "label": "normal"}
+{"type": "ml", "timestamp": "2026-11-18T18:10:23.497982+00:00", "client_ip": "10.10.0.9", "level": "medium", "score": -0.00211, "n_req": 7, "seq_id_run": 1, "label": "normal"}
+{"type": "ml", "timestamp": "2026-11-18T18:10:23.497982+00:00", "client_ip": "10.10.0.6", "level": "high", "score": -0.09192, "n_req": 5, "seq_id_run": 1, "label": "normal"}
+{"type": "ml", "timestamp": "2026-11-18T18:10:28.621182+00:00", "client_ip": "10.10.0.11", "level": "high", "score": -0.02551, "n_req": 6, "seq_id_run": 1, "label": "normal"}
+{"type": "ml", "timestamp": "2026-11-18T18:10:28.621182+00:00", "client_ip": "10.10.0.13", "level": "medium", "score": -0.00862, "n_req": 6, "seq_id_run": 1, "label": "normal"}
+{"type": "ml", "timestamp": "2026-11-18T18:10:28.621182+00:00", "client_ip": "10.10.0.14", "level": "medium", "score": -0.0081, "n_req": 7, "seq_id_run": 1, "label": "normal"}
+{"type": "ml", "timestamp": "2026-11-18T18:10:28.621182+00:00", "client_ip": "10.10.0.15", "level": "medium", "score": -0.00176, "n_req": 5, "seq_id_run": 1, "label": "normal"}
+{"type": "ml", "timestamp": "2026-11-18T18:10:33.734108+00:00", "client_ip": "10.10.0.16", "level": "high", "score": -0.01626, "n_req": 5, "seq_id_run": 1, "label": "normal"}
+{"type": "ml", "timestamp": "2026-11-18T18:10:33.734108+00:00", "client_ip": "10.10.0.17", "level": "medium", "score": -0.00791, "n_req": 8, "seq_id_run": 1, "label": "normal"}
+{"type": "ml", "timestamp": "2026-11-18T18:10:33.734108+00:00", "client_ip": "10.10.0.18", "level": "high", "score": -0.01944, "n_req": 6, "seq_id_run": 1, "label": "normal"}
+{"type": "ml", "timestamp": "2026-11-18T18:10:33.734108+00:00", "client_ip": "10.10.0.19", "level": "high", "score": -0.01944, "n_req": 6, "seq_id_run": 1, "label": "normal"}
+{"type": "ml", "timestamp": "2026-11-18T18:10:33.734108+00:00", "client_ip": "10.10.0.20", "level": "medium", "score": -0.00606, "n_req": 7, "seq_id_run": 1, "label": "normal"}
+{"type": "ml", "timestamp": "2026-11-18T18:10:38.866157+00:00", "client_ip": "10.10.0.1", "level": "medium", "score": -0.01442, "n_req": 6, "seq_id_run": 1, "label": "normal"}
+{"type": "ml", "timestamp": "2026-11-18T18:10:38.866157+00:00", "client_ip": "10.10.0.2", "level": "medium", "score": -0.0081, "n_req": 7, "seq_id_run": 1, "label": "normal"}
+{"type": "ml", "timestamp": "2026-11-18T18:10:38.866157+00:00", "client_ip": "10.10.0.3", "level": "high", "score": -0.01944, "n_req": 6, "seq_id_run": 1, "label": "normal"}
+{"type": "ml", "timestamp": "2026-11-18T18:10:38.866157+00:00", "client_ip": "10.10.0.4", "level": "high", "score": -0.01944, "n_req": 6, "seq_id_run": 1, "label": "normal"}
+{"type": "ml", "timestamp": "2026-11-18T18:10:44.007238+00:00", "client_ip": "10.10.0.10", "level": "medium", "score": 0.01307, "n_req": 7, "seq_id_run": 1, "label": "normal"}
+{"type": "ml", "timestamp": "2026-11-18T18:10:44.007238+00:00", "client_ip": "10.10.0.6", "level": "medium", "score": -0.0081, "n_req": 7, "seq_id_run": 1, "label": "normal"}
+{"type": "ml", "timestamp": "2026-11-18T18:10:44.007238+00:00", "client_ip": "10.10.0.7", "level": "medium", "score": -0.0081, "n_req": 7, "seq_id_run": 1, "label": "normal"}
+{"type": "ml", "timestamp": "2026-11-18T18:10:44.007238+00:00", "client_ip": "10.10.0.8", "level": "medium", "score": -0.0081, "n_req": 7, "seq_id_run": 1, "label": "normal"}
+{"type": "ml", "timestamp": "2026-11-18T18:10:49.150521+00:00", "client_ip": "10.10.0.11", "level": "medium", "score": 0.04852, "n_req": 9, "seq_id_run": 1, "label": "normal"}
+{"type": "ml", "timestamp": "2026-11-18T18:10:49.150521+00:00", "client_ip": "10.10.0.12", "level": "medium", "score": 0.01204, "n_req": 7, "seq_id_run": 1, "label": "normal"}
+{"type": "ml", "timestamp": "2026-11-18T18:10:54.302748+00:00", "client_ip": "10.10.0.16", "level": "medium", "score": 0.04952, "n_req": 9, "seq_id_run": 1, "label": "normal"}
+{"type": "ml", "timestamp": "2026-11-18T18:10:54.302748+00:00", "client_ip": "10.10.0.18", "level": "medium", "score": 0.04952, "n_req": 9, "seq_id_run": 1, "label": "normal"}
+{"type": "ml", "timestamp": "2026-11-18T18:10:54.302748+00:00", "client_ip": "10.10.0.19", "level": "medium", "score": 0.05151, "n_req": 9, "seq_id_run": 1, "label": "normal"}
+{"type": "ml", "timestamp": "2026-11-18T18:10:59.481528+00:00", "client_ip": "10.10.0.3", "level": "medium", "score": 0.01808, "n_req": 9, "seq_id_run": 1, "label": "normal"}
+{"type": "ml", "timestamp": "2026-11-18T18:10:59.481528+00:00", "client_ip": "10.10.0.4", "level": "medium", "score": 0.06074, "n_req": 8, "seq_id_run": 1, "label": "normal"}
+{"type": "ml", "timestamp": "2026-11-18T18:10:59.481528+00:00", "client_ip": "10.10.0.5", "level": "medium", "score": 0.06526, "n_req": 8, "seq_id_run": 1, "label": "normal"}
+{"type": "ml", "timestamp": "2026-11-18T18:13:59.960353+00:00", "client_ip": "10.10.0.4", "level": "high", "score": -0.03236, "n_req": 6, "seq_id_run": 1, "label": "normal"}
+{"type": "ml", "timestamp": "2026-11-18T18:13:59.960353+00:00", "client_ip": "10.10.0.6", "level": "high", "score": -0.02371, "n_req": 6, "seq_id_run": 1, "label": "normal"}
+{"type": "ml", "timestamp": "2026-11-18T18:14:05.101950+00:00", "client_ip": "10.10.0.9", "level": "high", "score": -0.01626, "n_req": 5, "seq_id_run": 1, "label": "normal"}
+{"type": "ml", "timestamp": "2026-11-18T18:14:10.238430+00:00", "client_ip": "10.10.0.13", "level": "high", "score": -0.02371, "n_req": 6, "seq_id_run": 1, "label": "normal"}
+{"type": "ml", "timestamp": "2026-11-18T18:14:15.379071+00:00", "client_ip": "10.10.0.17", "level": "high", "score": -0.01944, "n_req": 6, "seq_id_run": 1, "label": "normal"}
+{"type": "ml", "timestamp": "2026-11-18T18:14:15.379071+00:00", "client_ip": "10.10.0.20", "level": "high", "score": -0.01626, "n_req": 5, "seq_id_run": 1, "label": "normal"}
+{"type": "ml", "timestamp": "2026-11-18T18:14:20.516093+00:00", "client_ip": "10.10.0.2", "level": "high", "score": -0.01648, "n_req": 6, "seq_id_run": 1, "label": "normal"}
+{"type": "ml", "timestamp": "2026-11-18T18:14:25.659568+00:00", "client_ip": "10.10.0.10", "level": "high", "score": -0.09192, "n_req": 5, "seq_id_run": 1, "label": "normal"}

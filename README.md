@@ -150,6 +150,16 @@
 
 팀 시연 대시보드(대응 · SOAR 중심)와 나란히: [`04_team_vs_mine.png`](verify/dashboard_dvra_2026-11-18/screenshots/04_team_vs_mine.png)
 
+### 실시간 시연 — 공격 → 실시간 탐지 → 자동 차단 (2026-11-19, DVRA · 합성 트래픽)
+
+| 공격 | 탐지 | 결과 |
+|---|---|---|
+| 명세 밖 탐색 | 실시간 Wazuh — 숨은 API `/debug` 200 을 L3 로 판정 | **2.9초** 만에 자동 차단 |
+| 명세 안 BOLA (남의 주문 1..150) | ML — 연속 ID 19 | **8.2초** 만에 자동 차단, 남의 주문 20건 뒤 129건 403 |
+| 정상 20명 | ML high 창 38개 | 차단 0 — 차단 정책(창 요청 15건 이상)이 걸렀다. 모델의 한계로 기록 |
+
+영상(4배속): [`live_demo_4x.mp4`](verify/live_demo_2026-11-18/run_20261119_0246/live_demo_4x.mp4) · 보고서 · 구성: [`verify/live_demo_2026-11-18/`](verify/live_demo_2026-11-18/README.md)
+
 상세: [`verify/dvra/`](verify/dvra/README.md) · [`verify/vampi/`](verify/vampi/README.md) · [`automate/portable-workflow-v2.1/`](automate/portable-workflow-v2.1/README.md) · 대시보드(코드화) [`verify/dashboard_dvra_2026-11-18/`](verify/dashboard_dvra_2026-11-18/README.md) · **ML 최종 정리 [`ml/FINAL_v1.0.md`](ml/FINAL_v1.0.md)**
 
 > **v1 제품 정의서:** [PRODUCT_V1.md](PRODUCT_V1.md) — 누가 쓰나 · v1 범위 · 성공 기준 7개와 현재 상태
@@ -189,6 +199,7 @@
 | `verify/crapi/` | crAPI 검증 기록 · 트래픽 생성기 |
 | `verify/vampi/` · `verify/dvra/` | 처음 보는 앱 검증 (VAmPI 실패 · DVRA 룰 · ML 1차 무효 · 2차) |
 | `verify/dashboard_dvra_2026-11-18/` | 룰(실제 Wazuh) + ML 대시보드 — Grafana 코드화 |
+| `verify/live_demo_2026-11-18/` | 실시간 시연 — nginx 차단 목록 · Wazuh 실시간 · ML 파이프라인 · Grafana · HTML 보고서 · 영상 |
 | `verify/elk_teamlog_2026-11-18/` | ELK 인덱스 기반 Shadow 분류 — 팀 로그 108만 줄, 9% 분류 실패 원인 수정 |
 | `ml/FINAL_v1.0.md` | ML 최종 보고 v1.0 (기능 동결) |
 | `media/` | 시연 영상 2개 · 대시보드 그림 · 녹화 스크립트 |

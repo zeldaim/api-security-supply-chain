@@ -1,0 +1,6 @@
+apiVersion: 1
+datasources:
+  - {name: 실시간 요청, uid: live-access, type: elasticsearch, access: proxy, url: "http://es-local:9200", jsonData: {index: live-access, timeField: timestamp}}
+  - {name: 실시간 Shadow 경보, uid: live-alerts, type: elasticsearch, access: proxy, url: "http://es-local:9200", jsonData: {index: live-alerts, timeField: timestamp}}
+  - {name: 실시간 ML, uid: live-ml, type: elasticsearch, access: proxy, url: "http://es-local:9200", jsonData: {index: live-ml, timeField: timestamp}}
+  - {name: 자동 차단, uid: live-response, type: elasticsearch, access: proxy, url: "http://es-local:9200", jsonData: {index: live-response, timeField: timestamp}}
