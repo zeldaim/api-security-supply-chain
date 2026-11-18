@@ -22,6 +22,7 @@
 | 취약점 영향 판단 | **VEX** (도달하지 않는 CVE = not_affected 후보) | [`standardize/sbom/make_vex.py`](standardize/sbom/make_vex.py) |
 | 판정 기준 | OWASP · CIS · NIST 기반 기준표 | [`standardize/policy/`](standardize/policy/) |
 | 명세 밖 호출 분류 | 명세에 없다고 악성으로 단정하지 않고 승인 상태 · 소유자 · 사용 맥락으로 우선순위 | [`offspec_triage.md`](standardize/policy/offspec_triage.md) |
+| 우선순위 → 경보 레벨 | 명세 밖 호출 우선순위를 Wazuh 레벨로 (기존 룰 수정 없이 하위 룰), 실제 logtest 87/87 | [`offspec_rules.md`](standardize/policy/offspec_rules.md) |
 
 - **사람이 승인한 것만 기준이 된다.** 발견한 API 를 자동으로 기준에 넣으면 공격 대상 경로까지 "정상"이 되어 경보가 꺼진다. 도구는 후보만 내고 사람은 승인만 한다([`approval_server.py`](standardize/inventory/approval_server.py)).
 - **결과** (팀 웹): 소스만 보면 Shadow 0 → 4출처를 합치면 **Shadow 4 · 외부 노출 4**. 부품 취약점 2,355건 중 API 에서 실제로 닿는 CVE 는 **23%**([`standardize/reach/`](standardize/reach/), 정적 분석).

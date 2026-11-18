@@ -1,0 +1,476 @@
+<!--
+  명세 밖 호출 우선순위 → 경보 레벨 (자동 생성: standardize/policy/offspec_rules.py)
+  판정 원본: offspec_triage.csv
+  로그 형식: applog · 붙는 단계 룰: L1=100210, L2=100211, L3=100212, L3E=100213
+  레벨: 정보=3 · 낮음=기존-3(최소 3) · 중간=기존 · 높음=기존+2(최대 15)
+  판정 CSV 에 없는 명세 밖 호출은 기존 단계 룰 레벨 그대로 남는다.
+-->
+<group name="shadow_api,offspec_priority,">
+
+  <!-- 높음 · GET /api/v1/diagnostics/ping · 검토 중 · 승인 review · 소유자 없음 -->
+  <rule id="100600" level="7">
+    <if_sid>100210</if_sid>
+    <field name="method" type="pcre2">^GET$</field>
+    <field name="path" type="pcre2">^/api/v1/diagnostics/ping/*(?:\?.*)?$</field>
+    <description>[Shadow API L1 · 우선순위 높음] $(client_ip) $(method) $(path)</description>
+    <group>shadow_api_recon,offspec_high,offspec_recon_triaged,</group>
+  </rule>
+  <rule id="100601" level="10">
+    <if_sid>100211</if_sid>
+    <field name="method" type="pcre2">^GET$</field>
+    <field name="path" type="pcre2">^/api/v1/diagnostics/ping/*(?:\?.*)?$</field>
+    <description>[Shadow API L2 · 우선순위 높음] $(client_ip) $(method) $(path)</description>
+    <group>shadow_api_discovery,offspec_high,</group>
+  </rule>
+  <rule id="100602" level="14">
+    <if_sid>100212</if_sid>
+    <field name="method" type="pcre2">^GET$</field>
+    <field name="path" type="pcre2">^/api/v1/diagnostics/ping/*(?:\?.*)?$</field>
+    <description>[Shadow API L3 · 우선순위 높음] $(client_ip) $(method) $(path)</description>
+    <group>shadow_api_exploit,offspec_high,offspec_exploit_triaged,</group>
+  </rule>
+  <rule id="100603" level="12">
+    <if_sid>100213</if_sid>
+    <field name="method" type="pcre2">^GET$</field>
+    <field name="path" type="pcre2">^/api/v1/diagnostics/ping/*(?:\?.*)?$</field>
+    <description>[Shadow API L3E · 우선순위 높음] $(client_ip) $(method) $(path)</description>
+    <group>shadow_api_error,offspec_high,</group>
+  </rule>
+
+  <!-- 높음 · GET /api/v1/users/{id} · 검토 중 · 승인 review · 소유자 없음 -->
+  <rule id="100604" level="7">
+    <if_sid>100210</if_sid>
+    <field name="method" type="pcre2">^GET$</field>
+    <field name="path" type="pcre2">^/api/v1/users/[^/?]+/*(?:\?.*)?$</field>
+    <description>[Shadow API L1 · 우선순위 높음] $(client_ip) $(method) $(path)</description>
+    <group>shadow_api_recon,offspec_high,offspec_recon_triaged,</group>
+  </rule>
+  <rule id="100605" level="10">
+    <if_sid>100211</if_sid>
+    <field name="method" type="pcre2">^GET$</field>
+    <field name="path" type="pcre2">^/api/v1/users/[^/?]+/*(?:\?.*)?$</field>
+    <description>[Shadow API L2 · 우선순위 높음] $(client_ip) $(method) $(path)</description>
+    <group>shadow_api_discovery,offspec_high,</group>
+  </rule>
+  <rule id="100606" level="14">
+    <if_sid>100212</if_sid>
+    <field name="method" type="pcre2">^GET$</field>
+    <field name="path" type="pcre2">^/api/v1/users/[^/?]+/*(?:\?.*)?$</field>
+    <description>[Shadow API L3 · 우선순위 높음] $(client_ip) $(method) $(path)</description>
+    <group>shadow_api_exploit,offspec_high,offspec_exploit_triaged,</group>
+  </rule>
+  <rule id="100607" level="12">
+    <if_sid>100213</if_sid>
+    <field name="method" type="pcre2">^GET$</field>
+    <field name="path" type="pcre2">^/api/v1/users/[^/?]+/*(?:\?.*)?$</field>
+    <description>[Shadow API L3E · 우선순위 높음] $(client_ip) $(method) $(path)</description>
+    <group>shadow_api_error,offspec_high,</group>
+  </rule>
+
+  <!-- 낮음 · GET /api/jsonws · 존재 불명 (401·403·4xx·5xx 만) · 승인 미등록 · 소유자 없음 -->
+  <rule id="100608" level="3">
+    <if_sid>100210</if_sid>
+    <field name="method" type="pcre2">^GET$</field>
+    <field name="path" type="pcre2">^/api/jsonws/*(?:\?.*)?$</field>
+    <description>[Shadow API L1 · 우선순위 낮음] $(client_ip) $(method) $(path)</description>
+    <group>shadow_api_recon,offspec_low,offspec_recon_triaged,</group>
+  </rule>
+  <rule id="100609" level="5">
+    <if_sid>100211</if_sid>
+    <field name="method" type="pcre2">^GET$</field>
+    <field name="path" type="pcre2">^/api/jsonws/*(?:\?.*)?$</field>
+    <description>[Shadow API L2 · 우선순위 낮음] $(client_ip) $(method) $(path)</description>
+    <group>shadow_api_discovery,offspec_low,</group>
+  </rule>
+  <rule id="100610" level="9">
+    <if_sid>100212</if_sid>
+    <field name="method" type="pcre2">^GET$</field>
+    <field name="path" type="pcre2">^/api/jsonws/*(?:\?.*)?$</field>
+    <description>[Shadow API L3 · 우선순위 낮음] $(client_ip) $(method) $(path)</description>
+    <group>shadow_api_exploit,offspec_low,offspec_exploit_triaged,</group>
+  </rule>
+  <rule id="100611" level="7">
+    <if_sid>100213</if_sid>
+    <field name="method" type="pcre2">^GET$</field>
+    <field name="path" type="pcre2">^/api/jsonws/*(?:\?.*)?$</field>
+    <description>[Shadow API L3E · 우선순위 낮음] $(client_ip) $(method) $(path)</description>
+    <group>shadow_api_error,offspec_low,</group>
+  </rule>
+
+  <!-- 낮음 · GET /api/jsonws/index.jsp · 존재 불명 (401·403·4xx·5xx 만) · 승인 미등록 · 소유자 없음 -->
+  <rule id="100612" level="3">
+    <if_sid>100210</if_sid>
+    <field name="method" type="pcre2">^GET$</field>
+    <field name="path" type="pcre2">^/api/jsonws/index\.jsp/*(?:\?.*)?$</field>
+    <description>[Shadow API L1 · 우선순위 낮음] $(client_ip) $(method) $(path)</description>
+    <group>shadow_api_recon,offspec_low,offspec_recon_triaged,</group>
+  </rule>
+  <rule id="100613" level="5">
+    <if_sid>100211</if_sid>
+    <field name="method" type="pcre2">^GET$</field>
+    <field name="path" type="pcre2">^/api/jsonws/index\.jsp/*(?:\?.*)?$</field>
+    <description>[Shadow API L2 · 우선순위 낮음] $(client_ip) $(method) $(path)</description>
+    <group>shadow_api_discovery,offspec_low,</group>
+  </rule>
+  <rule id="100614" level="9">
+    <if_sid>100212</if_sid>
+    <field name="method" type="pcre2">^GET$</field>
+    <field name="path" type="pcre2">^/api/jsonws/index\.jsp/*(?:\?.*)?$</field>
+    <description>[Shadow API L3 · 우선순위 낮음] $(client_ip) $(method) $(path)</description>
+    <group>shadow_api_exploit,offspec_low,offspec_exploit_triaged,</group>
+  </rule>
+  <rule id="100615" level="7">
+    <if_sid>100213</if_sid>
+    <field name="method" type="pcre2">^GET$</field>
+    <field name="path" type="pcre2">^/api/jsonws/index\.jsp/*(?:\?.*)?$</field>
+    <description>[Shadow API L3E · 우선순위 낮음] $(client_ip) $(method) $(path)</description>
+    <group>shadow_api_error,offspec_low,</group>
+  </rule>
+
+  <!-- 낮음 · GET /api/v1/metrics · 존재 불명 (401·403·4xx·5xx 만) · 승인 미등록 · 소유자 없음 -->
+  <rule id="100616" level="3">
+    <if_sid>100210</if_sid>
+    <field name="method" type="pcre2">^GET$</field>
+    <field name="path" type="pcre2">^/api/v1/metrics/*(?:\?.*)?$</field>
+    <description>[Shadow API L1 · 우선순위 낮음] $(client_ip) $(method) $(path)</description>
+    <group>shadow_api_recon,offspec_low,offspec_recon_triaged,</group>
+  </rule>
+  <rule id="100617" level="5">
+    <if_sid>100211</if_sid>
+    <field name="method" type="pcre2">^GET$</field>
+    <field name="path" type="pcre2">^/api/v1/metrics/*(?:\?.*)?$</field>
+    <description>[Shadow API L2 · 우선순위 낮음] $(client_ip) $(method) $(path)</description>
+    <group>shadow_api_discovery,offspec_low,</group>
+  </rule>
+  <rule id="100618" level="9">
+    <if_sid>100212</if_sid>
+    <field name="method" type="pcre2">^GET$</field>
+    <field name="path" type="pcre2">^/api/v1/metrics/*(?:\?.*)?$</field>
+    <description>[Shadow API L3 · 우선순위 낮음] $(client_ip) $(method) $(path)</description>
+    <group>shadow_api_exploit,offspec_low,offspec_exploit_triaged,</group>
+  </rule>
+  <rule id="100619" level="7">
+    <if_sid>100213</if_sid>
+    <field name="method" type="pcre2">^GET$</field>
+    <field name="path" type="pcre2">^/api/v1/metrics/*(?:\?.*)?$</field>
+    <description>[Shadow API L3E · 우선순위 낮음] $(client_ip) $(method) $(path)</description>
+    <group>shadow_api_error,offspec_low,</group>
+  </rule>
+
+  <!-- 낮음 · GET /api/v1/user1 · 존재 불명 (401·403·4xx·5xx 만) · 승인 미등록 · 소유자 없음 -->
+  <rule id="100620" level="3">
+    <if_sid>100210</if_sid>
+    <field name="method" type="pcre2">^GET$</field>
+    <field name="path" type="pcre2">^/api/v1/user1/*(?:\?.*)?$</field>
+    <description>[Shadow API L1 · 우선순위 낮음] $(client_ip) $(method) $(path)</description>
+    <group>shadow_api_recon,offspec_low,offspec_recon_triaged,</group>
+  </rule>
+  <rule id="100621" level="5">
+    <if_sid>100211</if_sid>
+    <field name="method" type="pcre2">^GET$</field>
+    <field name="path" type="pcre2">^/api/v1/user1/*(?:\?.*)?$</field>
+    <description>[Shadow API L2 · 우선순위 낮음] $(client_ip) $(method) $(path)</description>
+    <group>shadow_api_discovery,offspec_low,</group>
+  </rule>
+  <rule id="100622" level="9">
+    <if_sid>100212</if_sid>
+    <field name="method" type="pcre2">^GET$</field>
+    <field name="path" type="pcre2">^/api/v1/user1/*(?:\?.*)?$</field>
+    <description>[Shadow API L3 · 우선순위 낮음] $(client_ip) $(method) $(path)</description>
+    <group>shadow_api_exploit,offspec_low,offspec_exploit_triaged,</group>
+  </rule>
+  <rule id="100623" level="7">
+    <if_sid>100213</if_sid>
+    <field name="method" type="pcre2">^GET$</field>
+    <field name="path" type="pcre2">^/api/v1/user1/*(?:\?.*)?$</field>
+    <description>[Shadow API L3E · 우선순위 낮음] $(client_ip) $(method) $(path)</description>
+    <group>shadow_api_error,offspec_low,</group>
+  </rule>
+
+  <!-- 낮음 · GET /api/v2/login.php · 존재 불명 (401·403·4xx·5xx 만) · 승인 미등록 · 소유자 없음 -->
+  <rule id="100624" level="3">
+    <if_sid>100210</if_sid>
+    <field name="method" type="pcre2">^GET$</field>
+    <field name="path" type="pcre2">^/api/v2/login\.php/*(?:\?.*)?$</field>
+    <description>[Shadow API L1 · 우선순위 낮음] $(client_ip) $(method) $(path)</description>
+    <group>shadow_api_recon,offspec_low,offspec_recon_triaged,</group>
+  </rule>
+  <rule id="100625" level="5">
+    <if_sid>100211</if_sid>
+    <field name="method" type="pcre2">^GET$</field>
+    <field name="path" type="pcre2">^/api/v2/login\.php/*(?:\?.*)?$</field>
+    <description>[Shadow API L2 · 우선순위 낮음] $(client_ip) $(method) $(path)</description>
+    <group>shadow_api_discovery,offspec_low,</group>
+  </rule>
+  <rule id="100626" level="9">
+    <if_sid>100212</if_sid>
+    <field name="method" type="pcre2">^GET$</field>
+    <field name="path" type="pcre2">^/api/v2/login\.php/*(?:\?.*)?$</field>
+    <description>[Shadow API L3 · 우선순위 낮음] $(client_ip) $(method) $(path)</description>
+    <group>shadow_api_exploit,offspec_low,offspec_exploit_triaged,</group>
+  </rule>
+  <rule id="100627" level="7">
+    <if_sid>100213</if_sid>
+    <field name="method" type="pcre2">^GET$</field>
+    <field name="path" type="pcre2">^/api/v2/login\.php/*(?:\?.*)?$</field>
+    <description>[Shadow API L3E · 우선순위 낮음] $(client_ip) $(method) $(path)</description>
+    <group>shadow_api_error,offspec_low,</group>
+  </rule>
+
+  <!-- 낮음 · GET /api/v2/ping · 존재 불명 (401·403·4xx·5xx 만) · 승인 미등록 · 소유자 없음 -->
+  <rule id="100628" level="3">
+    <if_sid>100210</if_sid>
+    <field name="method" type="pcre2">^GET$</field>
+    <field name="path" type="pcre2">^/api/v2/ping/*(?:\?.*)?$</field>
+    <description>[Shadow API L1 · 우선순위 낮음] $(client_ip) $(method) $(path)</description>
+    <group>shadow_api_recon,offspec_low,offspec_recon_triaged,</group>
+  </rule>
+  <rule id="100629" level="5">
+    <if_sid>100211</if_sid>
+    <field name="method" type="pcre2">^GET$</field>
+    <field name="path" type="pcre2">^/api/v2/ping/*(?:\?.*)?$</field>
+    <description>[Shadow API L2 · 우선순위 낮음] $(client_ip) $(method) $(path)</description>
+    <group>shadow_api_discovery,offspec_low,</group>
+  </rule>
+  <rule id="100630" level="9">
+    <if_sid>100212</if_sid>
+    <field name="method" type="pcre2">^GET$</field>
+    <field name="path" type="pcre2">^/api/v2/ping/*(?:\?.*)?$</field>
+    <description>[Shadow API L3 · 우선순위 낮음] $(client_ip) $(method) $(path)</description>
+    <group>shadow_api_exploit,offspec_low,offspec_exploit_triaged,</group>
+  </rule>
+  <rule id="100631" level="7">
+    <if_sid>100213</if_sid>
+    <field name="method" type="pcre2">^GET$</field>
+    <field name="path" type="pcre2">^/api/v2/ping/*(?:\?.*)?$</field>
+    <description>[Shadow API L3E · 우선순위 낮음] $(client_ip) $(method) $(path)</description>
+    <group>shadow_api_error,offspec_low,</group>
+  </rule>
+
+  <!-- 낮음 · HEAD /api/v1/login · 존재 불명 (401·403·4xx·5xx 만) · 승인 미등록 · 소유자 없음 -->
+  <rule id="100632" level="3">
+    <if_sid>100210</if_sid>
+    <field name="method" type="pcre2">^HEAD$</field>
+    <field name="path" type="pcre2">^/api/v1/login/*(?:\?.*)?$</field>
+    <description>[Shadow API L1 · 우선순위 낮음] $(client_ip) $(method) $(path)</description>
+    <group>shadow_api_recon,offspec_low,offspec_recon_triaged,</group>
+  </rule>
+  <rule id="100633" level="5">
+    <if_sid>100211</if_sid>
+    <field name="method" type="pcre2">^HEAD$</field>
+    <field name="path" type="pcre2">^/api/v1/login/*(?:\?.*)?$</field>
+    <description>[Shadow API L2 · 우선순위 낮음] $(client_ip) $(method) $(path)</description>
+    <group>shadow_api_discovery,offspec_low,</group>
+  </rule>
+  <rule id="100634" level="9">
+    <if_sid>100212</if_sid>
+    <field name="method" type="pcre2">^HEAD$</field>
+    <field name="path" type="pcre2">^/api/v1/login/*(?:\?.*)?$</field>
+    <description>[Shadow API L3 · 우선순위 낮음] $(client_ip) $(method) $(path)</description>
+    <group>shadow_api_exploit,offspec_low,offspec_exploit_triaged,</group>
+  </rule>
+  <rule id="100635" level="7">
+    <if_sid>100213</if_sid>
+    <field name="method" type="pcre2">^HEAD$</field>
+    <field name="path" type="pcre2">^/api/v1/login/*(?:\?.*)?$</field>
+    <description>[Shadow API L3E · 우선순위 낮음] $(client_ip) $(method) $(path)</description>
+    <group>shadow_api_error,offspec_low,</group>
+  </rule>
+
+  <!-- 낮음 · HEAD /api/v1/products · 존재 불명 (401·403·4xx·5xx 만) · 승인 미등록 · 소유자 없음 -->
+  <rule id="100636" level="3">
+    <if_sid>100210</if_sid>
+    <field name="method" type="pcre2">^HEAD$</field>
+    <field name="path" type="pcre2">^/api/v1/products/*(?:\?.*)?$</field>
+    <description>[Shadow API L1 · 우선순위 낮음] $(client_ip) $(method) $(path)</description>
+    <group>shadow_api_recon,offspec_low,offspec_recon_triaged,</group>
+  </rule>
+  <rule id="100637" level="5">
+    <if_sid>100211</if_sid>
+    <field name="method" type="pcre2">^HEAD$</field>
+    <field name="path" type="pcre2">^/api/v1/products/*(?:\?.*)?$</field>
+    <description>[Shadow API L2 · 우선순위 낮음] $(client_ip) $(method) $(path)</description>
+    <group>shadow_api_discovery,offspec_low,</group>
+  </rule>
+  <rule id="100638" level="9">
+    <if_sid>100212</if_sid>
+    <field name="method" type="pcre2">^HEAD$</field>
+    <field name="path" type="pcre2">^/api/v1/products/*(?:\?.*)?$</field>
+    <description>[Shadow API L3 · 우선순위 낮음] $(client_ip) $(method) $(path)</description>
+    <group>shadow_api_exploit,offspec_low,offspec_exploit_triaged,</group>
+  </rule>
+  <rule id="100639" level="7">
+    <if_sid>100213</if_sid>
+    <field name="method" type="pcre2">^HEAD$</field>
+    <field name="path" type="pcre2">^/api/v1/products/*(?:\?.*)?$</field>
+    <description>[Shadow API L3E · 우선순위 낮음] $(client_ip) $(method) $(path)</description>
+    <group>shadow_api_error,offspec_low,</group>
+  </rule>
+
+  <!-- 낮음 · HEAD /api/v1/users · 존재 불명 (401·403·4xx·5xx 만) · 승인 미등록 · 소유자 없음 -->
+  <rule id="100640" level="3">
+    <if_sid>100210</if_sid>
+    <field name="method" type="pcre2">^HEAD$</field>
+    <field name="path" type="pcre2">^/api/v1/users/*(?:\?.*)?$</field>
+    <description>[Shadow API L1 · 우선순위 낮음] $(client_ip) $(method) $(path)</description>
+    <group>shadow_api_recon,offspec_low,offspec_recon_triaged,</group>
+  </rule>
+  <rule id="100641" level="5">
+    <if_sid>100211</if_sid>
+    <field name="method" type="pcre2">^HEAD$</field>
+    <field name="path" type="pcre2">^/api/v1/users/*(?:\?.*)?$</field>
+    <description>[Shadow API L2 · 우선순위 낮음] $(client_ip) $(method) $(path)</description>
+    <group>shadow_api_discovery,offspec_low,</group>
+  </rule>
+  <rule id="100642" level="9">
+    <if_sid>100212</if_sid>
+    <field name="method" type="pcre2">^HEAD$</field>
+    <field name="path" type="pcre2">^/api/v1/users/*(?:\?.*)?$</field>
+    <description>[Shadow API L3 · 우선순위 낮음] $(client_ip) $(method) $(path)</description>
+    <group>shadow_api_exploit,offspec_low,offspec_exploit_triaged,</group>
+  </rule>
+  <rule id="100643" level="7">
+    <if_sid>100213</if_sid>
+    <field name="method" type="pcre2">^HEAD$</field>
+    <field name="path" type="pcre2">^/api/v1/users/*(?:\?.*)?$</field>
+    <description>[Shadow API L3E · 우선순위 낮음] $(client_ip) $(method) $(path)</description>
+    <group>shadow_api_error,offspec_low,</group>
+  </rule>
+
+  <!-- 낮음 · HEAD /api/v2/login · 존재 불명 (401·403·4xx·5xx 만) · 승인 미등록 · 소유자 없음 -->
+  <rule id="100644" level="3">
+    <if_sid>100210</if_sid>
+    <field name="method" type="pcre2">^HEAD$</field>
+    <field name="path" type="pcre2">^/api/v2/login/*(?:\?.*)?$</field>
+    <description>[Shadow API L1 · 우선순위 낮음] $(client_ip) $(method) $(path)</description>
+    <group>shadow_api_recon,offspec_low,offspec_recon_triaged,</group>
+  </rule>
+  <rule id="100645" level="5">
+    <if_sid>100211</if_sid>
+    <field name="method" type="pcre2">^HEAD$</field>
+    <field name="path" type="pcre2">^/api/v2/login/*(?:\?.*)?$</field>
+    <description>[Shadow API L2 · 우선순위 낮음] $(client_ip) $(method) $(path)</description>
+    <group>shadow_api_discovery,offspec_low,</group>
+  </rule>
+  <rule id="100646" level="9">
+    <if_sid>100212</if_sid>
+    <field name="method" type="pcre2">^HEAD$</field>
+    <field name="path" type="pcre2">^/api/v2/login/*(?:\?.*)?$</field>
+    <description>[Shadow API L3 · 우선순위 낮음] $(client_ip) $(method) $(path)</description>
+    <group>shadow_api_exploit,offspec_low,offspec_exploit_triaged,</group>
+  </rule>
+  <rule id="100647" level="7">
+    <if_sid>100213</if_sid>
+    <field name="method" type="pcre2">^HEAD$</field>
+    <field name="path" type="pcre2">^/api/v2/login/*(?:\?.*)?$</field>
+    <description>[Shadow API L3E · 우선순위 낮음] $(client_ip) $(method) $(path)</description>
+    <group>shadow_api_error,offspec_low,</group>
+  </rule>
+
+  <!-- 낮음 · OPTIONS /api/v1/login · 존재 불명 (401·403·4xx·5xx 만) · 승인 미등록 · 소유자 없음 -->
+  <rule id="100648" level="3">
+    <if_sid>100210</if_sid>
+    <field name="method" type="pcre2">^OPTIONS$</field>
+    <field name="path" type="pcre2">^/api/v1/login/*(?:\?.*)?$</field>
+    <description>[Shadow API L1 · 우선순위 낮음] $(client_ip) $(method) $(path)</description>
+    <group>shadow_api_recon,offspec_low,offspec_recon_triaged,</group>
+  </rule>
+  <rule id="100649" level="5">
+    <if_sid>100211</if_sid>
+    <field name="method" type="pcre2">^OPTIONS$</field>
+    <field name="path" type="pcre2">^/api/v1/login/*(?:\?.*)?$</field>
+    <description>[Shadow API L2 · 우선순위 낮음] $(client_ip) $(method) $(path)</description>
+    <group>shadow_api_discovery,offspec_low,</group>
+  </rule>
+  <rule id="100650" level="9">
+    <if_sid>100212</if_sid>
+    <field name="method" type="pcre2">^OPTIONS$</field>
+    <field name="path" type="pcre2">^/api/v1/login/*(?:\?.*)?$</field>
+    <description>[Shadow API L3 · 우선순위 낮음] $(client_ip) $(method) $(path)</description>
+    <group>shadow_api_exploit,offspec_low,offspec_exploit_triaged,</group>
+  </rule>
+  <rule id="100651" level="7">
+    <if_sid>100213</if_sid>
+    <field name="method" type="pcre2">^OPTIONS$</field>
+    <field name="path" type="pcre2">^/api/v1/login/*(?:\?.*)?$</field>
+    <description>[Shadow API L3E · 우선순위 낮음] $(client_ip) $(method) $(path)</description>
+    <group>shadow_api_error,offspec_low,</group>
+  </rule>
+
+  <!-- 낮음 · OPTIONS /api/v1/register · 존재 불명 (401·403·4xx·5xx 만) · 승인 미등록 · 소유자 없음 -->
+  <rule id="100652" level="3">
+    <if_sid>100210</if_sid>
+    <field name="method" type="pcre2">^OPTIONS$</field>
+    <field name="path" type="pcre2">^/api/v1/register/*(?:\?.*)?$</field>
+    <description>[Shadow API L1 · 우선순위 낮음] $(client_ip) $(method) $(path)</description>
+    <group>shadow_api_recon,offspec_low,offspec_recon_triaged,</group>
+  </rule>
+  <rule id="100653" level="5">
+    <if_sid>100211</if_sid>
+    <field name="method" type="pcre2">^OPTIONS$</field>
+    <field name="path" type="pcre2">^/api/v1/register/*(?:\?.*)?$</field>
+    <description>[Shadow API L2 · 우선순위 낮음] $(client_ip) $(method) $(path)</description>
+    <group>shadow_api_discovery,offspec_low,</group>
+  </rule>
+  <rule id="100654" level="9">
+    <if_sid>100212</if_sid>
+    <field name="method" type="pcre2">^OPTIONS$</field>
+    <field name="path" type="pcre2">^/api/v1/register/*(?:\?.*)?$</field>
+    <description>[Shadow API L3 · 우선순위 낮음] $(client_ip) $(method) $(path)</description>
+    <group>shadow_api_exploit,offspec_low,offspec_exploit_triaged,</group>
+  </rule>
+  <rule id="100655" level="7">
+    <if_sid>100213</if_sid>
+    <field name="method" type="pcre2">^OPTIONS$</field>
+    <field name="path" type="pcre2">^/api/v1/register/*(?:\?.*)?$</field>
+    <description>[Shadow API L3E · 우선순위 낮음] $(client_ip) $(method) $(path)</description>
+    <group>shadow_api_error,offspec_low,</group>
+  </rule>
+
+  <!-- 낮음 · POST /api/v1/register · 존재 불명 (401·403·4xx·5xx 만) · 승인 미등록 · 소유자 없음 -->
+  <rule id="100656" level="3">
+    <if_sid>100210</if_sid>
+    <field name="method" type="pcre2">^POST$</field>
+    <field name="path" type="pcre2">^/api/v1/register/*(?:\?.*)?$</field>
+    <description>[Shadow API L1 · 우선순위 낮음] $(client_ip) $(method) $(path)</description>
+    <group>shadow_api_recon,offspec_low,offspec_recon_triaged,</group>
+  </rule>
+  <rule id="100657" level="5">
+    <if_sid>100211</if_sid>
+    <field name="method" type="pcre2">^POST$</field>
+    <field name="path" type="pcre2">^/api/v1/register/*(?:\?.*)?$</field>
+    <description>[Shadow API L2 · 우선순위 낮음] $(client_ip) $(method) $(path)</description>
+    <group>shadow_api_discovery,offspec_low,</group>
+  </rule>
+  <rule id="100658" level="9">
+    <if_sid>100212</if_sid>
+    <field name="method" type="pcre2">^POST$</field>
+    <field name="path" type="pcre2">^/api/v1/register/*(?:\?.*)?$</field>
+    <description>[Shadow API L3 · 우선순위 낮음] $(client_ip) $(method) $(path)</description>
+    <group>shadow_api_exploit,offspec_low,offspec_exploit_triaged,</group>
+  </rule>
+  <rule id="100659" level="7">
+    <if_sid>100213</if_sid>
+    <field name="method" type="pcre2">^POST$</field>
+    <field name="path" type="pcre2">^/api/v1/register/*(?:\?.*)?$</field>
+    <description>[Shadow API L3E · 우선순위 낮음] $(client_ip) $(method) $(path)</description>
+    <group>shadow_api_error,offspec_low,</group>
+  </rule>
+
+  <!-- 빈도 보완: 위 하위 룰로 넘어간 이벤트는 기존 F1·F2(if_matched_sid)가 세지 못한다 -->
+  <rule id="100660" level="10" frequency="20" timeframe="30" ignore="60">
+    <if_matched_group>offspec_recon_triaged</if_matched_group>
+    <same_field>client_ip</same_field>
+    <description>[Shadow API F1 자동화 정찰 · 우선순위 반영 경로] $(client_ip) 30초 안에 20회 이상</description>
+    <mitre><id>T1595.003</id></mitre>
+    <group>shadow_api_recon_burst,offspec_priority_burst,</group>
+  </rule>
+  <rule id="100661" level="14" frequency="10" timeframe="60" ignore="60">
+    <if_matched_group>offspec_exploit_triaged</if_matched_group>
+    <same_field>client_ip</same_field>
+    <description>[Shadow API F2 대량 유출 · 우선순위 반영 경로] $(client_ip) 60초 안에 10회 이상</description>
+    <mitre><id>T1119</id></mitre>
+    <group>shadow_api_mass_exfil,offspec_priority_burst,</group>
+  </rule>
+
+</group>

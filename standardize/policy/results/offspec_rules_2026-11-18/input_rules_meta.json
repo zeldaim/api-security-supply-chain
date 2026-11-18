@@ -1,0 +1,124 @@
+{
+  "generated_at": "2026-11-18T10:39:16+09:00",
+  "spec_source": "D:/shadow_api_monitoring/api-bom/inputs/team_one_ab6c390/web/src/public/docs/openapi.yaml",
+  "spec_sha256": "3d146aea7f02090c242e2e79c8823756a9dc873d892157ce8d7d4404312b49e5",
+  "operation_count": 16,
+  "allowlist_count": 0,
+  "status_option": "static",
+  "rule_ids": {
+    "base": 100200,
+    "other_method": 100201,
+    "undoc_DELETE": 100202,
+    "undoc_GET": 100203,
+    "undoc_PATCH": 100204,
+    "undoc_POST": 100205,
+    "L1": 100210,
+    "L2": 100211,
+    "L3": 100212,
+    "L3E": 100213,
+    "F1": 100220,
+    "F2": 100221
+  },
+  "bursts": {
+    "F1": [
+      20,
+      30,
+      60
+    ],
+    "F2": [
+      10,
+      60,
+      60
+    ]
+  },
+  "operations": {
+    "DELETE": [
+      {
+        "template": "/api/v2/cart",
+        "source": "openapi",
+        "reason": ""
+      },
+      {
+        "template": "/api/v2/cart/{product_id}",
+        "source": "openapi",
+        "reason": ""
+      }
+    ],
+    "GET": [
+      {
+        "template": "/api/v2/cart",
+        "source": "openapi",
+        "reason": ""
+      },
+      {
+        "template": "/api/v2/orders/me",
+        "source": "openapi",
+        "reason": ""
+      },
+      {
+        "template": "/api/v2/orders/{id}",
+        "source": "openapi",
+        "reason": ""
+      },
+      {
+        "template": "/api/v2/products",
+        "source": "openapi",
+        "reason": ""
+      },
+      {
+        "template": "/api/v2/products/search",
+        "source": "openapi",
+        "reason": ""
+      },
+      {
+        "template": "/api/v2/products/{id}",
+        "source": "openapi",
+        "reason": ""
+      },
+      {
+        "template": "/api/v2/users/me",
+        "source": "openapi",
+        "reason": ""
+      }
+    ],
+    "PATCH": [
+      {
+        "template": "/api/v2/cart/{product_id}",
+        "source": "openapi",
+        "reason": ""
+      },
+      {
+        "template": "/api/v2/users/me",
+        "source": "openapi",
+        "reason": ""
+      }
+    ],
+    "POST": [
+      {
+        "template": "/api/v2/cart",
+        "source": "openapi",
+        "reason": ""
+      },
+      {
+        "template": "/api/v2/login",
+        "source": "openapi",
+        "reason": ""
+      },
+      {
+        "template": "/api/v2/orders",
+        "source": "openapi",
+        "reason": ""
+      },
+      {
+        "template": "/api/v2/orders/{id}/cancel",
+        "source": "openapi",
+        "reason": ""
+      },
+      {
+        "template": "/api/v2/signup",
+        "source": "openapi",
+        "reason": ""
+      }
+    ]
+  }
+}

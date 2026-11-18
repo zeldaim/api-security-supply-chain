@@ -1,0 +1,2 @@
+## 룰 로드 오류 없음 (wazuh/wazuh-manager:4.14.6)
+87/87 일치 (실제 wazuh-logtest)
