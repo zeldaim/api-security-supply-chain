@@ -53,6 +53,7 @@ flowchart TB
 | Shadow API 룰 + 행위 ML + 자동 차단 + 채점 (DVRA) | [api-defense-lab](https://github.com/zeldaim/api-defense-lab) `docker compose up -d` → `traffic demo` → `scorer` | ✅ 새 clone 으로 확인 (2026-11-19) |
 | 빈도 룰 vs LOF vs 임계값 룰 숫자 (§3 표) | [ml_detection](https://github.com/zeldaim/ml_detection) 에서 `bash docs/37_결과/run.sh` (numpy 만) | ✅ 새 clone 으로 확인 — 정상 오탐 52/356 · 느린 BOLA 210/210 그대로 (데이터가 그 저장소에 있다) |
 | 팀 웹 · Wazuh · Dependency-Track · EDA 전체 흐름 | — | ❌ 교육과정 종료로 환경 없음. 화면 · 영상 · 결과 파일이 기록 |
+| SBOM · API-BOM · 룰 생성 자동화 (`automate/github-actions/*.yml`) | **비공개 작업 저장소에서 매일 실행 중** (GitHub Actions, 05:30 KST) — 팀 웹 소스가 들어 있어 공개하지 않는다 | ✅ `api-bom` 최근 100회 중 성공 74 (2026-11-19 확인, 가장 오래된 기록 2026-11-03). 이 저장소의 파일은 사본이라 여기서는 돌지 않는다 (GitHub 는 `.github/workflows/` 만 실행) |
 | 이 저장소의 나머지 스크립트 | — | ⚠️ 경로가 원본 구조 기준 (`api-bom/…`, `e2e_story/…`) |
 
 ### 입력 로그 형식
