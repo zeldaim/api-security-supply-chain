@@ -43,6 +43,7 @@ flowchart TB
 | ② 서명 룰 (YARA → Wazuh) · BOLA 룰 | SQLi 같은 알려진 문자열, 빠른 BOLA 열거 | 느린 BOLA (빈도 기준 아래) |
 | ③ 행위 ML | 느린 BOLA 열거 (출발지 7곳 전부) | 처음 보는 정상 사용자 10~15% 를 오탐 — PoC |
 | ④ 대응 | 경보 → 차단 · 계정 정지 · 자동 해제를 코드로 | 여러 IP 로 나눈 공격 (출발지 단위라서) |
+| ⑤ 이미지 서명 · 출처 · Kyverno ([`verify/image_signing_2026-11-19/`](verify/image_signing_2026-11-19/README.md)) | 바꿔치기 · 남이 만든 이미지 배포 (서명 신원 · digest 고정) | 레포 · 워크플로 자체 오염, 서명된 이미지 안의 취약점 |
 | ① 도달성 | 대응 대상이 아니라 **우선순위** — CVE 403개 중 77% 를 "닿지 않음"으로 걸러 냄 | 런타임에 실제 로드된 것 (정적 분석) |
 
 ### 재현 가능 범위
@@ -262,6 +263,7 @@ flowchart TB
 | `verify/vampi/` · `verify/dvra/` | 처음 보는 앱 검증 (VAmPI 실패 · DVRA 룰 · ML 1차 무효 · 2차) |
 | `verify/dashboard_dvra_2026-11-18/` | 룰(실제 Wazuh) + ML 대시보드 — Grafana 코드화 |
 | `verify/live_demo_2026-11-18/` | 실시간 시연 — nginx 차단 목록 · Wazuh 실시간 · ML 파이프라인 · Grafana · HTML 보고서 · 영상 |
+| `verify/image_signing_2026-11-19/` | 무결성 — CI keyless 서명 · SBOM 증명 · SLSA 출처 (api-defense-lab 이미지) + Kyverno 1.20 으로 미서명 · 남의 서명 이미지 배포 거부 |
 | `verify/elk_teamlog_2026-11-18/` | ELK 인덱스 기반 Shadow 분류 — 팀 로그 108만 줄, 9% 분류 실패 원인 수정 |
 | `ml/FINAL_v1.0.md` | ML 최종 보고 v1.0 (기능 동결) |
 | `media/` | 시연 영상 2개 · 대시보드 그림 · 녹화 스크립트 |

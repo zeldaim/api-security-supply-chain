@@ -1,0 +1,46 @@
+# lab-secure 네임스페이스: api-defense-lab CI(main)가 keyless 서명하고, 같은 신원이 CycloneDX SBOM 증명을 붙인 이미지만 실행 허용
+# Kyverno 1.20 — ImageValidatingPolicy (CEL). 1.20 은 예전 kyverno.io/v1 ClusterPolicy 를 더 이상 실행하지 않는다.
+apiVersion: policies.kyverno.io/v1
+kind: ImageValidatingPolicy
+metadata:
+  name: require-signed-api-defense-lab
+spec:
+  validationActions: [Deny]
+  failurePolicy: Fail                     # 검증 중 오류(레지스트리 · Rekor 접속 실패 등)도 거부 — 확인 못 하면 실행 안 함
+  webhookConfiguration:
+    timeoutSeconds: 30
+  matchConstraints:
+    namespaceSelector:
+      matchLabels:
+        kubernetes.io/metadata.name: lab-secure
+    resourceRules:
+      - apiGroups: [""]
+        apiVersions: [v1]
+        operations: [CREATE, UPDATE]
+        resources: [pods]
+  matchImageReferences:
+    - glob: "*"                           # 이 네임스페이스에서는 모든 이미지를 검사 — 서명 없는 이미지는 거부
+  validationConfigurations:
+    mutateDigest: true                    # 태그 → 검증한 digest 로 고정
+    verifyDigest: true
+    required: true
+  attestors:
+    - name: ci
+      cosign:
+        keyless:
+          identities:
+            - issuer: https://token.actions.githubusercontent.com
+              subject: https://github.com/zeldaim/api-defense-lab/.github/workflows/release-image.yml@refs/heads/main
+        ctlog:
+          url: https://rekor.sigstore.dev
+  attestations:
+    - name: sbom
+      intoto:
+        type: https://cyclonedx.org/bom
+  validations:
+    - expression: >-
+        images.containers.map(image, verifyImageSignatures(image, [attestors.ci])).all(e, e > 0)
+      message: "서명이 없거나 api-defense-lab release-image.yml(main) 이 서명한 이미지가 아니다"
+    - expression: >-
+        images.containers.map(image, verifyAttestationSignatures(image, attestations.sbom, [attestors.ci])).all(e, e > 0)
+      message: "같은 신원이 서명한 CycloneDX SBOM 증명이 없다"
