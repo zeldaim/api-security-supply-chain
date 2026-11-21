@@ -1,0 +1,1914 @@
+{
+  "$schema": "http://cyclonedx.org/schema/bom-1.6.schema.json",
+  "bomFormat": "CycloneDX",
+  "specVersion": "1.6",
+  "serialNumber": "urn:uuid:c9ae23e6-c454-5d2b-bdb9-d3793affec5d",
+  "version": 1,
+  "metadata": {
+    "timestamp": "2025-11-21T00:00:00Z",
+    "lifecycles": [
+      {
+        "phase": "pre-build"
+      }
+    ],
+    "tools": {
+      "components": [
+        {
+          "type": "application",
+          "name": "source_to_baseline.py",
+          "version": "1.3",
+          "group": "sesac-nobreak-team-one"
+        }
+      ]
+    },
+    "component": {
+      "type": "application",
+      "bom-ref": "app:spring-petclinic",
+      "group": "spring-projects",
+      "name": "spring-petclinic",
+      "version": "500158f",
+      "description": "Spring PetClinic (Spring Boot 4.1, Thymeleaf, 500158f)"
+    },
+    "properties": [
+      {
+        "name": "sesac:baseline:csv",
+        "value": "baseline.csv"
+      },
+      {
+        "name": "sesac:baseline:operations",
+        "value": "33"
+      },
+      {
+        "name": "sesac:baseline:review-pending",
+        "value": "16"
+      }
+    ]
+  },
+  "services": [
+    {
+      "bom-ref": "svc:spring-petclinic-web-pages",
+      "provider": {
+        "name": "petclinic-team"
+      },
+      "group": "spring-petclinic",
+      "name": "spring-petclinic-web-pages",
+      "endpoints": [
+        "http://127.0.0.1:8099/"
+      ],
+      "x-trust-boundary": true,
+      "trustZone": "dmz",
+      "services": [
+        {
+          "bom-ref": "op:GET /vets",
+          "provider": {
+            "name": "petclinic-team"
+          },
+          "name": "GET /vets",
+          "description": "코드에만 있음 — 담당자 확인 필요 (shadow 후보)",
+          "endpoints": [
+            "http://127.0.0.1:8099/vets"
+          ],
+          "x-trust-boundary": true,
+          "trustZone": "dmz",
+          "data": [
+            {
+              "flow": "outbound",
+              "classification": "public"
+            }
+          ],
+          "authenticated": false,
+          "properties": [
+            {
+              "name": "sesac:api:endpoint_key",
+              "value": "GET /vets"
+            },
+            {
+              "name": "sesac:api:method",
+              "value": "GET"
+            },
+            {
+              "name": "sesac:api:path",
+              "value": "/vets"
+            },
+            {
+              "name": "sesac:api:kind",
+              "value": "api"
+            },
+            {
+              "name": "sesac:baseline:decision",
+              "value": "review"
+            },
+            {
+              "name": "sesac:baseline:observed-as",
+              "value": "shadow"
+            },
+            {
+              "name": "sesac:source:location",
+              "value": "src/main/java/org/springframework/samples/petclinic/vet/VetController.java:72"
+            },
+            {
+              "name": "sesac:frontend:used",
+              "value": "n"
+            }
+          ]
+        },
+        {
+          "bom-ref": "op:GET /",
+          "provider": {
+            "name": "petclinic-team"
+          },
+          "name": "GET /",
+          "description": "화면(page)",
+          "endpoints": [
+            "http://127.0.0.1:8099/"
+          ],
+          "x-trust-boundary": true,
+          "trustZone": "dmz",
+          "data": [
+            {
+              "flow": "outbound",
+              "classification": "public"
+            }
+          ],
+          "authenticated": false,
+          "properties": [
+            {
+              "name": "sesac:api:endpoint_key",
+              "value": "GET /"
+            },
+            {
+              "name": "sesac:api:method",
+              "value": "GET"
+            },
+            {
+              "name": "sesac:api:path",
+              "value": "/"
+            },
+            {
+              "name": "sesac:api:kind",
+              "value": "page"
+            },
+            {
+              "name": "sesac:baseline:decision",
+              "value": "active"
+            },
+            {
+              "name": "sesac:baseline:observed-as",
+              "value": "documented"
+            },
+            {
+              "name": "sesac:source:location",
+              "value": "src/main/java/org/springframework/samples/petclinic/system/WelcomeController.java:25"
+            },
+            {
+              "name": "sesac:frontend:used",
+              "value": "-"
+            }
+          ]
+        },
+        {
+          "bom-ref": "op:GET /oups",
+          "provider": {
+            "name": "petclinic-team"
+          },
+          "name": "GET /oups",
+          "description": "화면(page)",
+          "endpoints": [
+            "http://127.0.0.1:8099/oups"
+          ],
+          "x-trust-boundary": true,
+          "trustZone": "dmz",
+          "data": [
+            {
+              "flow": "outbound",
+              "classification": "public"
+            }
+          ],
+          "authenticated": false,
+          "properties": [
+            {
+              "name": "sesac:api:endpoint_key",
+              "value": "GET /oups"
+            },
+            {
+              "name": "sesac:api:method",
+              "value": "GET"
+            },
+            {
+              "name": "sesac:api:path",
+              "value": "/oups"
+            },
+            {
+              "name": "sesac:api:kind",
+              "value": "page"
+            },
+            {
+              "name": "sesac:baseline:decision",
+              "value": "active"
+            },
+            {
+              "name": "sesac:baseline:observed-as",
+              "value": "documented"
+            },
+            {
+              "name": "sesac:source:location",
+              "value": "src/main/java/org/springframework/samples/petclinic/system/CrashController.java:31"
+            },
+            {
+              "name": "sesac:frontend:used",
+              "value": "-"
+            }
+          ]
+        },
+        {
+          "bom-ref": "op:GET /owners",
+          "provider": {
+            "name": "petclinic-team"
+          },
+          "name": "GET /owners",
+          "description": "화면(page)",
+          "endpoints": [
+            "http://127.0.0.1:8099/owners"
+          ],
+          "x-trust-boundary": true,
+          "trustZone": "dmz",
+          "data": [
+            {
+              "flow": "outbound",
+              "classification": "PII"
+            }
+          ],
+          "authenticated": false,
+          "properties": [
+            {
+              "name": "sesac:api:endpoint_key",
+              "value": "GET /owners"
+            },
+            {
+              "name": "sesac:api:method",
+              "value": "GET"
+            },
+            {
+              "name": "sesac:api:path",
+              "value": "/owners"
+            },
+            {
+              "name": "sesac:api:kind",
+              "value": "page"
+            },
+            {
+              "name": "sesac:baseline:decision",
+              "value": "active"
+            },
+            {
+              "name": "sesac:baseline:observed-as",
+              "value": "documented"
+            },
+            {
+              "name": "sesac:source:location",
+              "value": "src/main/java/org/springframework/samples/petclinic/owner/OwnerController.java:94"
+            },
+            {
+              "name": "sesac:frontend:used",
+              "value": "-"
+            }
+          ]
+        },
+        {
+          "bom-ref": "op:GET /owners/find",
+          "provider": {
+            "name": "petclinic-team"
+          },
+          "name": "GET /owners/find",
+          "description": "화면(page)",
+          "endpoints": [
+            "http://127.0.0.1:8099/owners/find"
+          ],
+          "x-trust-boundary": true,
+          "trustZone": "dmz",
+          "data": [
+            {
+              "flow": "outbound",
+              "classification": "PII"
+            }
+          ],
+          "authenticated": false,
+          "properties": [
+            {
+              "name": "sesac:api:endpoint_key",
+              "value": "GET /owners/find"
+            },
+            {
+              "name": "sesac:api:method",
+              "value": "GET"
+            },
+            {
+              "name": "sesac:api:path",
+              "value": "/owners/find"
+            },
+            {
+              "name": "sesac:api:kind",
+              "value": "page"
+            },
+            {
+              "name": "sesac:baseline:decision",
+              "value": "active"
+            },
+            {
+              "name": "sesac:baseline:observed-as",
+              "value": "documented"
+            },
+            {
+              "name": "sesac:source:location",
+              "value": "src/main/java/org/springframework/samples/petclinic/owner/OwnerController.java:89"
+            },
+            {
+              "name": "sesac:frontend:used",
+              "value": "-"
+            }
+          ]
+        },
+        {
+          "bom-ref": "op:GET /owners/new",
+          "provider": {
+            "name": "petclinic-team"
+          },
+          "name": "GET /owners/new",
+          "description": "화면(page)",
+          "endpoints": [
+            "http://127.0.0.1:8099/owners/new"
+          ],
+          "x-trust-boundary": true,
+          "trustZone": "dmz",
+          "data": [
+            {
+              "flow": "outbound",
+              "classification": "PII"
+            }
+          ],
+          "authenticated": false,
+          "properties": [
+            {
+              "name": "sesac:api:endpoint_key",
+              "value": "GET /owners/new"
+            },
+            {
+              "name": "sesac:api:method",
+              "value": "GET"
+            },
+            {
+              "name": "sesac:api:path",
+              "value": "/owners/new"
+            },
+            {
+              "name": "sesac:api:kind",
+              "value": "page"
+            },
+            {
+              "name": "sesac:baseline:decision",
+              "value": "active"
+            },
+            {
+              "name": "sesac:baseline:observed-as",
+              "value": "documented"
+            },
+            {
+              "name": "sesac:source:location",
+              "value": "src/main/java/org/springframework/samples/petclinic/owner/OwnerController.java:72"
+            },
+            {
+              "name": "sesac:frontend:used",
+              "value": "-"
+            }
+          ]
+        },
+        {
+          "bom-ref": "op:POST /owners/new",
+          "provider": {
+            "name": "petclinic-team"
+          },
+          "name": "POST /owners/new",
+          "description": "화면(page)",
+          "endpoints": [
+            "http://127.0.0.1:8099/owners/new"
+          ],
+          "x-trust-boundary": true,
+          "trustZone": "dmz",
+          "data": [
+            {
+              "flow": "bi-directional",
+              "classification": "PII"
+            }
+          ],
+          "authenticated": false,
+          "properties": [
+            {
+              "name": "sesac:api:endpoint_key",
+              "value": "POST /owners/new"
+            },
+            {
+              "name": "sesac:api:method",
+              "value": "POST"
+            },
+            {
+              "name": "sesac:api:path",
+              "value": "/owners/new"
+            },
+            {
+              "name": "sesac:api:kind",
+              "value": "page"
+            },
+            {
+              "name": "sesac:baseline:decision",
+              "value": "active"
+            },
+            {
+              "name": "sesac:baseline:observed-as",
+              "value": "documented"
+            },
+            {
+              "name": "sesac:source:location",
+              "value": "src/main/java/org/springframework/samples/petclinic/owner/OwnerController.java:77"
+            },
+            {
+              "name": "sesac:frontend:used",
+              "value": "-"
+            }
+          ]
+        },
+        {
+          "bom-ref": "op:GET /owners/{id}",
+          "provider": {
+            "name": "petclinic-team"
+          },
+          "name": "GET /owners/{id}",
+          "description": "화면(page)",
+          "endpoints": [
+            "http://127.0.0.1:8099/owners/%7Bid%7D"
+          ],
+          "x-trust-boundary": true,
+          "trustZone": "dmz",
+          "data": [
+            {
+              "flow": "outbound",
+              "classification": "PII"
+            }
+          ],
+          "authenticated": false,
+          "properties": [
+            {
+              "name": "sesac:api:endpoint_key",
+              "value": "GET /owners/{id}"
+            },
+            {
+              "name": "sesac:api:method",
+              "value": "GET"
+            },
+            {
+              "name": "sesac:api:path",
+              "value": "/owners/{id}"
+            },
+            {
+              "name": "sesac:api:kind",
+              "value": "page"
+            },
+            {
+              "name": "sesac:baseline:decision",
+              "value": "active"
+            },
+            {
+              "name": "sesac:baseline:observed-as",
+              "value": "documented"
+            },
+            {
+              "name": "sesac:source:location",
+              "value": "src/main/java/org/springframework/samples/petclinic/owner/OwnerController.java:178"
+            },
+            {
+              "name": "sesac:frontend:used",
+              "value": "-"
+            },
+            {
+              "name": "sesac:api:path-param-types",
+              "value": "integer"
+            }
+          ]
+        },
+        {
+          "bom-ref": "op:GET /owners/{id}/edit",
+          "provider": {
+            "name": "petclinic-team"
+          },
+          "name": "GET /owners/{id}/edit",
+          "description": "화면(page)",
+          "endpoints": [
+            "http://127.0.0.1:8099/owners/%7Bid%7D/edit"
+          ],
+          "x-trust-boundary": true,
+          "trustZone": "dmz",
+          "data": [
+            {
+              "flow": "outbound",
+              "classification": "PII"
+            }
+          ],
+          "authenticated": false,
+          "properties": [
+            {
+              "name": "sesac:api:endpoint_key",
+              "value": "GET /owners/{id}/edit"
+            },
+            {
+              "name": "sesac:api:method",
+              "value": "GET"
+            },
+            {
+              "name": "sesac:api:path",
+              "value": "/owners/{id}/edit"
+            },
+            {
+              "name": "sesac:api:kind",
+              "value": "page"
+            },
+            {
+              "name": "sesac:baseline:decision",
+              "value": "active"
+            },
+            {
+              "name": "sesac:baseline:observed-as",
+              "value": "documented"
+            },
+            {
+              "name": "sesac:source:location",
+              "value": "src/main/java/org/springframework/samples/petclinic/owner/OwnerController.java:148"
+            },
+            {
+              "name": "sesac:frontend:used",
+              "value": "-"
+            },
+            {
+              "name": "sesac:api:path-param-types",
+              "value": "integer"
+            }
+          ]
+        },
+        {
+          "bom-ref": "op:POST /owners/{id}/edit",
+          "provider": {
+            "name": "petclinic-team"
+          },
+          "name": "POST /owners/{id}/edit",
+          "description": "화면(page)",
+          "endpoints": [
+            "http://127.0.0.1:8099/owners/%7Bid%7D/edit"
+          ],
+          "x-trust-boundary": true,
+          "trustZone": "dmz",
+          "data": [
+            {
+              "flow": "bi-directional",
+              "classification": "PII"
+            }
+          ],
+          "authenticated": false,
+          "properties": [
+            {
+              "name": "sesac:api:endpoint_key",
+              "value": "POST /owners/{id}/edit"
+            },
+            {
+              "name": "sesac:api:method",
+              "value": "POST"
+            },
+            {
+              "name": "sesac:api:path",
+              "value": "/owners/{id}/edit"
+            },
+            {
+              "name": "sesac:api:kind",
+              "value": "page"
+            },
+            {
+              "name": "sesac:baseline:decision",
+              "value": "active"
+            },
+            {
+              "name": "sesac:baseline:observed-as",
+              "value": "documented"
+            },
+            {
+              "name": "sesac:source:location",
+              "value": "src/main/java/org/springframework/samples/petclinic/owner/OwnerController.java:153"
+            },
+            {
+              "name": "sesac:frontend:used",
+              "value": "-"
+            },
+            {
+              "name": "sesac:api:path-param-types",
+              "value": "integer"
+            }
+          ]
+        },
+        {
+          "bom-ref": "op:GET /owners/{id}/pets/new",
+          "provider": {
+            "name": "petclinic-team"
+          },
+          "name": "GET /owners/{id}/pets/new",
+          "description": "화면(page)",
+          "endpoints": [
+            "http://127.0.0.1:8099/owners/%7Bid%7D/pets/new"
+          ],
+          "x-trust-boundary": true,
+          "trustZone": "dmz",
+          "data": [
+            {
+              "flow": "outbound",
+              "classification": "PII"
+            }
+          ],
+          "authenticated": false,
+          "properties": [
+            {
+              "name": "sesac:api:endpoint_key",
+              "value": "GET /owners/{id}/pets/new"
+            },
+            {
+              "name": "sesac:api:method",
+              "value": "GET"
+            },
+            {
+              "name": "sesac:api:path",
+              "value": "/owners/{id}/pets/new"
+            },
+            {
+              "name": "sesac:api:kind",
+              "value": "page"
+            },
+            {
+              "name": "sesac:baseline:decision",
+              "value": "active"
+            },
+            {
+              "name": "sesac:baseline:observed-as",
+              "value": "documented"
+            },
+            {
+              "name": "sesac:source:location",
+              "value": "src/main/java/org/springframework/samples/petclinic/owner/PetController.java:100"
+            },
+            {
+              "name": "sesac:frontend:used",
+              "value": "-"
+            },
+            {
+              "name": "sesac:api:path-param-types",
+              "value": "integer"
+            }
+          ]
+        },
+        {
+          "bom-ref": "op:POST /owners/{id}/pets/new",
+          "provider": {
+            "name": "petclinic-team"
+          },
+          "name": "POST /owners/{id}/pets/new",
+          "description": "화면(page)",
+          "endpoints": [
+            "http://127.0.0.1:8099/owners/%7Bid%7D/pets/new"
+          ],
+          "x-trust-boundary": true,
+          "trustZone": "dmz",
+          "data": [
+            {
+              "flow": "bi-directional",
+              "classification": "PII"
+            }
+          ],
+          "authenticated": false,
+          "properties": [
+            {
+              "name": "sesac:api:endpoint_key",
+              "value": "POST /owners/{id}/pets/new"
+            },
+            {
+              "name": "sesac:api:method",
+              "value": "POST"
+            },
+            {
+              "name": "sesac:api:path",
+              "value": "/owners/{id}/pets/new"
+            },
+            {
+              "name": "sesac:api:kind",
+              "value": "page"
+            },
+            {
+              "name": "sesac:baseline:decision",
+              "value": "active"
+            },
+            {
+              "name": "sesac:baseline:observed-as",
+              "value": "documented"
+            },
+            {
+              "name": "sesac:source:location",
+              "value": "src/main/java/org/springframework/samples/petclinic/owner/PetController.java:107"
+            },
+            {
+              "name": "sesac:frontend:used",
+              "value": "-"
+            },
+            {
+              "name": "sesac:api:path-param-types",
+              "value": "integer"
+            }
+          ]
+        },
+        {
+          "bom-ref": "op:GET /owners/{id}/pets/{id}/edit",
+          "provider": {
+            "name": "petclinic-team"
+          },
+          "name": "GET /owners/{id}/pets/{id}/edit",
+          "description": "화면(page)",
+          "endpoints": [
+            "http://127.0.0.1:8099/owners/%7Bid%7D/pets/%7Bid%7D/edit"
+          ],
+          "x-trust-boundary": true,
+          "trustZone": "dmz",
+          "data": [
+            {
+              "flow": "outbound",
+              "classification": "PII"
+            }
+          ],
+          "authenticated": false,
+          "properties": [
+            {
+              "name": "sesac:api:endpoint_key",
+              "value": "GET /owners/{id}/pets/{id}/edit"
+            },
+            {
+              "name": "sesac:api:method",
+              "value": "GET"
+            },
+            {
+              "name": "sesac:api:path",
+              "value": "/owners/{id}/pets/{id}/edit"
+            },
+            {
+              "name": "sesac:api:kind",
+              "value": "page"
+            },
+            {
+              "name": "sesac:baseline:decision",
+              "value": "active"
+            },
+            {
+              "name": "sesac:baseline:observed-as",
+              "value": "documented"
+            },
+            {
+              "name": "sesac:source:location",
+              "value": "src/main/java/org/springframework/samples/petclinic/owner/PetController.java:139"
+            },
+            {
+              "name": "sesac:frontend:used",
+              "value": "-"
+            },
+            {
+              "name": "sesac:api:path-param-types",
+              "value": "integer,integer"
+            }
+          ]
+        },
+        {
+          "bom-ref": "op:POST /owners/{id}/pets/{id}/edit",
+          "provider": {
+            "name": "petclinic-team"
+          },
+          "name": "POST /owners/{id}/pets/{id}/edit",
+          "description": "화면(page)",
+          "endpoints": [
+            "http://127.0.0.1:8099/owners/%7Bid%7D/pets/%7Bid%7D/edit"
+          ],
+          "x-trust-boundary": true,
+          "trustZone": "dmz",
+          "data": [
+            {
+              "flow": "bi-directional",
+              "classification": "PII"
+            }
+          ],
+          "authenticated": false,
+          "properties": [
+            {
+              "name": "sesac:api:endpoint_key",
+              "value": "POST /owners/{id}/pets/{id}/edit"
+            },
+            {
+              "name": "sesac:api:method",
+              "value": "POST"
+            },
+            {
+              "name": "sesac:api:path",
+              "value": "/owners/{id}/pets/{id}/edit"
+            },
+            {
+              "name": "sesac:api:kind",
+              "value": "page"
+            },
+            {
+              "name": "sesac:baseline:decision",
+              "value": "active"
+            },
+            {
+              "name": "sesac:baseline:observed-as",
+              "value": "documented"
+            },
+            {
+              "name": "sesac:source:location",
+              "value": "src/main/java/org/springframework/samples/petclinic/owner/PetController.java:144"
+            },
+            {
+              "name": "sesac:frontend:used",
+              "value": "-"
+            },
+            {
+              "name": "sesac:api:path-param-types",
+              "value": "integer,integer"
+            }
+          ]
+        },
+        {
+          "bom-ref": "op:GET /owners/{id}/pets/{id}/visits/new",
+          "provider": {
+            "name": "petclinic-team"
+          },
+          "name": "GET /owners/{id}/pets/{id}/visits/new",
+          "description": "화면(page)",
+          "endpoints": [
+            "http://127.0.0.1:8099/owners/%7Bid%7D/pets/%7Bid%7D/visits/new"
+          ],
+          "x-trust-boundary": true,
+          "trustZone": "dmz",
+          "data": [
+            {
+              "flow": "outbound",
+              "classification": "PII"
+            }
+          ],
+          "authenticated": false,
+          "properties": [
+            {
+              "name": "sesac:api:endpoint_key",
+              "value": "GET /owners/{id}/pets/{id}/visits/new"
+            },
+            {
+              "name": "sesac:api:method",
+              "value": "GET"
+            },
+            {
+              "name": "sesac:api:path",
+              "value": "/owners/{id}/pets/{id}/visits/new"
+            },
+            {
+              "name": "sesac:api:kind",
+              "value": "page"
+            },
+            {
+              "name": "sesac:baseline:decision",
+              "value": "active"
+            },
+            {
+              "name": "sesac:baseline:observed-as",
+              "value": "documented"
+            },
+            {
+              "name": "sesac:source:location",
+              "value": "src/main/java/org/springframework/samples/petclinic/owner/VisitController.java:90"
+            },
+            {
+              "name": "sesac:frontend:used",
+              "value": "-"
+            },
+            {
+              "name": "sesac:api:path-param-types",
+              "value": "integer,integer"
+            }
+          ]
+        },
+        {
+          "bom-ref": "op:POST /owners/{id}/pets/{id}/visits/new",
+          "provider": {
+            "name": "petclinic-team"
+          },
+          "name": "POST /owners/{id}/pets/{id}/visits/new",
+          "description": "화면(page)",
+          "endpoints": [
+            "http://127.0.0.1:8099/owners/%7Bid%7D/pets/%7Bid%7D/visits/new"
+          ],
+          "x-trust-boundary": true,
+          "trustZone": "dmz",
+          "data": [
+            {
+              "flow": "bi-directional",
+              "classification": "PII"
+            }
+          ],
+          "authenticated": false,
+          "properties": [
+            {
+              "name": "sesac:api:endpoint_key",
+              "value": "POST /owners/{id}/pets/{id}/visits/new"
+            },
+            {
+              "name": "sesac:api:method",
+              "value": "POST"
+            },
+            {
+              "name": "sesac:api:path",
+              "value": "/owners/{id}/pets/{id}/visits/new"
+            },
+            {
+              "name": "sesac:api:kind",
+              "value": "page"
+            },
+            {
+              "name": "sesac:baseline:decision",
+              "value": "active"
+            },
+            {
+              "name": "sesac:baseline:observed-as",
+              "value": "documented"
+            },
+            {
+              "name": "sesac:source:location",
+              "value": "src/main/java/org/springframework/samples/petclinic/owner/VisitController.java:97"
+            },
+            {
+              "name": "sesac:frontend:used",
+              "value": "-"
+            },
+            {
+              "name": "sesac:api:path-param-types",
+              "value": "integer,integer"
+            }
+          ]
+        },
+        {
+          "bom-ref": "op:GET /vets.html",
+          "provider": {
+            "name": "petclinic-team"
+          },
+          "name": "GET /vets.html",
+          "description": "화면(page)",
+          "endpoints": [
+            "http://127.0.0.1:8099/vets.html"
+          ],
+          "x-trust-boundary": true,
+          "trustZone": "dmz",
+          "data": [
+            {
+              "flow": "outbound",
+              "classification": "public"
+            }
+          ],
+          "authenticated": false,
+          "properties": [
+            {
+              "name": "sesac:api:endpoint_key",
+              "value": "GET /vets.html"
+            },
+            {
+              "name": "sesac:api:method",
+              "value": "GET"
+            },
+            {
+              "name": "sesac:api:path",
+              "value": "/vets.html"
+            },
+            {
+              "name": "sesac:api:kind",
+              "value": "page"
+            },
+            {
+              "name": "sesac:baseline:decision",
+              "value": "active"
+            },
+            {
+              "name": "sesac:baseline:observed-as",
+              "value": "documented"
+            },
+            {
+              "name": "sesac:source:location",
+              "value": "src/main/java/org/springframework/samples/petclinic/vet/VetController.java:45"
+            },
+            {
+              "name": "sesac:frontend:used",
+              "value": "-"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "bom-ref": "svc:spring-petclinic-actuator",
+      "provider": {
+        "name": "petclinic-team"
+      },
+      "group": "spring-petclinic",
+      "name": "spring-petclinic-actuator",
+      "endpoints": [
+        "http://127.0.0.1:8099/actuator"
+      ],
+      "x-trust-boundary": true,
+      "trustZone": "dmz",
+      "services": [
+        {
+          "bom-ref": "op:GET /actuator",
+          "provider": {
+            "name": "petclinic-team"
+          },
+          "name": "GET /actuator",
+          "description": "설정 파일로 열림 — 코드에 경로 없음 (actuator). 운영 노출 여부 확인 필요",
+          "endpoints": [
+            "http://127.0.0.1:8099/actuator"
+          ],
+          "x-trust-boundary": true,
+          "trustZone": "dmz",
+          "data": [
+            {
+              "flow": "outbound",
+              "classification": "system"
+            }
+          ],
+          "authenticated": false,
+          "properties": [
+            {
+              "name": "sesac:api:endpoint_key",
+              "value": "GET /actuator"
+            },
+            {
+              "name": "sesac:api:method",
+              "value": "GET"
+            },
+            {
+              "name": "sesac:api:path",
+              "value": "/actuator"
+            },
+            {
+              "name": "sesac:api:kind",
+              "value": "config"
+            },
+            {
+              "name": "sesac:baseline:decision",
+              "value": "review"
+            },
+            {
+              "name": "sesac:baseline:observed-as",
+              "value": "shadow"
+            },
+            {
+              "name": "sesac:source:location",
+              "value": "src/main/resources/application.properties:21"
+            },
+            {
+              "name": "sesac:frontend:used",
+              "value": "-"
+            }
+          ]
+        },
+        {
+          "bom-ref": "op:GET /actuator/beans",
+          "provider": {
+            "name": "petclinic-team"
+          },
+          "name": "GET /actuator/beans",
+          "description": "설정 파일로 열림 — 코드에 경로 없음 (actuator). 운영 노출 여부 확인 필요",
+          "endpoints": [
+            "http://127.0.0.1:8099/actuator/beans"
+          ],
+          "x-trust-boundary": true,
+          "trustZone": "dmz",
+          "data": [
+            {
+              "flow": "outbound",
+              "classification": "system"
+            }
+          ],
+          "authenticated": false,
+          "properties": [
+            {
+              "name": "sesac:api:endpoint_key",
+              "value": "GET /actuator/beans"
+            },
+            {
+              "name": "sesac:api:method",
+              "value": "GET"
+            },
+            {
+              "name": "sesac:api:path",
+              "value": "/actuator/beans"
+            },
+            {
+              "name": "sesac:api:kind",
+              "value": "config"
+            },
+            {
+              "name": "sesac:baseline:decision",
+              "value": "review"
+            },
+            {
+              "name": "sesac:baseline:observed-as",
+              "value": "shadow"
+            },
+            {
+              "name": "sesac:source:location",
+              "value": "src/main/resources/application.properties:21"
+            },
+            {
+              "name": "sesac:frontend:used",
+              "value": "-"
+            }
+          ]
+        },
+        {
+          "bom-ref": "op:DELETE /actuator/caches",
+          "provider": {
+            "name": "petclinic-team"
+          },
+          "name": "DELETE /actuator/caches",
+          "description": "설정 파일로 열림 — 코드에 경로 없음 (actuator). 운영 노출 여부 확인 필요",
+          "endpoints": [
+            "http://127.0.0.1:8099/actuator/caches"
+          ],
+          "x-trust-boundary": true,
+          "trustZone": "dmz",
+          "data": [
+            {
+              "flow": "bi-directional",
+              "classification": "system"
+            }
+          ],
+          "authenticated": false,
+          "properties": [
+            {
+              "name": "sesac:api:endpoint_key",
+              "value": "DELETE /actuator/caches"
+            },
+            {
+              "name": "sesac:api:method",
+              "value": "DELETE"
+            },
+            {
+              "name": "sesac:api:path",
+              "value": "/actuator/caches"
+            },
+            {
+              "name": "sesac:api:kind",
+              "value": "config"
+            },
+            {
+              "name": "sesac:baseline:decision",
+              "value": "review"
+            },
+            {
+              "name": "sesac:baseline:observed-as",
+              "value": "shadow"
+            },
+            {
+              "name": "sesac:source:location",
+              "value": "src/main/resources/application.properties:21"
+            },
+            {
+              "name": "sesac:frontend:used",
+              "value": "-"
+            }
+          ]
+        },
+        {
+          "bom-ref": "op:GET /actuator/caches",
+          "provider": {
+            "name": "petclinic-team"
+          },
+          "name": "GET /actuator/caches",
+          "description": "설정 파일로 열림 — 코드에 경로 없음 (actuator). 운영 노출 여부 확인 필요",
+          "endpoints": [
+            "http://127.0.0.1:8099/actuator/caches"
+          ],
+          "x-trust-boundary": true,
+          "trustZone": "dmz",
+          "data": [
+            {
+              "flow": "outbound",
+              "classification": "system"
+            }
+          ],
+          "authenticated": false,
+          "properties": [
+            {
+              "name": "sesac:api:endpoint_key",
+              "value": "GET /actuator/caches"
+            },
+            {
+              "name": "sesac:api:method",
+              "value": "GET"
+            },
+            {
+              "name": "sesac:api:path",
+              "value": "/actuator/caches"
+            },
+            {
+              "name": "sesac:api:kind",
+              "value": "config"
+            },
+            {
+              "name": "sesac:baseline:decision",
+              "value": "review"
+            },
+            {
+              "name": "sesac:baseline:observed-as",
+              "value": "shadow"
+            },
+            {
+              "name": "sesac:source:location",
+              "value": "src/main/resources/application.properties:21"
+            },
+            {
+              "name": "sesac:frontend:used",
+              "value": "-"
+            }
+          ]
+        },
+        {
+          "bom-ref": "op:GET /actuator/conditions",
+          "provider": {
+            "name": "petclinic-team"
+          },
+          "name": "GET /actuator/conditions",
+          "description": "설정 파일로 열림 — 코드에 경로 없음 (actuator). 운영 노출 여부 확인 필요",
+          "endpoints": [
+            "http://127.0.0.1:8099/actuator/conditions"
+          ],
+          "x-trust-boundary": true,
+          "trustZone": "dmz",
+          "data": [
+            {
+              "flow": "outbound",
+              "classification": "system"
+            }
+          ],
+          "authenticated": false,
+          "properties": [
+            {
+              "name": "sesac:api:endpoint_key",
+              "value": "GET /actuator/conditions"
+            },
+            {
+              "name": "sesac:api:method",
+              "value": "GET"
+            },
+            {
+              "name": "sesac:api:path",
+              "value": "/actuator/conditions"
+            },
+            {
+              "name": "sesac:api:kind",
+              "value": "config"
+            },
+            {
+              "name": "sesac:baseline:decision",
+              "value": "review"
+            },
+            {
+              "name": "sesac:baseline:observed-as",
+              "value": "shadow"
+            },
+            {
+              "name": "sesac:source:location",
+              "value": "src/main/resources/application.properties:21"
+            },
+            {
+              "name": "sesac:frontend:used",
+              "value": "-"
+            }
+          ]
+        },
+        {
+          "bom-ref": "op:GET /actuator/configprops",
+          "provider": {
+            "name": "petclinic-team"
+          },
+          "name": "GET /actuator/configprops",
+          "description": "설정 파일로 열림 — 코드에 경로 없음 (actuator). 운영 노출 여부 확인 필요",
+          "endpoints": [
+            "http://127.0.0.1:8099/actuator/configprops"
+          ],
+          "x-trust-boundary": true,
+          "trustZone": "dmz",
+          "data": [
+            {
+              "flow": "outbound",
+              "classification": "system"
+            }
+          ],
+          "authenticated": false,
+          "properties": [
+            {
+              "name": "sesac:api:endpoint_key",
+              "value": "GET /actuator/configprops"
+            },
+            {
+              "name": "sesac:api:method",
+              "value": "GET"
+            },
+            {
+              "name": "sesac:api:path",
+              "value": "/actuator/configprops"
+            },
+            {
+              "name": "sesac:api:kind",
+              "value": "config"
+            },
+            {
+              "name": "sesac:baseline:decision",
+              "value": "review"
+            },
+            {
+              "name": "sesac:baseline:observed-as",
+              "value": "shadow"
+            },
+            {
+              "name": "sesac:source:location",
+              "value": "src/main/resources/application.properties:21"
+            },
+            {
+              "name": "sesac:frontend:used",
+              "value": "-"
+            }
+          ]
+        },
+        {
+          "bom-ref": "op:GET /actuator/env",
+          "provider": {
+            "name": "petclinic-team"
+          },
+          "name": "GET /actuator/env",
+          "description": "설정 파일로 열림 — 코드에 경로 없음 (actuator). 운영 노출 여부 확인 필요",
+          "endpoints": [
+            "http://127.0.0.1:8099/actuator/env"
+          ],
+          "x-trust-boundary": true,
+          "trustZone": "dmz",
+          "data": [
+            {
+              "flow": "outbound",
+              "classification": "system"
+            }
+          ],
+          "authenticated": false,
+          "properties": [
+            {
+              "name": "sesac:api:endpoint_key",
+              "value": "GET /actuator/env"
+            },
+            {
+              "name": "sesac:api:method",
+              "value": "GET"
+            },
+            {
+              "name": "sesac:api:path",
+              "value": "/actuator/env"
+            },
+            {
+              "name": "sesac:api:kind",
+              "value": "config"
+            },
+            {
+              "name": "sesac:baseline:decision",
+              "value": "review"
+            },
+            {
+              "name": "sesac:baseline:observed-as",
+              "value": "shadow"
+            },
+            {
+              "name": "sesac:source:location",
+              "value": "src/main/resources/application.properties:21"
+            },
+            {
+              "name": "sesac:frontend:used",
+              "value": "-"
+            }
+          ]
+        },
+        {
+          "bom-ref": "op:GET /actuator/health",
+          "provider": {
+            "name": "운영팀"
+          },
+          "name": "GET /actuator/health",
+          "description": "모니터링 헬스 체크 — 사람 검토로 승인 (2026-11-21, 검증용으로 Claude 가 대신 결정)",
+          "endpoints": [
+            "http://127.0.0.1:8099/actuator/health"
+          ],
+          "x-trust-boundary": true,
+          "trustZone": "dmz",
+          "data": [
+            {
+              "flow": "outbound",
+              "classification": "system"
+            }
+          ],
+          "authenticated": false,
+          "properties": [
+            {
+              "name": "sesac:api:endpoint_key",
+              "value": "GET /actuator/health"
+            },
+            {
+              "name": "sesac:api:method",
+              "value": "GET"
+            },
+            {
+              "name": "sesac:api:path",
+              "value": "/actuator/health"
+            },
+            {
+              "name": "sesac:api:kind",
+              "value": "config"
+            },
+            {
+              "name": "sesac:baseline:decision",
+              "value": "active"
+            },
+            {
+              "name": "sesac:baseline:observed-as",
+              "value": "documented"
+            },
+            {
+              "name": "sesac:source:location",
+              "value": "src/main/resources/application.properties:21"
+            },
+            {
+              "name": "sesac:frontend:used",
+              "value": "-"
+            }
+          ]
+        },
+        {
+          "bom-ref": "op:GET /actuator/info",
+          "provider": {
+            "name": "petclinic-team"
+          },
+          "name": "GET /actuator/info",
+          "description": "설정 파일로 열림 — 코드에 경로 없음 (actuator). 운영 노출 여부 확인 필요",
+          "endpoints": [
+            "http://127.0.0.1:8099/actuator/info"
+          ],
+          "x-trust-boundary": true,
+          "trustZone": "dmz",
+          "data": [
+            {
+              "flow": "outbound",
+              "classification": "system"
+            }
+          ],
+          "authenticated": false,
+          "properties": [
+            {
+              "name": "sesac:api:endpoint_key",
+              "value": "GET /actuator/info"
+            },
+            {
+              "name": "sesac:api:method",
+              "value": "GET"
+            },
+            {
+              "name": "sesac:api:path",
+              "value": "/actuator/info"
+            },
+            {
+              "name": "sesac:api:kind",
+              "value": "config"
+            },
+            {
+              "name": "sesac:baseline:decision",
+              "value": "review"
+            },
+            {
+              "name": "sesac:baseline:observed-as",
+              "value": "shadow"
+            },
+            {
+              "name": "sesac:source:location",
+              "value": "src/main/resources/application.properties:21"
+            },
+            {
+              "name": "sesac:frontend:used",
+              "value": "-"
+            }
+          ]
+        },
+        {
+          "bom-ref": "op:GET /actuator/loggers",
+          "provider": {
+            "name": "petclinic-team"
+          },
+          "name": "GET /actuator/loggers",
+          "description": "설정 파일로 열림 — 코드에 경로 없음 (actuator). 운영 노출 여부 확인 필요",
+          "endpoints": [
+            "http://127.0.0.1:8099/actuator/loggers"
+          ],
+          "x-trust-boundary": true,
+          "trustZone": "dmz",
+          "data": [
+            {
+              "flow": "outbound",
+              "classification": "system"
+            }
+          ],
+          "authenticated": false,
+          "properties": [
+            {
+              "name": "sesac:api:endpoint_key",
+              "value": "GET /actuator/loggers"
+            },
+            {
+              "name": "sesac:api:method",
+              "value": "GET"
+            },
+            {
+              "name": "sesac:api:path",
+              "value": "/actuator/loggers"
+            },
+            {
+              "name": "sesac:api:kind",
+              "value": "config"
+            },
+            {
+              "name": "sesac:baseline:decision",
+              "value": "review"
+            },
+            {
+              "name": "sesac:baseline:observed-as",
+              "value": "shadow"
+            },
+            {
+              "name": "sesac:source:location",
+              "value": "src/main/resources/application.properties:21"
+            },
+            {
+              "name": "sesac:frontend:used",
+              "value": "-"
+            }
+          ]
+        },
+        {
+          "bom-ref": "op:POST /actuator/loggers/{id}",
+          "provider": {
+            "name": "petclinic-team"
+          },
+          "name": "POST /actuator/loggers/{id}",
+          "description": "설정 파일로 열림 — 코드에 경로 없음 (actuator). 운영 노출 여부 확인 필요",
+          "endpoints": [
+            "http://127.0.0.1:8099/actuator/loggers/%7Bid%7D"
+          ],
+          "x-trust-boundary": true,
+          "trustZone": "dmz",
+          "data": [
+            {
+              "flow": "bi-directional",
+              "classification": "system"
+            }
+          ],
+          "authenticated": false,
+          "properties": [
+            {
+              "name": "sesac:api:endpoint_key",
+              "value": "POST /actuator/loggers/{id}"
+            },
+            {
+              "name": "sesac:api:method",
+              "value": "POST"
+            },
+            {
+              "name": "sesac:api:path",
+              "value": "/actuator/loggers/{id}"
+            },
+            {
+              "name": "sesac:api:kind",
+              "value": "config"
+            },
+            {
+              "name": "sesac:baseline:decision",
+              "value": "review"
+            },
+            {
+              "name": "sesac:baseline:observed-as",
+              "value": "shadow"
+            },
+            {
+              "name": "sesac:source:location",
+              "value": "src/main/resources/application.properties:21"
+            },
+            {
+              "name": "sesac:frontend:used",
+              "value": "-"
+            }
+          ]
+        },
+        {
+          "bom-ref": "op:GET /actuator/mappings",
+          "provider": {
+            "name": "petclinic-team"
+          },
+          "name": "GET /actuator/mappings",
+          "description": "설정 파일로 열림 — 코드에 경로 없음 (actuator). 운영 노출 여부 확인 필요",
+          "endpoints": [
+            "http://127.0.0.1:8099/actuator/mappings"
+          ],
+          "x-trust-boundary": true,
+          "trustZone": "dmz",
+          "data": [
+            {
+              "flow": "outbound",
+              "classification": "system"
+            }
+          ],
+          "authenticated": false,
+          "properties": [
+            {
+              "name": "sesac:api:endpoint_key",
+              "value": "GET /actuator/mappings"
+            },
+            {
+              "name": "sesac:api:method",
+              "value": "GET"
+            },
+            {
+              "name": "sesac:api:path",
+              "value": "/actuator/mappings"
+            },
+            {
+              "name": "sesac:api:kind",
+              "value": "config"
+            },
+            {
+              "name": "sesac:baseline:decision",
+              "value": "review"
+            },
+            {
+              "name": "sesac:baseline:observed-as",
+              "value": "shadow"
+            },
+            {
+              "name": "sesac:source:location",
+              "value": "src/main/resources/application.properties:21"
+            },
+            {
+              "name": "sesac:frontend:used",
+              "value": "-"
+            }
+          ]
+        },
+        {
+          "bom-ref": "op:GET /actuator/metrics",
+          "provider": {
+            "name": "petclinic-team"
+          },
+          "name": "GET /actuator/metrics",
+          "description": "설정 파일로 열림 — 코드에 경로 없음 (actuator). 운영 노출 여부 확인 필요",
+          "endpoints": [
+            "http://127.0.0.1:8099/actuator/metrics"
+          ],
+          "x-trust-boundary": true,
+          "trustZone": "dmz",
+          "data": [
+            {
+              "flow": "outbound",
+              "classification": "system"
+            }
+          ],
+          "authenticated": false,
+          "properties": [
+            {
+              "name": "sesac:api:endpoint_key",
+              "value": "GET /actuator/metrics"
+            },
+            {
+              "name": "sesac:api:method",
+              "value": "GET"
+            },
+            {
+              "name": "sesac:api:path",
+              "value": "/actuator/metrics"
+            },
+            {
+              "name": "sesac:api:kind",
+              "value": "config"
+            },
+            {
+              "name": "sesac:baseline:decision",
+              "value": "review"
+            },
+            {
+              "name": "sesac:baseline:observed-as",
+              "value": "shadow"
+            },
+            {
+              "name": "sesac:source:location",
+              "value": "src/main/resources/application.properties:21"
+            },
+            {
+              "name": "sesac:frontend:used",
+              "value": "-"
+            }
+          ]
+        },
+        {
+          "bom-ref": "op:GET /actuator/sbom",
+          "provider": {
+            "name": "petclinic-team"
+          },
+          "name": "GET /actuator/sbom",
+          "description": "설정 파일로 열림 — 코드에 경로 없음 (actuator). 운영 노출 여부 확인 필요",
+          "endpoints": [
+            "http://127.0.0.1:8099/actuator/sbom"
+          ],
+          "x-trust-boundary": true,
+          "trustZone": "dmz",
+          "data": [
+            {
+              "flow": "outbound",
+              "classification": "system"
+            }
+          ],
+          "authenticated": false,
+          "properties": [
+            {
+              "name": "sesac:api:endpoint_key",
+              "value": "GET /actuator/sbom"
+            },
+            {
+              "name": "sesac:api:method",
+              "value": "GET"
+            },
+            {
+              "name": "sesac:api:path",
+              "value": "/actuator/sbom"
+            },
+            {
+              "name": "sesac:api:kind",
+              "value": "config"
+            },
+            {
+              "name": "sesac:baseline:decision",
+              "value": "review"
+            },
+            {
+              "name": "sesac:baseline:observed-as",
+              "value": "shadow"
+            },
+            {
+              "name": "sesac:source:location",
+              "value": "src/main/resources/application.properties:21"
+            },
+            {
+              "name": "sesac:frontend:used",
+              "value": "-"
+            }
+          ]
+        },
+        {
+          "bom-ref": "op:GET /actuator/scheduledtasks",
+          "provider": {
+            "name": "petclinic-team"
+          },
+          "name": "GET /actuator/scheduledtasks",
+          "description": "설정 파일로 열림 — 코드에 경로 없음 (actuator). 운영 노출 여부 확인 필요",
+          "endpoints": [
+            "http://127.0.0.1:8099/actuator/scheduledtasks"
+          ],
+          "x-trust-boundary": true,
+          "trustZone": "dmz",
+          "data": [
+            {
+              "flow": "outbound",
+              "classification": "system"
+            }
+          ],
+          "authenticated": false,
+          "properties": [
+            {
+              "name": "sesac:api:endpoint_key",
+              "value": "GET /actuator/scheduledtasks"
+            },
+            {
+              "name": "sesac:api:method",
+              "value": "GET"
+            },
+            {
+              "name": "sesac:api:path",
+              "value": "/actuator/scheduledtasks"
+            },
+            {
+              "name": "sesac:api:kind",
+              "value": "config"
+            },
+            {
+              "name": "sesac:baseline:decision",
+              "value": "review"
+            },
+            {
+              "name": "sesac:baseline:observed-as",
+              "value": "shadow"
+            },
+            {
+              "name": "sesac:source:location",
+              "value": "src/main/resources/application.properties:21"
+            },
+            {
+              "name": "sesac:frontend:used",
+              "value": "-"
+            }
+          ]
+        },
+        {
+          "bom-ref": "op:GET /actuator/threaddump",
+          "provider": {
+            "name": "petclinic-team"
+          },
+          "name": "GET /actuator/threaddump",
+          "description": "설정 파일로 열림 — 코드에 경로 없음 (actuator). 운영 노출 여부 확인 필요",
+          "endpoints": [
+            "http://127.0.0.1:8099/actuator/threaddump"
+          ],
+          "x-trust-boundary": true,
+          "trustZone": "dmz",
+          "data": [
+            {
+              "flow": "outbound",
+              "classification": "system"
+            }
+          ],
+          "authenticated": false,
+          "properties": [
+            {
+              "name": "sesac:api:endpoint_key",
+              "value": "GET /actuator/threaddump"
+            },
+            {
+              "name": "sesac:api:method",
+              "value": "GET"
+            },
+            {
+              "name": "sesac:api:path",
+              "value": "/actuator/threaddump"
+            },
+            {
+              "name": "sesac:api:kind",
+              "value": "config"
+            },
+            {
+              "name": "sesac:baseline:decision",
+              "value": "review"
+            },
+            {
+              "name": "sesac:baseline:observed-as",
+              "value": "shadow"
+            },
+            {
+              "name": "sesac:source:location",
+              "value": "src/main/resources/application.properties:21"
+            },
+            {
+              "name": "sesac:frontend:used",
+              "value": "-"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "dependencies": [
+    {
+      "ref": "app:spring-petclinic"
+    },
+    {
+      "ref": "svc:spring-petclinic-web-pages",
+      "dependsOn": [
+        "app:spring-petclinic"
+      ]
+    },
+    {
+      "ref": "svc:spring-petclinic-actuator",
+      "dependsOn": [
+        "app:spring-petclinic"
+      ]
+    }
+  ]
+}

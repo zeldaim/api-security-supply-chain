@@ -17,6 +17,11 @@
     python source_to_baseline.py observe   <baseline.csv> <access.log> [access.log ...]
     python source_to_baseline.py inventory <baseline.csv> <service> <owner> > inventory.ndjson
 
+지원하는 소스: 팀 쇼핑몰(PHP 라우터) · Spring MVC(Java 컨트롤러 + application.properties 의 actuator 노출) — 2026-11-21 추가.
+    Spring 앱에 쓸 때: cyclonedx 에 --app 이름 [--app-group 조직] [--app-desc 설명],
+                       /api 가 없는 서버 렌더링 앱이면 openapi 에 --include-pages (화면·폼 처리기도 허용 목록에 넣음).
+    결과 검증: verify/petclinic/ (실제 Spring 매핑 17/17 일치), 시험: test_spring_extract.py
+
 경로 파라미터 {id}, {product_id} 등은 모두 {id}로 통일한다 (ingest pipeline 정규화 규칙과 맞춤).
 표준 라이브러리만 사용 (--spec 이 YAML일 때만 pyyaml, validate 는 cyclonedx-python-lib[json-validation] 필요).
 """
@@ -41,6 +46,23 @@ STATIC_EXT = re.compile(r"\.(css|js|png|jpe?g|gif|svg|ico|woff2?|ttf|map|txt|ya?
 ROUTER_ADD = re.compile(r"""->add\(\s*'(\w+)'\s*,\s*'([^']+)'\s*,\s*\[[^\]]*\]\s*(,\s*true)?""")
 #   v1: $method === 'GET' && preg_match('#^/api/v1/users/([^/]+)$#', ...)  /  $path === '/api/v1/...'
 V1_BRANCH = re.compile(r"""\$method\s*===\s*'(\w+)'\s*&&\s*(?:preg_match\(\s*'#\^(.+?)\$#'|\$path\s*===\s*'([^']+)')""")
+
+# Spring MVC (Java): @GetMapping("/x") · @PostMapping({ "/a", "/b" }) · @RequestMapping(value = "/x", method = RequestMethod.GET)
+#   클래스에 붙은 @RequestMapping("/prefix") 는 그 클래스 안 모든 경로 앞에 붙는다.
+SPRING_MAPPING = re.compile(r"@(Get|Post|Put|Delete|Patch|Request)Mapping\b\s*(\((?:[^()]|\([^()]*\))*\))?")
+SPRING_CLASS = re.compile(r"\bclass\s+\w+")
+#   @PathVariable("ownerId") int ownerId · @PathVariable(name = "id") UUID id · @PathVariable Long petId
+SPRING_PATHVAR = re.compile(r'@PathVariable(?:\(\s*(?:(?:value|name)\s*=\s*)?"(\w+)"[^)]*\))?\s+(?:final\s+)?([\w.]+)\s+(\w+)')
+JAVA_PARAM_TYPE = {"int": "integer", "Integer": "integer", "long": "integer", "Long": "integer",
+                   "short": "integer", "Short": "integer", "UUID": "uuid", "java.util.UUID": "uuid"}
+# Spring Boot actuator: 코드가 아니라 설정(management.endpoints.web.exposure.include)만으로 열리는 엔드포인트.
+#   include=* 일 때 Boot 4 에서 기본으로 웹에 열리는 것. 실제로 열리는지는 의존성·빈에 따라 다르므로
+#   실행 중인 앱의 GET /actuator 응답으로 대조한다 (verify/petclinic/ 참고).
+#   2026-11-21 petclinic(Boot 4.1.0) 실측: 아래 13개가 열림. heapdump 는 include=* 로도 열리지 않았다 → 목록에서 뺌.
+ACTUATOR_DEFAULT = ["beans", "caches", "conditions", "configprops", "env", "health", "info",
+                    "loggers", "mappings", "metrics", "sbom", "scheduledtasks", "threaddump"]
+# 값을 바꾸는 작업 (GET 이 아닌 것) — 로그 레벨 변경 · 캐시 비우기
+ACTUATOR_WRITES = {"loggers": [("POST", "/{id}")], "caches": [("DELETE", "")]}
 
 
 # ── 공통: 경로 정규화 (02 가이드 5-4 ingest pipeline 과 같은 규칙) ──────────────────
@@ -90,6 +112,103 @@ def pages_from_code(src):
         found[f"GET /{php.name}"] = ("none", rel)
         if php.name == "index.php":
             found["GET /"] = ("none", rel)
+    return found
+
+
+def _spring_paths(args):
+    """매핑 애노테이션 괄호 안 → 경로 목록. value= / path= 또는 첫 위치 인자만 본다 (produces 등은 무시)"""
+    a = (args or "()")[1:-1].strip()
+    # 배열 { "/a/{id}", "/b" } 은 문자열 안의 중괄호({id}) 때문에 [^}]* 로 자르면 안 된다 → 문자열 단위로 센다
+    value = r'(\{\s*(?:"[^"]*"\s*,?\s*)*\}|"[^"]*")'
+    m = re.search(r'\b(?:value|path)\s*=\s*' + value, a)
+    seg = m.group(1) if m else (re.match(value, a) or [None])[0]
+    if not seg:
+        return []
+    return [p if p.startswith("/") or not p else "/" + p for p in re.findall(r'"([^"]*)"', seg)]
+
+
+def _strip_java_comments(text):
+    """// · /* */ 주석을 공백으로 지운다 (줄 번호 유지). 주석 속 '@RequestMapping' 같은 글자를 매핑으로 읽지 않게."""
+    pattern = re.compile(r'//[^\n]*|/\*.*?\*/|"(?:\\.|[^"\\])*"', re.S)
+    return pattern.sub(lambda m: m.group(0) if m.group(0).startswith('"') else re.sub(r"[^\n]", " ", m.group(0)), text)
+
+
+def _spring_secured(java_texts):
+    """Spring Security 설정이 보이면 인증 여부를 코드만으로 단정하지 않는다"""
+    return any(re.search(r"SecurityFilterChain|@PreAuthorize|@Secured|@RolesAllowed", t) for t in java_texts)
+
+
+def spring_routes(src):
+    """Spring MVC 컨트롤러의 매핑 → {endpoint_key: (kind, auth, source, 경로 변수 형식 목록)}
+    @RestController 또는 @ResponseBody 가 붙은 처리기 = api(데이터 응답), 나머지 @Controller 처리기 = page(서버가 그리는 화면·폼)
+    경로 변수 형식은 같은 클래스의 @PathVariable 선언 타입에서 (int → integer, UUID → uuid, 그 밖 → string).
+    정규화하면 {ownerId} 같은 이름이 {id} 로 사라지므로, 순서대로 형식만 남긴다 → cyclonedx · openapi 가 쓴다.
+    """
+    files = [f for f in sorted(src.rglob("*.java")) if "/src/test/" not in f.as_posix()]
+    texts = {f: _strip_java_comments(f.read_text(encoding="utf-8", errors="replace")) for f in files}
+    auth = "unknown" if _spring_secured(texts.values()) else "none"
+    found = {}
+    for f, text in texts.items():
+        if not re.search(r"@(Rest)?Controller\b", text):
+            continue
+        rest = "@RestController" in text
+        cls = SPRING_CLASS.search(text)
+        prefixes = [""]
+        rel = f.relative_to(src).as_posix()
+        var_type = {(m.group(1) or m.group(3)): JAVA_PARAM_TYPE.get(m.group(2), "string")
+                    for m in SPRING_PATHVAR.finditer(text)}
+        for m in SPRING_MAPPING.finditer(text):
+            if cls and m.start() < cls.start():  # 클래스에 붙은 공통 접두어
+                if m.group(1) == "Request":
+                    prefixes = _spring_paths(m.group(2)) or [""]
+                continue
+            if m.group(1) == "Request":
+                methods = re.findall(r"RequestMethod\.(\w+)", m.group(2) or "") or ["GET", "POST"]
+            else:
+                methods = [m.group(1).upper()]
+            # 이 처리기 선언부: 앞 문장 끝(; 또는 })부터 본문 시작({)까지 — @ResponseBody 가 앞이나 뒤 어디에 있든 잡는다
+            start = max(text.rfind(";", 0, m.start()), text.rfind("}", 0, m.start()))
+            end = text.find("{", m.end())
+            body_api = "@ResponseBody" in text[start + 1:end if end != -1 else None]
+            kind = "api" if rest or body_api else "page"
+            for prefix in prefixes:
+                for path in _spring_paths(m.group(2)) or [""]:
+                    full = re.sub(r"/{2,}", "/", (prefix.rstrip("/") + "/" + path.lstrip("/")) if path else prefix) or "/"
+                    types = [var_type.get(v, "string") for v in re.findall(r"\{(\w+)[^}]*\}", full)]
+                    for method in methods:
+                        found[f"{method.upper()} {normalize(full)}"] = (kind, auth, f"{rel}:{line_no(text, m.start())}", types)
+    return found
+
+
+def actuator_from_config(src):
+    """Spring Boot actuator — 설정 파일로 웹에 열린 엔드포인트 → {endpoint_key: (kind, auth, source)}
+    코드 어디에도 경로가 없어서 컨트롤러만 보는 추출로는 놓친다. actuator 의존성이 있을 때만 본다.
+    """
+    builds = [p for name in ("pom.xml", "build.gradle", "build.gradle.kts") for p in src.glob(name)]
+    if not any("spring-boot-starter-actuator" in p.read_text(encoding="utf-8", errors="replace") for p in builds):
+        return {}
+    props, where = {}, {}
+    for conf in sorted(src.glob("src/main/resources/application*.properties")):
+        for n, line in enumerate(conf.read_text(encoding="utf-8", errors="replace").splitlines(), 1):
+            m = re.match(r"\s*(management\.endpoints\.web\.(?:exposure\.include|exposure\.exclude|base-path))\s*[=:]\s*(.*?)\s*$", line)
+            if m:
+                props[m.group(1)] = m.group(2)
+                where[m.group(1)] = f"{conf.relative_to(src).as_posix()}:{n}"
+    split = lambda v: [x.strip() for x in v.split(",") if x.strip()]
+    include = split(props.get("management.endpoints.web.exposure.include", "health"))  # Boot 기본값 = health 만
+    exclude = set(split(props.get("management.endpoints.web.exposure.exclude", "")))
+    ids = ACTUATOR_DEFAULT if "*" in include else include
+    base = props.get("management.endpoints.web.base-path", "/actuator").rstrip("/") or "/"
+    source = where.get("management.endpoints.web.exposure.include", "Spring Boot 기본값(health)")
+    auth = "unknown" if _spring_secured(f.read_text(encoding="utf-8", errors="replace")
+                                        for f in src.rglob("*.java")) else "none"
+    found = {f"GET {base}": ("config", auth, source)}
+    for ep in ids:
+        if ep in exclude:
+            continue
+        found[f"GET {normalize(base + '/' + ep)}"] = ("config", auth, source)
+        for method, sub in ACTUATOR_WRITES.get(ep, []):
+            found[f"{method} {normalize(base + '/' + ep + sub)}"] = ("config", auth, source)
     return found
 
 
@@ -161,6 +280,8 @@ def keys_from_spec(spec_path):
 def suggest(kind, frontend, in_spec, spec_deprecated):
     if spec_deprecated:
         return "deprecated", "명세에 deprecated 표시"
+    if kind == "config":
+        return "review", "설정 파일로 열림 — 코드에 경로 없음 (actuator). 운영 노출 여부 확인 필요"
     if kind == "page":
         return "active", "화면(page)"
     if frontend == "y":
@@ -177,11 +298,13 @@ def cmd_extract(args):
         spec = keys_from_spec(args[args.index("--spec") + 1])
 
     routes = routes_from_code(src)
-    if not routes:
+    spring = spring_routes(src)
+    if not routes and not spring:
         # 2026-11-10: 0개여도 통과해서 서비스 0개 API-BOM 이 커밋됐다 (sbom/results/2026-11-05). 빈 허용 목록 = 모든 호출이 Shadow
         sys.exit(f"[extract] 오류: {src} 에서 API 라우트 0개 — 소스 경로·구조 확인 (빈 기준선은 만들지 않는다)")
-    pages = pages_from_code(src)
-    used = calls_from_frontend(src)
+    config = actuator_from_config(src) if spring else {}
+    pages = pages_from_code(src) if (src / "public").is_dir() else {}
+    used = calls_from_frontend(src) if (src / "public").is_dir() else set()
 
     # 자동화(재실행) 때: 이전에 사람이 확정한 decision·owner·note 는 그대로 이어받는다.
     # 새로 생긴 엔드포인트는 추천값과 상관없이 review → 사람이 승인해야 기준선에 들어간다.
@@ -192,8 +315,9 @@ def cmd_extract(args):
     w = csv.DictWriter(sys.stdout, fieldnames=CSV_FIELDS, lineterminator="\n")
     w.writeheader()
     rows = [(k, "api", *v) for k, v in routes.items()] + [(k, "page", *v) for k, v in pages.items()]
+    rows += [(k, *v[:3]) for k, v in spring.items()] + [(k, *v) for k, v in config.items() if k not in spring]
     for key, kind, auth, source in sorted(rows, key=lambda r: (r[1], r[0].split(" ", 1)[1], r[0])):
-        frontend = "-" if kind == "page" else ("y" if key in used else "n")
+        frontend = "-" if kind in ("page", "config") else ("y" if key in used else "n")
         in_spec = "" if spec is None else ("y" if key in spec else "n")
         decision, note = suggest(kind, frontend, in_spec, bool(spec and spec.get(key)))
         owner = ""
@@ -211,10 +335,10 @@ def cmd_extract(args):
             print(f"[삭제] 코드에서 사라진 엔드포인트 (새 기준선에서 빠짐): {key}", file=sys.stderr)
 
     # 프런트는 부르는데 서버 코드에 없는 경로 = 깨진 호출이거나 추출 규칙 누락
-    for key in sorted(used - set(routes)):
+    for key in sorted(used - set(routes) - set(spring)):
         print(f"[경고] 프런트 호출이 서버 라우트에 없음: {key}", file=sys.stderr)
     if spec is not None:
-        for key in sorted(set(spec) - set(routes)):
+        for key in sorted(set(spec) - set(routes) - set(spring)):
             print(f"[경고] 명세에는 있는데 코드에 없음(미구현/삭제됨): {key}", file=sys.stderr)
 
 
@@ -291,28 +415,32 @@ def cmd_observe(args):
 #   그룹 서비스(shop-api-v2 등) 아래에 operation 하나당 서비스 하나를 중첩한다.
 #   CycloneDX endpoints 는 URL만 담고 HTTP 메서드 칸이 없으므로, 메서드·상태 등은 properties(sesac:*)로 넣는다.
 SPEC_VERSION = "1.6"
-TOOL_VERSION = "1.2"
+TOOL_VERSION = "1.3"
 OBSERVED_AS = {"active": "documented", "deprecated": "zombie", "review": "shadow", "exclude": "shadow"}
 
 # 경로 → 데이터 분류 (위에서부터 먼저 맞는 것). 팀 정책에 맞게 고쳐 쓴다.
 DATA_CLASS = [
-    (r"/(users|signup|login)\b", "PII"),
+    (r"/(users|signup|login|owners)\b", "PII"),
+    (r"/actuator\b", "system"),
     (r"/(orders|cart)\b", "customer-transaction"),
     (r"/diagnostics\b", "system"),
     (r".*", "public"),
 ]
 
 
-def group_of(row):
+def group_of(row, short="shop"):
     """endpoint_key → (그룹 이름, 그룹 경로)  예: GET /api/v2/cart → ('shop-api-v2', '/api/v2')"""
     path = row["endpoint_key"].split(" ", 1)[1]
+    if row["kind"] == "config":
+        m = re.match(r"(/[^/]+)", path)
+        return f"{short}-actuator", m.group(1) if m else "/"
     m = re.match(r"(/api/v\d+)", path)
     if row["kind"] == "page" or not m:
-        return "shop-web-pages", "/"
-    return f"shop-{m.group(1).strip('/').replace('/', '-')}", m.group(1)
+        return f"{short}-web-pages", "/"
+    return f"{short}-{m.group(1).strip('/').replace('/', '-')}", m.group(1)
 
 
-def operation_service(row, base_url, owner):
+def operation_service(row, base_url, owner, param_types=None):
     method, path = row["endpoint_key"].split(" ", 1)
     classification = next(c for rx, c in DATA_CLASS if re.search(rx, path))
     svc = {
@@ -340,6 +468,8 @@ def operation_service(row, base_url, owner):
     ]
     if row["in_spec"]:
         props.append(("sesac:openapi:present", row["in_spec"]))
+    if param_types:  # 경로의 {id} 순서대로 형식 (Spring @PathVariable 타입에서). openapi 가 parameters 로 바꾼다
+        props.append(("sesac:api:path-param-types", ",".join(param_types)))
     svc["properties"] = [{"name": n, "value": v} for n, v in props]
     return svc
 
@@ -362,10 +492,12 @@ def cmd_cyclonedx(args):
     opt = lambda name, default: args[args.index(name) + 1] if name in args else default
     base_url = opt("--base-url", "http://192.168.0.141:8000").rstrip("/")
     owner = opt("--owner", "웹팀")
-
-    app = {"type": "application", "bom-ref": "app:sesac-shop", "group": "sesac-nobreak-team-one",
-           "name": "sesac-shop", "version": git_version(src),
-           "description": "쇼핑몰 웹 애플리케이션 (Apache/PHP, web/src)"}
+    # 다른 앱에 쓸 때: --app 이름 --app-group 조직 --app-desc 설명 (기본값 = 원래 대상인 팀 쇼핑몰)
+    app_name = opt("--app", "sesac-shop")
+    short = "shop" if app_name == "sesac-shop" else app_name
+    app = {"type": "application", "bom-ref": f"app:{app_name}", "group": opt("--app-group", "sesac-nobreak-team-one"),
+           "name": app_name, "version": git_version(src),
+           "description": opt("--app-desc", "쇼핑몰 웹 애플리케이션 (Apache/PHP, web/src)")}
     sbom_path = opt("--sbom", None)
     if sbom_path:
         # BOM-Link: urn:cdx:<serialNumber의 uuid>/<version>#<bom-ref> — 이미지 SBOM의 그 컴포넌트를 가리킨다
@@ -377,15 +509,16 @@ def cmd_cyclonedx(args):
             "comment": f"이 서비스를 실행하는 이미지의 SBOM ({Path(sbom_path).name})",
         }]
 
+    param_types = {k: v[3] for k, v in spring_routes(src).items()} if src.is_dir() else {}
     groups = {}
     for row in rows:
-        name, prefix = group_of(row)
+        name, prefix = group_of(row, short)
         g = groups.setdefault(name, {
-            "bom-ref": f"svc:{name}", "provider": {"name": owner}, "group": "sesac-shop", "name": name,
+            "bom-ref": f"svc:{name}", "provider": {"name": owner}, "group": app_name, "name": name,
             "endpoints": [base_url + (prefix if prefix != "/" else "/")],
             "x-trust-boundary": True, "trustZone": "dmz", "services": [],
         })
-        g["services"].append(operation_service(row, base_url, owner))
+        g["services"].append(operation_service(row, base_url, owner, param_types.get(row["endpoint_key"])))
 
     pending = sum(r["decision"] == "review" for r in rows)
     # 재현 가능한 빌드: SOURCE_DATE_EPOCH(reproducible-builds.org 관례)가 있으면 시각을 고정하고,
@@ -412,9 +545,9 @@ def cmd_cyclonedx(args):
             ],
         },
         "services": list(groups.values()),
-        # 각 서비스는 쇼핑몰 애플리케이션(→ 이미지 SBOM) 위에서 돈다
-        "dependencies": [{"ref": "app:sesac-shop"}]
-                        + [{"ref": g["bom-ref"], "dependsOn": ["app:sesac-shop"]} for g in groups.values()],
+        # 각 서비스는 애플리케이션(→ 이미지 SBOM) 위에서 돈다
+        "dependencies": [{"ref": app["bom-ref"]}]
+                        + [{"ref": g["bom-ref"], "dependsOn": [app["bom-ref"]]} for g in groups.values()],
     }
     serial = (uuid.uuid5(uuid.NAMESPACE_URL, json.dumps(bom, ensure_ascii=False, sort_keys=True))
               if epoch else uuid.uuid4())
@@ -449,21 +582,34 @@ def cmd_openapi(args):
       - deprecated : 빠짐 → 호출되면 Wazuh 경보 (zombie 도 경보 대상)
       - review/exclude : 빠짐 → 호출되면 Wazuh 경보 (shadow)
       - page(.php 화면) : 룰 생성기가 /api 만 보므로 넣지 않는다
+        단, /api 가 없는 서버 렌더링 앱(Spring MVC 등)은 화면·폼 처리기가 곧 공격 표면이라 --include-pages 로 넣는다
+      - config(actuator 등 설정으로 열린 것) : 기본값이 review 라 빠짐 → 호출되면 경보.
+        사람이 active 로 승인한 것(예: 모니터링 헬스 체크)만 들어간다
     출력은 JSON 이다. JSON 은 YAML 의 부분집합이라 룰 생성기(yaml.safe_load)가 그대로 읽는다.
     """
     bom = json.loads(Path(args[0]).read_text(encoding="utf-8"))
     prop = lambda svc, name: next((p["value"] for p in svc.get("properties", []) if p["name"] == name), None)
+    allowed_kinds = {"api", "config", "page"} if "--include-pages" in args else {"api", "config"}
 
     paths, skipped = {}, Counter()
     for group in bom.get("services", []):
         for svc in group.get("services", []):
-            decision = prop(svc, "sesac:baseline:decision")
-            if prop(svc, "sesac:api:kind") != "api" or decision != "active":
-                skipped[decision if prop(svc, "sesac:api:kind") == "api" else "page"] += 1
+            decision = prop(svc, "sesac:api:kind") in allowed_kinds and prop(svc, "sesac:baseline:decision")
+            if decision != "active":
+                kind = prop(svc, "sesac:api:kind")
+                skipped[prop(svc, "sesac:baseline:decision") if kind in allowed_kinds else kind] += 1
                 continue
             method, path = prop(svc, "sesac:api:method").lower(), prop(svc, "sesac:api:path")
             op = {"summary": svc["name"], "x-bom-ref": svc["bom-ref"],
                   "responses": {"default": {"description": "see CycloneDX API-BOM"}}}
+            types = prop(svc, "sesac:api:path-param-types")
+            if types:
+                # OpenAPI 는 한 경로 안 파라미터 이름이 겹치면 안 되므로 두 번째부터 id2, id3 …
+                n = iter(range(1, 100))
+                path = re.sub(r"\{id\}", lambda _: "{id}" if (i := next(n)) == 1 else "{id%d}" % i, path)
+                schema = {"integer": {"type": "integer"}, "uuid": {"type": "string", "format": "uuid"}}
+                op["parameters"] = [{"name": nm, "in": "path", "required": True, "schema": schema.get(t, {"type": "string"})}
+                                    for nm, t in zip(re.findall(r"\{(\w+)\}", path), types.split(","))]
             if svc.get("authenticated"):
                 op["security"] = [{"bearerAuth": []}]
             paths.setdefault(path, {})[method] = op

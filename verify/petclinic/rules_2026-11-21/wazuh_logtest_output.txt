@@ -1,0 +1,12 @@
+## 룰 로드 오류 없음 (wazuh/wazuh-manager:4.14.6)
+## 케이스 대조
+FAIL 기대=L1  실제=None (룰 31101, L5)  GET //vets.html -> 404  (/vets.html: 슬래시 겹침(//) 우회)
+56/57 일치 (실제 wazuh-logtest)
+## 실제 로그: lt_normal.log
+입력 542줄 → 경보 없음 542
+## 실제 로그: lt_bola.log
+입력 61줄 → 경보 없음 61
+## 실제 로그: lt_probe.log
+입력 15줄 → L1 8 · L3 6 · OTHER 1
+## 실제 로그: lt_probe_all.log
+입력 16줄 → L1 8 · L3 6 · OTHER 1 · 경보 없음 1

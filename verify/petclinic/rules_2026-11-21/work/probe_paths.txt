@@ -1,0 +1,15 @@
+GET /vets 200
+GET /actuator 200
+GET /actuator/env 200
+GET /actuator/heapdump 404
+GET /actuator/mappings 200
+GET /actuator/configprops 200
+GET /actuator/beans 200
+GET /admin 404
+GET /api/v1/users 404
+GET /v3/api-docs 404
+GET /h2-console 404
+GET /.env 404
+GET /owners/abc 400
+DELETE /owners/1 405
+GET /backup.zip 404

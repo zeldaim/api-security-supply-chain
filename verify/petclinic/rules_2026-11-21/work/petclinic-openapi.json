@@ -1,0 +1,322 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "spring-petclinic — CycloneDX API-BOM 에서 생성한 허용 목록",
+    "version": "500158f",
+    "description": "원본 BOM urn:uuid:c9ae23e6-c454-5d2b-bdb9-d3793affec5d (version 1). 직접 고치지 말고 baseline.csv 를 고칠 것."
+  },
+  "servers": [
+    {
+      "url": "/"
+    }
+  ],
+  "paths": {
+    "/": {
+      "get": {
+        "summary": "GET /",
+        "x-bom-ref": "op:GET /",
+        "responses": {
+          "default": {
+            "description": "see CycloneDX API-BOM"
+          }
+        }
+      }
+    },
+    "/actuator/health": {
+      "get": {
+        "summary": "GET /actuator/health",
+        "x-bom-ref": "op:GET /actuator/health",
+        "responses": {
+          "default": {
+            "description": "see CycloneDX API-BOM"
+          }
+        }
+      }
+    },
+    "/oups": {
+      "get": {
+        "summary": "GET /oups",
+        "x-bom-ref": "op:GET /oups",
+        "responses": {
+          "default": {
+            "description": "see CycloneDX API-BOM"
+          }
+        }
+      }
+    },
+    "/owners": {
+      "get": {
+        "summary": "GET /owners",
+        "x-bom-ref": "op:GET /owners",
+        "responses": {
+          "default": {
+            "description": "see CycloneDX API-BOM"
+          }
+        }
+      }
+    },
+    "/owners/find": {
+      "get": {
+        "summary": "GET /owners/find",
+        "x-bom-ref": "op:GET /owners/find",
+        "responses": {
+          "default": {
+            "description": "see CycloneDX API-BOM"
+          }
+        }
+      }
+    },
+    "/owners/new": {
+      "get": {
+        "summary": "GET /owners/new",
+        "x-bom-ref": "op:GET /owners/new",
+        "responses": {
+          "default": {
+            "description": "see CycloneDX API-BOM"
+          }
+        }
+      },
+      "post": {
+        "summary": "POST /owners/new",
+        "x-bom-ref": "op:POST /owners/new",
+        "responses": {
+          "default": {
+            "description": "see CycloneDX API-BOM"
+          }
+        }
+      }
+    },
+    "/owners/{id}": {
+      "get": {
+        "summary": "GET /owners/{id}",
+        "x-bom-ref": "op:GET /owners/{id}",
+        "responses": {
+          "default": {
+            "description": "see CycloneDX API-BOM"
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ]
+      }
+    },
+    "/owners/{id}/edit": {
+      "get": {
+        "summary": "GET /owners/{id}/edit",
+        "x-bom-ref": "op:GET /owners/{id}/edit",
+        "responses": {
+          "default": {
+            "description": "see CycloneDX API-BOM"
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ]
+      },
+      "post": {
+        "summary": "POST /owners/{id}/edit",
+        "x-bom-ref": "op:POST /owners/{id}/edit",
+        "responses": {
+          "default": {
+            "description": "see CycloneDX API-BOM"
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ]
+      }
+    },
+    "/owners/{id}/pets/new": {
+      "get": {
+        "summary": "GET /owners/{id}/pets/new",
+        "x-bom-ref": "op:GET /owners/{id}/pets/new",
+        "responses": {
+          "default": {
+            "description": "see CycloneDX API-BOM"
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ]
+      },
+      "post": {
+        "summary": "POST /owners/{id}/pets/new",
+        "x-bom-ref": "op:POST /owners/{id}/pets/new",
+        "responses": {
+          "default": {
+            "description": "see CycloneDX API-BOM"
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ]
+      }
+    },
+    "/owners/{id}/pets/{id2}/edit": {
+      "get": {
+        "summary": "GET /owners/{id}/pets/{id}/edit",
+        "x-bom-ref": "op:GET /owners/{id}/pets/{id}/edit",
+        "responses": {
+          "default": {
+            "description": "see CycloneDX API-BOM"
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "id2",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ]
+      },
+      "post": {
+        "summary": "POST /owners/{id}/pets/{id}/edit",
+        "x-bom-ref": "op:POST /owners/{id}/pets/{id}/edit",
+        "responses": {
+          "default": {
+            "description": "see CycloneDX API-BOM"
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "id2",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ]
+      }
+    },
+    "/owners/{id}/pets/{id2}/visits/new": {
+      "get": {
+        "summary": "GET /owners/{id}/pets/{id}/visits/new",
+        "x-bom-ref": "op:GET /owners/{id}/pets/{id}/visits/new",
+        "responses": {
+          "default": {
+            "description": "see CycloneDX API-BOM"
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "id2",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ]
+      },
+      "post": {
+        "summary": "POST /owners/{id}/pets/{id}/visits/new",
+        "x-bom-ref": "op:POST /owners/{id}/pets/{id}/visits/new",
+        "responses": {
+          "default": {
+            "description": "see CycloneDX API-BOM"
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "id2",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ]
+      }
+    },
+    "/vets.html": {
+      "get": {
+        "summary": "GET /vets.html",
+        "x-bom-ref": "op:GET /vets.html",
+        "responses": {
+          "default": {
+            "description": "see CycloneDX API-BOM"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer"
+      }
+    }
+  }
+}

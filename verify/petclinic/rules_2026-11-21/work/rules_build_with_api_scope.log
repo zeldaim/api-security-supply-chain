@@ -1,0 +1,7 @@
+명세 작업 17개 (예외 0건) · 로그 형식 accesslog → verify/petclinic/rules_2026-11-21/state/0915-shadow_api_rules.xml
+  검사 범위: ^/(?!(?:\?|$))(?![^?]*\.(?:css|js|png|jpe?g|gif|svg|ico|woff2?|ttf|map|txt)(?:\?|$))
+  룰 ID 100500~ · 테스트 케이스 54개 → verify/petclinic/rules_2026-11-21/state/testcases.jsonl
+FAIL 기대=None  결과=L3  GET    /index.html -> 200  (범위 밖 (정적 페이지))
+FAIL 기대=None  결과=L1  GET    /zz-not-api/1 -> 404  (범위 밖 404)
+
+52/54 통과 (파이썬 재현 — 구현 검증)

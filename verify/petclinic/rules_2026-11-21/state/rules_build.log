@@ -1,0 +1,6 @@
+명세 작업 17개 (예외 0건) · 로그 형식 accesslog → verify/petclinic/rules_2026-11-21/state/0915-shadow_api_rules.xml
+  검사 범위: ^/(?!(?:\?|$))(?![^?]*\.(?:css|js|png|jpe?g|gif|svg|ico|woff2?|ttf|map|html?|txt)(?:\?|$))
+  룰 ID 100500~ · 테스트 케이스 57개 → verify/petclinic/rules_2026-11-21/state/testcases.jsonl
+FAIL 기대=L1  결과=None  GET    //vets.html -> 404  (/vets.html: 슬래시 겹침(//) 우회)
+
+56/57 통과 (파이썬 재현 — 구현 검증)
